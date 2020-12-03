@@ -19,4 +19,8 @@ target_compile_features(advent-of-code-test
         cxx_std_17
 )
 
+install(TARGETS advent-of-code-test
+    RUNTIME DESTINATION bin COMPONENT Runtime
+)
+
 add_test(advent-of-code-test advent-of-code-test)
