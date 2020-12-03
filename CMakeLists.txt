@@ -10,6 +10,8 @@ endif()
 
 add_subdirectory(src)
 
+add_subdirectory(test)
+
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
     ${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake

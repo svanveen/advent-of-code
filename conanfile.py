@@ -9,16 +9,16 @@ class AdventOfCodeConan(ConanFile):
     default_channel = 'stable'
 
     scm = {
-        "type": "git",
-        "url": "auto",
-        "revision": "auto",
+        'type': 'git',
+        'url': 'auto',
+        'revision': 'auto',
     }
 
     generators = 'cmake'
     settings = 'os', 'compiler', 'build_type', 'arch'
 
     default_options = {
-        "cmake:with_openssl": False
+        'cmake:with_openssl': False
     }
 
     build_requires = [
@@ -27,7 +27,8 @@ class AdventOfCodeConan(ConanFile):
 
     requires = [
         'docopt.cpp/0.6.3',
-        "range-v3/0.11.0"
+        'gtest/1.10.0',
+        'range-v3/0.11.0'
     ]
 
     no_copy_sources = True
