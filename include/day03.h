@@ -21,7 +21,7 @@ struct Slope
 
 auto exercise(const std::string& path, std::initializer_list<Slope> slopes)
 {
-    std::ifstream stream{path + "/3.dat"};
+    std::ifstream stream{path};
     auto forest = ranges::getlines(stream) | ranges::to_vector;
 
     auto solutions = slopes | ranges::views::transform([&](auto&& slope)

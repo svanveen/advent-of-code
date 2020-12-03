@@ -30,7 +30,7 @@ auto cartesian_product(const R& r)
 template <std::size_t N>
 auto exercise(const std::string& path)
 {
-    std::ifstream stream{path + "/1.dat"};
+    std::ifstream stream{path};
     const auto numbers = ranges::getlines(stream)
            | ranges::views::filter([](auto&& s) { return !s.empty(); })
            | ranges::views::transform([](auto&& s) { return std::stoi(s); })

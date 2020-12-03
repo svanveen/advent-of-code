@@ -18,8 +18,8 @@ int main(int argc, char** argv)
 {
     auto args = docopt::docopt(USAGE, {argv + 1, argv + argc});
 
-    const auto& path = args["-p"].asString();
     const auto& day = args["-d"].asLong();
+    const auto path = args["-p"].asString() + "/" + std::to_string(day) + ".dat";
 
     std::cout << "Solutions day " << day << std::endl;
     switch (day)

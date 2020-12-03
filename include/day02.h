@@ -31,7 +31,7 @@ auto match(const std::string& str)
 template <typename FILTER>
 auto exercise(const std::string& path, FILTER&& filter)
 {
-    std::ifstream stream{path + "/2.dat"};
+    std::ifstream stream{path};
     auto solutions = ranges::getlines(stream)
            | ranges::views::transform(match)
            | ranges::views::filter(filter);
