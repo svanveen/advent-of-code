@@ -2,7 +2,7 @@ add_executable(advent-of-code main.cpp)
 
 target_include_directories(advent-of-code
     PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
 )
 
