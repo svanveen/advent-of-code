@@ -28,9 +28,8 @@ auto cartesian_product(const R& r)
 }
 
 template <std::size_t N>
-auto exercise(const std::string& path)
+auto exercise(std::istream& stream)
 {
-    std::ifstream stream{path};
     const auto numbers = ranges::getlines(stream)
            | ranges::views::filter([](auto&& s) { return !s.empty(); })
            | ranges::views::transform([](auto&& s) { return std::stoi(s); })
@@ -45,14 +44,14 @@ auto exercise(const std::string& path)
 
 }
 
-auto exercise1(const std::string& path)
+auto exercise1(std::istream& stream)
 {
-    return impl::exercise<1>(path);
+    return impl::exercise<1>(stream);
 }
 
-auto exercise2(const std::string& path)
+auto exercise2(std::istream& stream)
 {
-    return impl::exercise<2>(path);
+    return impl::exercise<2>(stream);
 }
 
 }

@@ -29,9 +29,8 @@ auto match(const std::string& str)
 }
 
 template <typename FILTER>
-auto exercise(const std::string& path, FILTER&& filter)
+auto exercise(std::istream& stream, FILTER&& filter)
 {
-    std::ifstream stream{path};
     auto solutions = ranges::getlines(stream)
            | ranges::views::transform(match)
            | ranges::views::filter(filter);
@@ -41,18 +40,18 @@ auto exercise(const std::string& path, FILTER&& filter)
 
 }
 
-auto exercise1(const std::string& path)
+auto exercise1(std::istream& stream)
 {
-    return impl::exercise(path, [](auto&& match)
+    return impl::exercise(stream, [](auto&& match)
     {
         const auto count = std::count(std::begin(match.password), std::end(match.password), match.character);
         return (match.from <= count) && (match.to >= count);
     });
 }
 
-auto exercise2(const std::string& path)
+auto exercise2(std::istream& stream)
 {
-    return impl::exercise(path, [](auto&& match)
+    return impl::exercise(stream, [](auto&& match)
     {
         return (match.password[match.from - 1] == match.character) ^ (match.password[match.to - 1] == match.character);
     });

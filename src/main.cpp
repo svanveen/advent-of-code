@@ -14,6 +14,13 @@ Options:
   -d DAY   day to execute
 )";
 
+template <typename CALLBACK>
+auto solve(CALLBACK&& callback, const std::string& path)
+{
+    std::ifstream stream{path};
+    return callback(stream);
+}
+
 int main(int argc, char** argv)
 {
     auto args = docopt::docopt(USAGE, {argv + 1, argv + argc});
@@ -25,16 +32,16 @@ int main(int argc, char** argv)
     switch (day)
     {
         case 1:
-            std::cout << "Exercise 1: " << day1::exercise1(path) << std::endl;
-            std::cout << "Exercise 2: " << day1::exercise2(path) << std::endl;
+            std::cout << "Exercise 1: " << solve(day1::exercise1, path) << std::endl;
+            std::cout << "Exercise 2: " << solve(day1::exercise2, path) << std::endl;
             break;
         case 2:
-            std::cout << "Exercise 1: " << day2::exercise1(path) << std::endl;
-            std::cout << "Exercise 2: " << day2::exercise2(path) << std::endl;
+            std::cout << "Exercise 1: " << solve(day2::exercise1, path) << std::endl;
+            std::cout << "Exercise 2: " << solve(day2::exercise2, path) << std::endl;
             break;
         case 3:
-            std::cout << "Exercise 1: " << day3::exercise1(path) << std::endl;
-            std::cout << "Exercise 2: " << day3::exercise2(path) << std::endl;
+            std::cout << "Exercise 1: " << solve(day3::exercise1, path) << std::endl;
+            std::cout << "Exercise 2: " << solve(day3::exercise2, path) << std::endl;
             break;
         default:
             std::cerr << "No solution for this day" << std::endl;

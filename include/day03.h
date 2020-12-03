@@ -19,9 +19,8 @@ struct Slope
     std::size_t y;
 };
 
-auto exercise(const std::string& path, std::initializer_list<Slope> slopes)
+auto exercise(std::istream& stream, std::initializer_list<Slope> slopes)
 {
-    std::ifstream stream{path};
     auto forest = ranges::getlines(stream) | ranges::to_vector;
 
     auto solutions = slopes | ranges::views::transform([&](auto&& slope)
@@ -36,14 +35,14 @@ auto exercise(const std::string& path, std::initializer_list<Slope> slopes)
 
 }
 
-auto exercise1(const std::string& path)
+auto exercise1(std::istream& stream)
 {
-    return impl::exercise(path, {{3, 1}});
+    return impl::exercise(stream, {{3, 1}});
 }
 
-auto exercise2(const std::string& path)
+auto exercise2(std::istream& stream)
 {
-    return impl::exercise(path, {{1, 1}, {3, 1}, {5, 1}, {7, 1}, {1, 2}});
+    return impl::exercise(stream, {{1, 1}, {3, 1}, {5, 1}, {7, 1}, {1, 2}});
 }
 
 }
