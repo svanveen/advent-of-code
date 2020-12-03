@@ -31,10 +31,6 @@ auto exercise(const std::string& path, std::initializer_list<Slope> slopes)
         return ranges::distance(trees);
     });
 
-    for (auto&& i : solutions)
-    {
-        std::cout << i << std::endl;
-    }
     return ranges::accumulate(solutions, std::size_t{1}, std::multiplies{});
 }
 
