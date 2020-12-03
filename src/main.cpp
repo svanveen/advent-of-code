@@ -1,6 +1,7 @@
 #include <iostream>
 #include <day01.h>
 #include <day02.h>
+#include <day03.h>
 
 int main(int argc, char** argv)
 {
@@ -18,4 +19,8 @@ int main(int argc, char** argv)
     std::cout << "Solutions day 2" << std::endl;
     std::cout << "Exercise 1: " << day2::exercise1(path) << std::endl;
     std::cout << "Exercise 2: " << day2::exercise2(path) << std::endl;
+
+    std::cout << "Solutions day 3" << std::endl;
+    std::cout << "Exercise 1: " << day3::exercise1(path) << std::endl;
+    std::cout << "Exercise 2: " << day3::exercise2(path) << std::endl;
 }
