@@ -26,6 +26,7 @@ class AdventOfCodeConan(ConanFile):
     ]
 
     requires = [
+        'docopt.cpp/0.6.3',
         "range-v3/0.11.0"
     ]
 

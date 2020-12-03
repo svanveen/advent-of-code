@@ -8,6 +8,7 @@ target_include_directories(advent-of-code
 
 target_link_libraries(advent-of-code
     PRIVATE
+        CONAN_PKG::docopt.cpp
         CONAN_PKG::range-v3
 )
 
