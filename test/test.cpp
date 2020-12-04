@@ -5,11 +5,11 @@
 #include <aoc/day03.h>
 #include <aoc/day04.h>
 
-template <typename EXERCISE, typename EXPECTATION>
-void testSolution(EXERCISE&& exercise, const std::string& input, EXPECTATION&& expectation)
+template <typename EXERCISE>
+auto solve(EXERCISE&& exercise, const std::string& input)
 {
     std::stringstream stream{input};
-    EXPECT_EQ(expectation, exercise(stream));
+    return exercise(stream);
 }
 
 TEST(AdventOfCode, Day1)
@@ -24,10 +24,10 @@ TEST(AdventOfCode, Day1)
 )";
 
     // exercise 1
-    testSolution(day1::exercise1, input, 514579);
+    EXPECT_EQ(514579, solve(day1::exercise1, input));
 
     // exercise 2
-    testSolution(day1::exercise2, input, 241861950);
+    EXPECT_EQ(241861950, solve(day1::exercise2, input));
 }
 
 TEST(AdventOfCode, Day2)
@@ -38,10 +38,10 @@ TEST(AdventOfCode, Day2)
 )";
 
     // exercise 1
-    testSolution(day2::exercise1, input, 2);
+    EXPECT_EQ(2, solve(day2::exercise1, input));
 
     // exercise 2
-    testSolution(day2::exercise2, input, 1);
+    EXPECT_EQ(1, solve(day2::exercise2, input));
 }
 
 TEST(AdventOfCode, Day3)
@@ -60,10 +60,10 @@ TEST(AdventOfCode, Day3)
 )";
 
     // exercise 1
-    testSolution(day3::exercise1, input, 7);
+    EXPECT_EQ(7, solve(day3::exercise1, input));
 
     // exercise 2
-    testSolution(day3::exercise2, input, 336);
+    EXPECT_EQ(336, solve(day3::exercise2, input));
 }
 
 TEST(AdventOfCode, Day4)
@@ -84,7 +84,7 @@ hgt:179cm
 hcl:#cfa07d eyr:2025 pid:166559648
 iyr:2011 ecl:brn hgt:59in
 )";
-        testSolution(day4::exercise1, input, 2);
+        EXPECT_EQ(2, solve(day4::exercise1, input));
     }
 
     // exercise 2
@@ -103,7 +103,7 @@ hgt:59cm ecl:zzz
 eyr:2038 hcl:74454a iyr:2023
 pid:3556412378 byr:2007
 )";
-        testSolution(day4::exercise2, input1, 0);
+        EXPECT_EQ(0, solve(day4::exercise2, input1));
 
         constexpr auto input2 = R"(pid:087499704 hgt:74in ecl:grn iyr:2012 eyr:2030 byr:1980
 hcl:#623a2f
@@ -118,6 +118,6 @@ eyr:2022
 
 iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719
 )";
-        testSolution(day4::exercise2, input2, 4);
+        EXPECT_EQ(4, solve(day4::exercise2, input2));
     }
 }
