@@ -1,18 +1,18 @@
 #include <iostream>
 #include <docopt/docopt.h>
-#include <aoc/day01.h>
-#include <aoc/day02.h>
-#include <aoc/day03.h>
-#include <aoc/day04.h>
+#include <aoc/exercise01.h>
+#include <aoc/exercise02.h>
+#include <aoc/exercise03.h>
+#include <aoc/exercise04.h>
 
 constexpr auto USAGE = R"(Advent of Code.
 
 Usage:
-  advent-of-code -p PATH [-d DAY]
+  advent-of-code -p PATH [-e EXERCISE]
 
 Options:
-  -p PATH  path to .dat files
-  -d DAY   day to execute [default: 4]
+  -p PATH       path to .dat files
+  -e EXERCISE   exercise to execute [default: 4]
 )";
 
 template <typename CALLBACK>
@@ -26,30 +26,30 @@ int main(int argc, char** argv)
 {
     auto args = docopt::docopt(USAGE, {argv + 1, argv + argc});
 
-    const auto& day = args["-d"].asLong();
-    const auto path = args["-p"].asString() + "/" + std::to_string(day) + ".dat";
+    const auto& exercise = args["-e"].asLong();
+    const auto path = args["-p"].asString() + "/" + std::to_string(exercise) + ".dat";
 
-    std::cout << "Solutions day " << day << std::endl;
-    switch (day)
+    std::cout << "Solutions for exercise " << exercise << std::endl;
+    switch (exercise)
     {
         case 1:
-            std::cout << "Exercise 1: " << solve(day1::exercise1, path) << std::endl;
-            std::cout << "Exercise 2: " << solve(day1::exercise2, path) << std::endl;
+            std::cout << "Part 1: " << solve(exercise1::part1, path) << std::endl;
+            std::cout << "Part 2: " << solve(exercise1::part2, path) << std::endl;
             break;
         case 2:
-            std::cout << "Exercise 1: " << solve(day2::exercise1, path) << std::endl;
-            std::cout << "Exercise 2: " << solve(day2::exercise2, path) << std::endl;
+            std::cout << "Part 1: " << solve(exercise2::part1, path) << std::endl;
+            std::cout << "Part 2: " << solve(exercise2::part2, path) << std::endl;
             break;
         case 3:
-            std::cout << "Exercise 1: " << solve(day3::exercise1, path) << std::endl;
-            std::cout << "Exercise 2: " << solve(day3::exercise2, path) << std::endl;
+            std::cout << "Part 1: " << solve(exercise3::part1, path) << std::endl;
+            std::cout << "Part 2: " << solve(exercise3::part2, path) << std::endl;
             break;
         case 4:
-            std::cout << "Exercise 1: " << solve(day4::exercise1, path) << std::endl;
-            std::cout << "Exercise 2: " << solve(day4::exercise2, path) << std::endl;
+            std::cout << "Part 1: " << solve(exercise4::part1, path) << std::endl;
+            std::cout << "Part 2: " << solve(exercise4::part2, path) << std::endl;
             break;
         default:
-            std::cerr << "No solution for this day" << std::endl;
+            std::cerr << "No solution for this exercise" << std::endl;
             return 1;
     }
 

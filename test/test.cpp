@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 #include <sstream>
-#include <aoc/day01.h>
-#include <aoc/day02.h>
-#include <aoc/day03.h>
-#include <aoc/day04.h>
+#include <aoc/exercise01.h>
+#include <aoc/exercise02.h>
+#include <aoc/exercise03.h>
+#include <aoc/exercise04.h>
 
 template <typename EXERCISE>
 auto solve(EXERCISE&& exercise, const std::string& input)
@@ -12,7 +12,7 @@ auto solve(EXERCISE&& exercise, const std::string& input)
     return exercise(stream);
 }
 
-TEST(AdventOfCode, Day1)
+TEST(AdventOfCode, Exercise1)
 {
     constexpr auto input = R"(
 1721
@@ -23,28 +23,28 @@ TEST(AdventOfCode, Day1)
 1456
 )";
 
-    // exercise 1
-    EXPECT_EQ(514579, solve(day1::exercise1, input));
+    // part 1
+    EXPECT_EQ(514579, solve(exercise1::part1, input));
 
-    // exercise 2
-    EXPECT_EQ(241861950, solve(day1::exercise2, input));
+    // part 2
+    EXPECT_EQ(241861950, solve(exercise1::part2, input));
 }
 
-TEST(AdventOfCode, Day2)
+TEST(AdventOfCode, Exercise2)
 {
     constexpr auto input = R"(1-3 a: abcde
 1-3 b: cdefg
 2-9 c: ccccccccc
 )";
 
-    // exercise 1
-    EXPECT_EQ(2, solve(day2::exercise1, input));
+    // part 1
+    EXPECT_EQ(2, solve(exercise2::part1, input));
 
-    // exercise 2
-    EXPECT_EQ(1, solve(day2::exercise2, input));
+    // part 2
+    EXPECT_EQ(1, solve(exercise2::part2, input));
 }
 
-TEST(AdventOfCode, Day3)
+TEST(AdventOfCode, Exercise3)
 {
     constexpr auto input = R"(..##.......
 #...#...#..
@@ -59,16 +59,16 @@ TEST(AdventOfCode, Day3)
 .#..#...#.#
 )";
 
-    // exercise 1
-    EXPECT_EQ(7, solve(day3::exercise1, input));
+    // part 1
+    EXPECT_EQ(7, solve(exercise3::part1, input));
 
-    // exercise 2
-    EXPECT_EQ(336, solve(day3::exercise2, input));
+    // part 2
+    EXPECT_EQ(336, solve(exercise3::part2, input));
 }
 
-TEST(AdventOfCode, Day4)
+TEST(AdventOfCode, Exercise4)
 {
-    // exercise 1
+    // part 1
     {
         constexpr auto input = R"(ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
 byr:1937 iyr:2017 cid:147 hgt:183cm
@@ -84,10 +84,10 @@ hgt:179cm
 hcl:#cfa07d eyr:2025 pid:166559648
 iyr:2011 ecl:brn hgt:59in
 )";
-        EXPECT_EQ(2, solve(day4::exercise1, input));
+        EXPECT_EQ(2, solve(exercise4::part1, input));
     }
 
-    // exercise 2
+    // part 2
     {
         constexpr auto input1 = R"(eyr:1972 cid:100
 hcl:#18171d ecl:amb hgt:170 pid:186cm iyr:2018 byr:1926
@@ -103,7 +103,7 @@ hgt:59cm ecl:zzz
 eyr:2038 hcl:74454a iyr:2023
 pid:3556412378 byr:2007
 )";
-        EXPECT_EQ(0, solve(day4::exercise2, input1));
+        EXPECT_EQ(0, solve(exercise4::part2, input1));
 
         constexpr auto input2 = R"(pid:087499704 hgt:74in ecl:grn iyr:2012 eyr:2030 byr:1980
 hcl:#623a2f
@@ -118,6 +118,6 @@ eyr:2022
 
 iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719
 )";
-        EXPECT_EQ(4, solve(day4::exercise2, input2));
+        EXPECT_EQ(4, solve(exercise4::part2, input2));
     }
 }

@@ -1,12 +1,12 @@
-#ifndef ADVENT_OF_CODE_DAY02_H
-#define ADVENT_OF_CODE_DAY02_H
+#ifndef ADVENT_OF_CODE_EXERCISE02_H
+#define ADVENT_OF_CODE_EXERCISE02_H
 
 #include <fstream>
 #include <regex>
 #include <string>
 #include <range/v3/view.hpp>
 
-namespace day2
+namespace exercise2
 {
 
 namespace impl
@@ -40,7 +40,7 @@ auto exercise(std::istream& stream, FILTER&& filter)
 
 }
 
-auto exercise1(std::istream& stream)
+auto part1(std::istream& stream)
 {
     return impl::exercise(stream, [](auto&& match)
     {
@@ -49,7 +49,7 @@ auto exercise1(std::istream& stream)
     });
 }
 
-auto exercise2(std::istream& stream)
+auto part2(std::istream& stream)
 {
     return impl::exercise(stream, [](auto&& match)
     {
@@ -60,4 +60,4 @@ auto exercise2(std::istream& stream)
 }
 
 
-#endif //ADVENT_OF_CODE_DAY02_H
+#endif //ADVENT_OF_CODE_EXERCISE02_H

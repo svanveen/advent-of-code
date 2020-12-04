@@ -1,5 +1,5 @@
-#ifndef ADVENT_OF_CODE_DAY01_H
-#define ADVENT_OF_CODE_DAY01_H
+#ifndef ADVENT_OF_CODE_EXERCISE01_H
+#define ADVENT_OF_CODE_EXERCISE01_H
 
 #include <fstream>
 #include <string>
@@ -7,7 +7,7 @@
 #include <range/v3/range/operations.hpp>
 #include <range/v3/utility/tuple_algorithm.hpp>
 
-namespace day1
+namespace exercise1
 {
 
 namespace impl
@@ -44,12 +44,12 @@ auto exercise(std::istream& stream)
 
 }
 
-auto exercise1(std::istream& stream)
+auto part1(std::istream& stream)
 {
     return impl::exercise<1>(stream);
 }
 
-auto exercise2(std::istream& stream)
+auto part2(std::istream& stream)
 {
     return impl::exercise<2>(stream);
 }
@@ -57,4 +57,4 @@ auto exercise2(std::istream& stream)
 }
 
 
-#endif //ADVENT_OF_CODE_DAY01_H
+#endif //ADVENT_OF_CODE_EXERCISE01_H

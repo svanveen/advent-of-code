@@ -1,5 +1,5 @@
-#ifndef ADVENT_OF_CODE_DAY04_H
-#define ADVENT_OF_CODE_DAY04_H
+#ifndef ADVENT_OF_CODE_EXERCISE04_H
+#define ADVENT_OF_CODE_EXERCISE04_H
 
 #include <array>
 #include <fstream>
@@ -7,7 +7,7 @@
 #include <range/v3/algorithm.hpp>
 #include <range/v3/view.hpp>
 
-namespace day4
+namespace exercise4
 {
 
 namespace impl
@@ -63,12 +63,12 @@ auto exercise(std::istream& stream, FILTER&& filter)
 
 }
 
-auto exercise1(std::istream& stream)
+auto part1(std::istream& stream)
 {
     return impl::exercise(stream, impl::containsAllKeys);
 }
 
-auto exercise2(std::istream& stream)
+auto part2(std::istream& stream)
 {
     return impl::exercise(stream, [](auto&& passportEntries)
     {
@@ -82,4 +82,4 @@ auto exercise2(std::istream& stream)
 }
 
 
-#endif //ADVENT_OF_CODE_DAY04_H
+#endif //ADVENT_OF_CODE_EXERCISE04_H

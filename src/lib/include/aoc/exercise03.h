@@ -1,5 +1,5 @@
-#ifndef ADVENT_OF_CODE_DAY03_H
-#define ADVENT_OF_CODE_DAY03_H
+#ifndef ADVENT_OF_CODE_EXERCISE03_H
+#define ADVENT_OF_CODE_EXERCISE03_H
 
 #include <array>
 #include <fstream>
@@ -7,7 +7,7 @@
 #include <range/v3/numeric.hpp>
 #include <range/v3/view.hpp>
 
-namespace day3
+namespace exercise3
 {
 
 namespace impl
@@ -35,12 +35,12 @@ auto exercise(std::istream& stream, std::initializer_list<Slope> slopes)
 
 }
 
-auto exercise1(std::istream& stream)
+auto part1(std::istream& stream)
 {
     return impl::exercise(stream, {{3, 1}});
 }
 
-auto exercise2(std::istream& stream)
+auto part2(std::istream& stream)
 {
     return impl::exercise(stream, {{1, 1}, {3, 1}, {5, 1}, {7, 1}, {1, 2}});
 }
@@ -48,4 +48,4 @@ auto exercise2(std::istream& stream)
 }
 
 
-#endif //ADVENT_OF_CODE_DAY03_H
+#endif //ADVENT_OF_CODE_EXERCISE03_H
