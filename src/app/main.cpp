@@ -3,6 +3,7 @@
 #include <aoc/day01.h>
 #include <aoc/day02.h>
 #include <aoc/day03.h>
+#include <aoc/day04.h>
 
 constexpr auto USAGE = R"(Advent of Code.
 
@@ -42,6 +43,10 @@ int main(int argc, char** argv)
         case 3:
             std::cout << "Exercise 1: " << solve(day3::exercise1, path) << std::endl;
             std::cout << "Exercise 2: " << solve(day3::exercise2, path) << std::endl;
+            break;
+        case 4:
+            std::cout << "Exercise 1: " << solve(day4::exercise1, path) << std::endl;
+            std::cout << "Exercise 2: " << solve(day4::exercise2, path) << std::endl;
             break;
         default:
             std::cerr << "No solution for this day" << std::endl;
