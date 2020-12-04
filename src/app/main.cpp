@@ -1,8 +1,8 @@
 #include <iostream>
 #include <docopt/docopt.h>
-#include <day01.h>
-#include <day02.h>
-#include <day03.h>
+#include <aoc/day01.h>
+#include <aoc/day02.h>
+#include <aoc/day03.h>
 
 constexpr auto USAGE = R"(Advent of Code.
 

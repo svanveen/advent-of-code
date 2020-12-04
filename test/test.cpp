@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 #include <sstream>
-#include <day01.h>
-#include <day02.h>
-#include <day03.h>
+#include <aoc/day01.h>
+#include <aoc/day02.h>
+#include <aoc/day03.h>
 
 template <typename EXERCISE, typename EXPECTATION>
 void testSolution(EXERCISE&& exercise, const std::string& input, EXPECTATION&& expectation)

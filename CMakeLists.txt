@@ -12,33 +12,5 @@ add_subdirectory(src)
 
 add_subdirectory(test)
 
-include(CMakePackageConfigHelpers)
-write_basic_package_version_file(
-    ${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-    COMPATIBILITY AnyNewerVersion
-)
-configure_package_config_file(
-    ${CMAKE_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in
-    ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-    INSTALL_DESTINATION lib/cmake/${PROJECT_NAME}
-)
-
-install(TARGETS advent-of-code
-    EXPORT ${PROJECT_NAME}Targets
-    ARCHIVE DESTINATION lib COMPONENT Development
-    LIBRARY DESTINATION lib COMPONENT Runtime
-    RUNTIME DESTINATION bin COMPONENT Runtime
-)
-
-install(EXPORT ${PROJECT_NAME}Targets
-    NAMESPACE ${PROJECT_NAME}::
-    DESTINATION lib/cmake/${PROJECT_NAME}
-)
-
-install(FILES
-    ${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-    ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-    DESTINATION lib/cmake/${PROJECT_NAME}
-)
 
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/res/ DESTINATION share)
