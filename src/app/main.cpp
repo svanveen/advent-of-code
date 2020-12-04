@@ -15,6 +15,20 @@ Options:
   -e EXERCISE   exercise to execute [default: 4]
 )";
 
+struct Exercise
+{
+    using Part = std::size_t (&)(std::istream&);
+    Part part1;
+    Part part2;
+};
+
+static const std::map<int, Exercise> exercises {
+    {1, {exercise1::part1, exercise1::part2}},
+    {2, {exercise2::part1, exercise2::part2}},
+    {3, {exercise3::part1, exercise3::part2}},
+    {4, {exercise4::part1, exercise4::part2}},
+};
+
 template <typename CALLBACK>
 auto solve(CALLBACK&& callback, const std::string& path)
 {
@@ -22,35 +36,31 @@ auto solve(CALLBACK&& callback, const std::string& path)
     return callback(stream);
 }
 
+void solveExercises(int exercise, const std::string& basePath)
+{
+    const auto path = basePath + "/" + std::to_string(exercise) + ".dat";
+    const auto&[part1, part2] = exercises.at(exercise);
+    std::ifstream stream{path};
+
+    std::cout << "Solutions for exercise " << exercise << std::endl;
+    std::cout << "Part 1: " << solve(part1, path) << std::endl;
+    std::cout << "Part 2: " << solve(part2, path) << std::endl;
+}
+
 int main(int argc, char** argv)
 {
     auto args = docopt::docopt(USAGE, {argv + 1, argv + argc});
 
     const auto& exercise = args["-e"].asLong();
-    const auto path = args["-p"].asString() + "/" + std::to_string(exercise) + ".dat";
+    const auto basePath = args["-p"].asString();
 
-    std::cout << "Solutions for exercise " << exercise << std::endl;
-    switch (exercise)
+    try
     {
-        case 1:
-            std::cout << "Part 1: " << solve(exercise1::part1, path) << std::endl;
-            std::cout << "Part 2: " << solve(exercise1::part2, path) << std::endl;
-            break;
-        case 2:
-            std::cout << "Part 1: " << solve(exercise2::part1, path) << std::endl;
-            std::cout << "Part 2: " << solve(exercise2::part2, path) << std::endl;
-            break;
-        case 3:
-            std::cout << "Part 1: " << solve(exercise3::part1, path) << std::endl;
-            std::cout << "Part 2: " << solve(exercise3::part2, path) << std::endl;
-            break;
-        case 4:
-            std::cout << "Part 1: " << solve(exercise4::part1, path) << std::endl;
-            std::cout << "Part 2: " << solve(exercise4::part2, path) << std::endl;
-            break;
-        default:
-            std::cerr << "No solution for this exercise" << std::endl;
-            return 1;
+        solveExercises(exercise, basePath);
+    }
+    catch(...)
+    {
+        std::cerr << "No solution for this exercise" << std::endl;
     }
 
     return 0;

@@ -63,12 +63,12 @@ auto exercise(std::istream& stream, FILTER&& filter)
 
 }
 
-auto part1(std::istream& stream)
+std::size_t part1(std::istream& stream)
 {
     return impl::exercise(stream, impl::containsAllKeys);
 }
 
-auto part2(std::istream& stream)
+std::size_t part2(std::istream& stream)
 {
     return impl::exercise(stream, [](auto&& passportEntries)
     {

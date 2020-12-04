@@ -44,12 +44,12 @@ auto exercise(std::istream& stream)
 
 }
 
-auto part1(std::istream& stream)
+std::size_t part1(std::istream& stream)
 {
     return impl::exercise<1>(stream);
 }
 
-auto part2(std::istream& stream)
+std::size_t part2(std::istream& stream)
 {
     return impl::exercise<2>(stream);
 }

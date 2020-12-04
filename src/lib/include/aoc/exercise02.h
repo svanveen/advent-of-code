@@ -40,7 +40,7 @@ auto exercise(std::istream& stream, FILTER&& filter)
 
 }
 
-auto part1(std::istream& stream)
+std::size_t part1(std::istream& stream)
 {
     return impl::exercise(stream, [](auto&& match)
     {
@@ -49,7 +49,7 @@ auto part1(std::istream& stream)
     });
 }
 
-auto part2(std::istream& stream)
+std::size_t part2(std::istream& stream)
 {
     return impl::exercise(stream, [](auto&& match)
     {

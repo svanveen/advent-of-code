@@ -35,12 +35,12 @@ auto exercise(std::istream& stream, std::initializer_list<Slope> slopes)
 
 }
 
-auto part1(std::istream& stream)
+std::size_t part1(std::istream& stream)
 {
     return impl::exercise(stream, {{3, 1}});
 }
 
-auto part2(std::istream& stream)
+std::size_t part2(std::istream& stream)
 {
     return impl::exercise(stream, {{1, 1}, {3, 1}, {5, 1}, {7, 1}, {1, 2}});
 }
