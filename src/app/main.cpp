@@ -8,11 +8,11 @@
 constexpr auto USAGE = R"(Advent of Code.
 
 Usage:
-  advent-of-code -p PATH -d DAY
+  advent-of-code -p PATH [-d DAY]
 
 Options:
   -p PATH  path to .dat files
-  -d DAY   day to execute
+  -d DAY   day to execute [default: 4]
 )";
 
 template <typename CALLBACK>
