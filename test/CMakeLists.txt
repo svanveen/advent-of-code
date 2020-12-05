@@ -1,28 +1,19 @@
 enable_testing()
 
-add_executable(advent-of-code-test
-    src/2020/exercise01.cpp
-    src/2020/exercise02.cpp
-    src/2020/exercise03.cpp
-    src/2020/exercise04.cpp
-    src/2020/exercise05.cpp
-)
+add_library(aoc-test INTERFACE)
+add_library(${PROJECT_NAME}::aoc-test ALIAS aoc-test)
 
-target_include_directories(advent-of-code-test
-    PRIVATE
+target_include_directories(aoc-test
+    INTERFACE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
         $<INSTALL_INTERFACE:include>
 )
 
-target_link_libraries(advent-of-code-test
-    PRIVATE
-        AdventOfCode::aoc
+target_link_libraries(aoc-test
+    INTERFACE
+        ${PROJECT_NAME}::aoc
         CONAN_PKG::gtest
 )
 
-install(TARGETS advent-of-code-test
-    RUNTIME DESTINATION bin COMPONENT Runtime
-)
-
-add_test(advent-of-code-test advent-of-code-test)
+add_subdirectory(src/2020)
