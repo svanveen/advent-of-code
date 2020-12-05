@@ -41,7 +41,7 @@ auto solve(CALLBACK&& callback, const std::string& path)
 
 void solveExercises(int year, int exercise, const std::string& basePath)
 {
-    const auto path = basePath + "/" + std::to_string(exercise) + ".dat";
+    const auto path = basePath + "/" + std::to_string(year) + "/" + std::to_string(exercise) + ".dat";
     const auto&[part1, part2] = exercises.at(year * 100 + exercise);
     std::ifstream stream{path};
 
