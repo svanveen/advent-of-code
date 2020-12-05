@@ -3,6 +3,7 @@ add_library(${PROJECT_NAME}::aoc ALIAS aoc)
 
 target_sources(aoc
     PRIVATE
+        src/2019/exercise01.cpp
         src/2020/exercise01.cpp
         src/2020/exercise02.cpp
         src/2020/exercise03.cpp

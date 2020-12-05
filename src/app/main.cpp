@@ -10,8 +10,8 @@ Usage:
 
 Options:
   -p PATH       path to .dat files
-  -y YEAR       year of the event
-  -e EXERCISE   exercise to execute
+  -y YEAR       year of the event [default: 2019]
+  -e EXERCISE   exercise to execute [default: 1]
 )";
 
 struct Exercise
@@ -22,6 +22,7 @@ struct Exercise
 };
 
 static const std::map<int, Exercise> exercises {
+    {201901, {aoc::exercise<2019, 1, 1>, aoc::exercise<2019, 1, 2>}},
     {202001, {aoc::exercise<2020, 1, 1>, aoc::exercise<2020, 1, 2>}},
     {202002, {aoc::exercise<2020, 2, 1>, aoc::exercise<2020, 2, 2>}},
     {202003, {aoc::exercise<2020, 3, 1>, aoc::exercise<2020, 3, 2>}},

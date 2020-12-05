@@ -16,4 +16,5 @@ target_link_libraries(aoc-test
         CONAN_PKG::gtest
 )
 
+add_subdirectory(src/2019)
 add_subdirectory(src/2020)
