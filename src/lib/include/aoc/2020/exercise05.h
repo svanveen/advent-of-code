@@ -1,5 +1,5 @@
-#ifndef ADVENT_OF_CODE_EXERCISE05_H
-#define ADVENT_OF_CODE_EXERCISE05_H
+#ifndef ADVENT_OF_CODE_2020_EXERCISE05_H
+#define ADVENT_OF_CODE_2020_EXERCISE05_H
 
 #include <array>
 #include <fstream>
@@ -54,4 +54,4 @@ std::size_t part2(std::istream& stream)
 }
 
 
-#endif //ADVENT_OF_CODE_EXERCISE05_H
+#endif //ADVENT_OF_CODE_2020_EXERCISE05_H
