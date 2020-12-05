@@ -7,7 +7,7 @@
 #include <range/v3/range/operations.hpp>
 #include <range/v3/utility/tuple_algorithm.hpp>
 
-namespace exercise1
+namespace event2020::exercise1
 {
 
 namespace impl

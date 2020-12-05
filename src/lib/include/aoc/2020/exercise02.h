@@ -6,7 +6,7 @@
 #include <string>
 #include <range/v3/view.hpp>
 
-namespace exercise2
+namespace event2020::exercise2
 {
 
 namespace impl
