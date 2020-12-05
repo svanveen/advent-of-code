@@ -4,6 +4,7 @@
 #include <aoc/exercise02.h>
 #include <aoc/exercise03.h>
 #include <aoc/exercise04.h>
+#include <aoc/exercise05.h>
 
 constexpr auto USAGE = R"(Advent of Code.
 
@@ -12,7 +13,7 @@ Usage:
 
 Options:
   -p PATH       path to .dat files
-  -e EXERCISE   exercise to execute [default: 4]
+  -e EXERCISE   exercise to execute [default: 5]
 )";
 
 struct Exercise
@@ -27,6 +28,7 @@ static const std::map<int, Exercise> exercises {
     {2, {exercise2::part1, exercise2::part2}},
     {3, {exercise3::part1, exercise3::part2}},
     {4, {exercise4::part1, exercise4::part2}},
+    {5, {exercise5::part1, exercise5::part2}},
 };
 
 template <typename CALLBACK>

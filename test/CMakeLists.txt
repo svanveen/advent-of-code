@@ -5,6 +5,7 @@ add_executable(advent-of-code-test
     src/exercise02.cpp
     src/exercise03.cpp
     src/exercise04.cpp
+    src/exercise05.cpp
 )
 
 target_include_directories(aoc
