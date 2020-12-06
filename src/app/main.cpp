@@ -5,6 +5,7 @@
 #include <aoc/2020/exercise03.h>
 #include <aoc/2020/exercise04.h>
 #include <aoc/2020/exercise05.h>
+#include <aoc/2020/exercise06.h>
 
 constexpr auto USAGE = R"(Advent of Code.
 
@@ -14,7 +15,7 @@ Usage:
 Options:
   -p PATH       path to .dat files
   -y YEAR       year of the event [default: 2020]
-  -e EXERCISE   exercise to execute [default: 5]
+  -e EXERCISE   exercise to execute [default: 6]
 )";
 
 struct Exercise
@@ -30,6 +31,7 @@ static const std::map<int, Exercise> exercises {
     {202003, {event2020::exercise3::part1, event2020::exercise3::part2}},
     {202004, {event2020::exercise4::part1, event2020::exercise4::part2}},
     {202005, {event2020::exercise5::part1, event2020::exercise5::part2}},
+    {202006, {event2020::exercise6::part1, event2020::exercise6::part2}},
 };
 
 template <typename CALLBACK>
