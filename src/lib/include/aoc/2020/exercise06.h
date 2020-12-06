@@ -15,15 +15,21 @@ namespace event2020::exercise6
 namespace impl
 {
 
-auto exercise(std::istream& stream)
+template <typename FILTER>
+auto exercise(std::istream& stream, FILTER&& filter)
 {
     auto lines =  ranges::getlines(stream) | ranges::to_vector;
 
     auto answers = lines
         | ranges::views::split_when([](auto&& line) { return line.empty(); })
-        | ranges::views::transform(ranges::bind_back(ranges::accumulate, std::string{}, std::plus{}))
-        | ranges::views::transform(ranges::actions::sort)
-        | ranges::views::transform(ranges::actions::unique)
+        | ranges::views::transform([filter](auto&& passengers)
+            {
+                return ranges::views::iota('a', 'z' + 1)
+                    | ranges::views::filter([filter, passengers](auto&& q)
+                        {
+                            return filter(passengers, [q](auto&& str) { return str.find(q) != std::string::npos; });
+                        });
+            })
         | ranges::views::transform(ranges::distance);
 
     return ranges::accumulate(answers, std::size_t{0});
@@ -33,12 +39,12 @@ auto exercise(std::istream& stream)
 
 std::size_t part1(std::istream& stream)
 {
-    return impl::exercise(stream);
+    return impl::exercise(stream, ranges::any_of);
 }
 
 std::size_t part2(std::istream& stream)
 {
-    return 0;
+    return impl::exercise(stream, ranges::all_of);
 }
 
 }
