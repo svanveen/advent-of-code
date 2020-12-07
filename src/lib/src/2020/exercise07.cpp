@@ -1,17 +1,13 @@
-#ifndef ADVENT_OF_CODE_2020_EXERCISE07_H
-#define ADVENT_OF_CODE_2020_EXERCISE07_H
-
-#include <array>
-#include <fstream>
 #include <string>
 #include <range/v3/action.hpp>
 #include <range/v3/iterator_range.hpp>
 #include <range/v3/view.hpp>
+#include <aoc/exercises.h>
 
-namespace event2020::exercise7
+namespace aoc
 {
 
-namespace impl
+namespace
 {
 
 auto parseRule(const std::string& str)
@@ -36,9 +32,10 @@ auto exercise(std::istream& stream)
 
 }
 
-std::size_t part1(std::istream& stream)
+template <>
+std::size_t exercise<2020, 7, 1>(std::istream& stream)
 {
-    auto rules = impl::exercise(stream);
+    auto rules = exercise(stream);
 
     auto findContainerBags = [&](auto&& bag)
     {
@@ -67,9 +64,10 @@ std::size_t part1(std::istream& stream)
     return result.size() - 1; // remove shiny gold itself from result
 }
 
-std::size_t part2(std::istream& stream)
+template <>
+std::size_t exercise<2020, 7, 2>(std::istream& stream)
 {
-    auto rules = impl::exercise(stream);
+    auto rules = exercise(stream);
     auto containedBags = [&](auto&& bag)
     {
         return rules
@@ -98,6 +96,3 @@ std::size_t part2(std::istream& stream)
 }
 
 }
-
-
-#endif //ADVENT_OF_CODE_2020_EXERCISE07_H

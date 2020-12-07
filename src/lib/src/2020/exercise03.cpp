@@ -1,16 +1,13 @@
-#ifndef ADVENT_OF_CODE_2020_EXERCISE03_H
-#define ADVENT_OF_CODE_2020_EXERCISE03_H
-
 #include <array>
-#include <fstream>
 #include <string>
 #include <range/v3/numeric.hpp>
 #include <range/v3/view.hpp>
+#include <aoc/exercises.h>
 
-namespace event2020::exercise3
+namespace aoc
 {
 
-namespace impl
+namespace
 {
 
 struct Slope
@@ -35,17 +32,16 @@ auto exercise(std::istream& stream, std::initializer_list<Slope> slopes)
 
 }
 
-std::size_t part1(std::istream& stream)
+template <>
+std::size_t exercise<2020, 3, 1>(std::istream& stream)
 {
-    return impl::exercise(stream, {{3, 1}});
+    return exercise(stream, {{3, 1}});
 }
 
-std::size_t part2(std::istream& stream)
+template <>
+std::size_t exercise<2020, 3, 2>(std::istream& stream)
 {
-    return impl::exercise(stream, {{1, 1}, {3, 1}, {5, 1}, {7, 1}, {1, 2}});
+    return exercise(stream, {{1, 1}, {3, 1}, {5, 1}, {7, 1}, {1, 2}});
 }
 
 }
-
-
-#endif //ADVENT_OF_CODE_2020_EXERCISE03_H

@@ -1,16 +1,11 @@
-#ifndef ADVENT_OF_CODE_2020_EXERCISE01_H
-#define ADVENT_OF_CODE_2020_EXERCISE01_H
-
-#include <fstream>
 #include <string>
 #include <range/v3/view.hpp>
-#include <range/v3/range/operations.hpp>
-#include <range/v3/utility/tuple_algorithm.hpp>
+#include <aoc/exercises.h>
 
-namespace event2020::exercise1
+namespace aoc
 {
 
-namespace impl
+namespace
 {
 
 template <typename R, std::size_t N, std::size_t ...INDICES>
@@ -44,17 +39,16 @@ auto exercise(std::istream& stream)
 
 }
 
-std::size_t part1(std::istream& stream)
+template <>
+std::size_t exercise<2020, 1, 1>(std::istream& stream)
 {
-    return impl::exercise<1>(stream);
+    return exercise<1>(stream);
 }
 
-std::size_t part2(std::istream& stream)
+template <>
+std::size_t exercise<2020, 1, 2>(std::istream& stream)
 {
-    return impl::exercise<2>(stream);
+    return exercise<2>(stream);
 }
 
 }
-
-
-#endif //ADVENT_OF_CODE_2020_EXERCISE01_H

@@ -1,26 +1,32 @@
-add_library(aoc INTERFACE)
+add_library(aoc)
 add_library(${PROJECT_NAME}::aoc ALIAS aoc)
 
+target_sources(aoc
+    PRIVATE
+        src/2020/exercise01.cpp
+        src/2020/exercise02.cpp
+        src/2020/exercise03.cpp
+        src/2020/exercise04.cpp
+        src/2020/exercise05.cpp
+        src/2020/exercise06.cpp
+        src/2020/exercise07.cpp
+)
+
 target_include_directories(aoc
-    INTERFACE
+    PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
         $<INSTALL_INTERFACE:include>
 )
 
 target_link_libraries(aoc
-    INTERFACE
+    PUBLIC
         CONAN_PKG::range-v3
 )
 
 target_compile_features(aoc
-    INTERFACE
+    PUBLIC
         cxx_std_17
-)
-
-target_compile_definitions(aoc
-    INTERFACE
-        LIBRARY_HEADER_ONLY
 )
 
 include(CMakePackageConfigHelpers)

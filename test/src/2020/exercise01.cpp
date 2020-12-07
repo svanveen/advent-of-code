@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <test/util.h>
-#include <aoc/2020/exercise01.h>
+#include <aoc/exercises.h>
 
 constexpr auto input = R"(
 1721
@@ -13,11 +13,11 @@ constexpr auto input = R"(
 
 TEST(Exercise1, Part1)
 {
-    EXPECT_EQ(514579, solve(event2020::exercise1::part1, input));
+    EXPECT_EQ(514579, solve(aoc::exercise<2020, 1, 1>, input));
 }
 
 TEST(Exercise1, Part2)
 {
-    EXPECT_EQ(241861950, solve(event2020::exercise1::part2, input));
+    EXPECT_EQ(241861950, solve(aoc::exercise<2020, 1, 2>, input));
 }
 

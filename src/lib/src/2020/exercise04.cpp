@@ -1,16 +1,13 @@
-#ifndef ADVENT_OF_CODE_2020_EXERCISE04_H
-#define ADVENT_OF_CODE_2020_EXERCISE04_H
-
 #include <array>
-#include <fstream>
 #include <string>
 #include <range/v3/algorithm.hpp>
 #include <range/v3/view.hpp>
+#include <aoc/exercises.h>
 
-namespace event2020::exercise4
+namespace aoc
 {
 
-namespace impl
+namespace
 {
 
 static const std::map<std::string, std::regex> keyMap = {
@@ -25,7 +22,7 @@ static const std::map<std::string, std::regex> keyMap = {
 
 const auto containsAllKeys = [](auto&& passportEntries)
 {
-    return ranges::all_of(impl::keyMap | ranges::views::keys, [&](auto&& key) {
+    return ranges::all_of(keyMap | ranges::views::keys, [&](auto&& key) {
         return ranges::count(passportEntries | ranges::views::keys, key) == 1;
     });
 };
@@ -63,23 +60,22 @@ auto exercise(std::istream& stream, FILTER&& filter)
 
 }
 
-std::size_t part1(std::istream& stream)
+template <>
+std::size_t exercise<2020, 4, 1>(std::istream& stream)
 {
-    return impl::exercise(stream, impl::containsAllKeys);
+    return exercise(stream, containsAllKeys);
 }
 
-std::size_t part2(std::istream& stream)
+template <>
+std::size_t exercise<2020, 4, 2>(std::istream& stream)
 {
-    return impl::exercise(stream, [](auto&& passportEntries)
+    return exercise(stream, [](auto&& passportEntries)
     {
-        return impl::containsAllKeys(passportEntries) && ranges::all_of(passportEntries, [&](auto&& entry)
+        return containsAllKeys(passportEntries) && ranges::all_of(passportEntries, [&](auto&& entry)
         {
-            return entry.first == "cid" || std::regex_search(entry.second, impl::keyMap.at(entry.first));
+            return entry.first == "cid" || std::regex_search(entry.second, keyMap.at(entry.first));
         });
     });
 }
 
 }
-
-
-#endif //ADVENT_OF_CODE_2020_EXERCISE04_H

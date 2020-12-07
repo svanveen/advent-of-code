@@ -1,12 +1,7 @@
-#include <iostream>
+#include <fstream>
+#include <istream>
 #include <docopt/docopt.h>
-#include <aoc/2020/exercise01.h>
-#include <aoc/2020/exercise02.h>
-#include <aoc/2020/exercise03.h>
-#include <aoc/2020/exercise04.h>
-#include <aoc/2020/exercise05.h>
-#include <aoc/2020/exercise06.h>
-#include <aoc/2020/exercise07.h>
+#include <aoc/exercises.h>
 
 constexpr auto USAGE = R"(Advent of Code.
 
@@ -27,13 +22,13 @@ struct Exercise
 };
 
 static const std::map<int, Exercise> exercises {
-    {202001, {event2020::exercise1::part1, event2020::exercise1::part2}},
-    {202002, {event2020::exercise2::part1, event2020::exercise2::part2}},
-    {202003, {event2020::exercise3::part1, event2020::exercise3::part2}},
-    {202004, {event2020::exercise4::part1, event2020::exercise4::part2}},
-    {202005, {event2020::exercise5::part1, event2020::exercise5::part2}},
-    {202006, {event2020::exercise6::part1, event2020::exercise6::part2}},
-    {202007, {event2020::exercise7::part1, event2020::exercise7::part2}},
+    {202001, {aoc::exercise<2020, 1, 1>, aoc::exercise<2020, 1, 2>}},
+    {202002, {aoc::exercise<2020, 2, 1>, aoc::exercise<2020, 2, 2>}},
+    {202003, {aoc::exercise<2020, 3, 1>, aoc::exercise<2020, 3, 2>}},
+    {202004, {aoc::exercise<2020, 4, 1>, aoc::exercise<2020, 4, 2>}},
+    {202005, {aoc::exercise<2020, 5, 1>, aoc::exercise<2020, 5, 2>}},
+    {202006, {aoc::exercise<2020, 6, 1>, aoc::exercise<2020, 6, 2>}},
+    {202007, {aoc::exercise<2020, 7, 1>, aoc::exercise<2020, 7, 2>}},
 };
 
 template <typename CALLBACK>

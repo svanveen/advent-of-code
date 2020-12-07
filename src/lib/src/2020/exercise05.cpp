@@ -1,18 +1,14 @@
-#ifndef ADVENT_OF_CODE_2020_EXERCISE05_H
-#define ADVENT_OF_CODE_2020_EXERCISE05_H
-
 #include <array>
-#include <fstream>
 #include <string>
 #include <range/v3/action.hpp>
-#include <range/v3/algorithm.hpp>
 #include <range/v3/numeric.hpp>
 #include <range/v3/view.hpp>
+#include <aoc/exercises.h>
 
-namespace event2020::exercise5
+namespace aoc
 {
 
-namespace impl
+namespace
 {
 
 auto toBit(char c)
@@ -36,14 +32,16 @@ auto exercise(std::istream& stream)
 
 }
 
-std::size_t part1(std::istream& stream)
+template <>
+std::size_t exercise<2020, 5, 1>(std::istream& stream)
 {
-    return ranges::max(impl::exercise(stream));
+    return ranges::max(exercise(stream));
 }
 
-std::size_t part2(std::istream& stream)
+template <>
+std::size_t exercise<2020, 5, 2>(std::istream& stream)
 {
-    auto ids = impl::exercise(stream)
+    auto ids = exercise(stream)
         | ranges::to_vector
         | ranges::actions::sort
         | ranges::actions::adjacent_remove_if([](auto&& lhs, auto&& rhs) { return lhs + 1 == rhs; });
@@ -52,6 +50,3 @@ std::size_t part2(std::istream& stream)
 }
 
 }
-
-
-#endif //ADVENT_OF_CODE_2020_EXERCISE05_H

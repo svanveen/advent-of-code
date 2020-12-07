@@ -1,18 +1,15 @@
-#ifndef ADVENT_OF_CODE_2020_EXERCISE06_H
-#define ADVENT_OF_CODE_2020_EXERCISE06_H
-
 #include <array>
-#include <fstream>
 #include <string>
 #include <range/v3/action.hpp>
 #include <range/v3/algorithm.hpp>
 #include <range/v3/numeric.hpp>
 #include <range/v3/view.hpp>
+#include <aoc/exercises.h>
 
-namespace event2020::exercise6
+namespace aoc
 {
 
-namespace impl
+namespace
 {
 
 template <typename FILTER>
@@ -37,17 +34,16 @@ auto exercise(std::istream& stream, FILTER&& filter)
 
 }
 
-std::size_t part1(std::istream& stream)
+template <>
+std::size_t exercise<2020, 6, 1>(std::istream& stream)
 {
-    return impl::exercise(stream, ranges::any_of);
+    return exercise(stream, ranges::any_of);
 }
 
-std::size_t part2(std::istream& stream)
+template <>
+std::size_t exercise<2020, 6, 2>(std::istream& stream)
 {
-    return impl::exercise(stream, ranges::all_of);
+    return exercise(stream, ranges::all_of);
 }
 
 }
-
-
-#endif //ADVENT_OF_CODE_2020_EXERCISE06_H

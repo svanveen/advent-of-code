@@ -1,15 +1,12 @@
-#ifndef ADVENT_OF_CODE_2020_EXERCISE02_H
-#define ADVENT_OF_CODE_2020_EXERCISE02_H
-
-#include <fstream>
 #include <regex>
 #include <string>
 #include <range/v3/view.hpp>
+#include <aoc/exercises.h>
 
-namespace event2020::exercise2
+namespace aoc
 {
 
-namespace impl
+namespace
 {
 
 struct Match
@@ -40,24 +37,23 @@ auto exercise(std::istream& stream, FILTER&& filter)
 
 }
 
-std::size_t part1(std::istream& stream)
+template <>
+std::size_t exercise<2020, 2, 1>(std::istream& stream)
 {
-    return impl::exercise(stream, [](auto&& match)
+    return exercise(stream, [](auto&& match)
     {
         const auto count = std::count(std::begin(match.password), std::end(match.password), match.character);
         return (match.from <= count) && (match.to >= count);
     });
 }
 
-std::size_t part2(std::istream& stream)
+template <>
+std::size_t exercise<2020, 2, 2>(std::istream& stream)
 {
-    return impl::exercise(stream, [](auto&& match)
+    return exercise(stream, [](auto&& match)
     {
         return (match.password[match.from - 1] == match.character) ^ (match.password[match.to - 1] == match.character);
     });
 }
 
 }
-
-
-#endif //ADVENT_OF_CODE_2020_EXERCISE02_H
