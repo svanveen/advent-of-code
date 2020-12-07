@@ -69,7 +69,32 @@ std::size_t part1(std::istream& stream)
 
 std::size_t part2(std::istream& stream)
 {
-    return 0;
+    auto rules = impl::exercise(stream);
+    auto containedBags = [&](auto&& bag)
+    {
+        return rules
+           | ranges::views::filter([&](auto&& rule) { return rule.first == bag; })
+           | ranges::views::values
+           | ranges::views::transform([](auto&& contained) { return ranges::views::repeat_n(contained.second, contained.first); })
+           | ranges::views::join;
+    };
+
+    auto result = 0;
+    auto bags = std::vector<std::string>{"shiny gold"};
+    while (true)
+    {
+        auto contained = bags
+            | ranges::views::transform(containedBags)
+            | ranges::views::join;
+        if (ranges::distance(contained) == 0)
+        {
+            break;
+        }
+        result += ranges::distance(contained);
+        bags = contained | ranges::to_vector;
+    }
+
+    return result;
 }
 
 }

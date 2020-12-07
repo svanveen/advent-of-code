@@ -20,5 +20,15 @@ TEST(Exercise7, Part1)
 
 TEST(Exercise7, Part2)
 {
-    EXPECT_EQ(6, solve(event2020::exercise7::part2, input));
+    EXPECT_EQ(32, solve(event2020::exercise7::part2, input));
+
+    constexpr auto input2 = R"(shiny gold bags contain 2 dark red bags.
+dark red bags contain 2 dark orange bags.
+dark orange bags contain 2 dark yellow bags.
+dark yellow bags contain 2 dark green bags.
+dark green bags contain 2 dark blue bags.
+dark blue bags contain 2 dark violet bags.
+dark violet bags contain no other bags.
+)";
+    EXPECT_EQ(126, solve(event2020::exercise7::part2, input2));
 }
