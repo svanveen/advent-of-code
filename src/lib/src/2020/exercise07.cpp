@@ -1,4 +1,5 @@
 #include <string>
+#include <vector>
 #include <range/v3/action.hpp>
 #include <range/v3/iterator_range.hpp>
 #include <range/v3/view.hpp>
@@ -9,6 +10,78 @@ namespace aoc
 
 namespace
 {
+
+struct ContainingBagCounter
+{
+    std::size_t operator()(const std::vector<std::string>& bags)
+    {
+        auto findContainerBags = [&](auto&& bag)
+        {
+            return rules
+                   | ranges::views::filter([&](auto&& rule) { return rule.second.second == bag; })
+                   | ranges::views::keys;
+        };
+
+        auto containing = bags
+            | ranges::views::transform(findContainerBags)
+            | ranges::views::join
+            | ranges::to_vector
+            | ranges::actions::sort
+            | ranges::actions::unique;
+
+        if (ranges::empty(ranges::views::set_difference(containing, bags)))
+        {
+            return bags.size() - 1;
+        }
+        else
+        {
+            return (*this)(ranges::views::set_union(bags, containing) | ranges::to_vector);
+        }
+    }
+
+    std::size_t operator()(const std::string& bag)
+    {
+        return (*this)(std::vector{bag});
+    }
+
+    std::vector<std::pair<std::string, std::pair<int, std::string>>> rules;
+};
+
+struct ContainedBagCounter
+{
+    std::size_t operator()(const std::vector<std::string>& bags)
+    {
+        auto containedBags = [&](auto&& bag)
+        {
+            return rules
+                   | ranges::views::filter([&](auto&& rule) { return rule.first == bag; })
+                   | ranges::views::values
+                   | ranges::views::transform([](auto&& contained) { return ranges::views::repeat_n(contained.second, contained.first); })
+                   | ranges::views::join;
+        };
+
+        auto contained = bags
+            | ranges::views::transform(containedBags)
+            | ranges::views::join;
+
+        const auto size = ranges::distance(contained);
+        if (size > 0)
+        {
+            return size + (*this)(contained | ranges::to_vector);
+        }
+        else
+        {
+            return size;
+        }
+    }
+
+    std::size_t operator()(const std::string& bag)
+    {
+        return (*this)(std::vector{bag});
+    }
+
+    std::vector<std::pair<std::string, std::pair<int, std::string>>> rules;
+};
 
 auto parseRule(const std::string& str)
 {
@@ -22,12 +95,17 @@ auto parseRule(const std::string& str)
         | ranges::views::transform([outter = match[1]](auto&& inner) { return std::pair(outter.str(), std::pair(std::stoi(inner[0]), inner[1].str())); });
 }
 
+template <typename COUNTER>
 auto exercise(std::istream& stream)
 {
-    return ranges::getlines(stream)
-        | ranges::views::transform(parseRule)
-        | ranges::views::join
-        | ranges::to_vector;
+    auto rules = ranges::getlines(stream)
+           | ranges::views::transform(parseRule)
+           | ranges::views::join
+           | ranges::to_vector;
+
+    COUNTER counter{std::move(rules)};
+
+    return counter("shiny gold");
 }
 
 }
@@ -35,64 +113,13 @@ auto exercise(std::istream& stream)
 template <>
 std::size_t exercise<2020, 7, 1>(std::istream& stream)
 {
-    auto rules = exercise(stream);
-
-    auto findContainerBags = [&](auto&& bag)
-    {
-        return rules
-               | ranges::views::filter([&](auto&& rule) { return rule.second.second == bag; })
-               | ranges::views::keys;
-    };
-
-    auto result = std::vector<std::string>{"shiny gold"};
-
-    while (true)
-    {
-        auto containing = result
-            | ranges::views::transform(findContainerBags)
-            | ranges::views::join
-            | ranges::to_vector
-            | ranges::actions::sort
-            | ranges::actions::unique;
-        if (ranges::empty(ranges::views::set_difference(containing, result)))
-        {
-            break;
-        }
-        result = ranges::views::set_union(result, containing) | ranges::to_vector;
-    }
-
-    return result.size() - 1; // remove shiny gold itself from result
+    return exercise<ContainingBagCounter>(stream);
 }
 
 template <>
 std::size_t exercise<2020, 7, 2>(std::istream& stream)
 {
-    auto rules = exercise(stream);
-    auto containedBags = [&](auto&& bag)
-    {
-        return rules
-           | ranges::views::filter([&](auto&& rule) { return rule.first == bag; })
-           | ranges::views::values
-           | ranges::views::transform([](auto&& contained) { return ranges::views::repeat_n(contained.second, contained.first); })
-           | ranges::views::join;
-    };
-
-    auto result = 0;
-    auto bags = std::vector<std::string>{"shiny gold"};
-    while (true)
-    {
-        auto contained = bags
-            | ranges::views::transform(containedBags)
-            | ranges::views::join;
-        if (ranges::distance(contained) == 0)
-        {
-            break;
-        }
-        result += ranges::distance(contained);
-        bags = contained | ranges::to_vector;
-    }
-
-    return result;
+    return exercise<ContainedBagCounter>(stream);
 }
 
 }
