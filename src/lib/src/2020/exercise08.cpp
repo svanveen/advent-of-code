@@ -36,28 +36,29 @@ struct Instruction
         return {operations.at(match[1]), std::stoi(match[2])};
     }
 
-    void flip()
+    Instruction flipped() const
     {
         if (Operation::JMP == operation)
         {
-            operation = Operation::NOP;
+            return {Operation::NOP, argument};
         }
         else if (Operation::NOP == operation)
         {
-            operation = Operation::JMP;
+            return {Operation::JMP, argument};
         }
-
+        return *this;
     }
 };
 
 template <typename INSTRUCTIONS>
 auto runInstructions(INSTRUCTIONS&& instructions)
 {
-    auto visited = ranges::views::repeat_n(false, instructions.size()) | ranges::to_vector;
+    const auto size = ranges::distance(instructions);
+    auto visited = ranges::views::repeat_n(false, size) | ranges::to_vector;
 
     std::size_t idx = 0;
     int accumulator = 0;
-    for (; !visited[idx] && idx < instructions.size();)
+    for (; !visited[idx] && idx < size;)
     {
         visited[idx] = true;
         const auto&[op, arg] = instructions[idx];
@@ -105,14 +106,15 @@ std::size_t exercise<2020, 8, 2>(std::istream& stream)
 {
     const auto instructions = getInstrucions(stream);
 
+    auto flipAtInstruction = [&](auto&& idx)
+    {
+        return ranges::views::iota(0u, instructions.size())
+            | ranges::views::transform([&, idx](auto&& i) { return (i == idx) ? instructions[i].flipped() : instructions[i]; });
+    };
+
     auto values = ranges::views::iota(0u, instructions.size())
         | ranges::views::filter([&](auto&& idx) { return instructions[idx].operation != Instruction::Operation::ACC; })
-        | ranges::views::transform([&](auto&& idx)
-            {
-                auto i = instructions; // TODO: prevent this copies
-                i[idx].flip();
-                return i;
-            })
+        | ranges::views::transform(flipAtInstruction)
         | ranges::views::transform([](auto&& instr) { return runInstructions(instr); })
         | ranges::views::filter([&](auto&& result) { return result.first == instructions.size(); })
         | ranges::views::values;
