@@ -14,6 +14,7 @@ auto toDigits(std::size_t number)
     return ranges::views::iota(0, 6) | ranges::views::transform([=](auto pot) { return (number / static_cast<std::size_t>(std::pow(10, pot))) % 10; });
 }
 
+template <typename COMPARATOR>
 auto exercise(std::istream& stream)
 {
     const auto passwordRange = ranges::getlines(stream, '-')
@@ -23,10 +24,12 @@ auto exercise(std::istream& stream)
     const auto& from = passwordRange[0];
     const auto& to = passwordRange[1];
 
-    auto passwords = ranges::views::iota(from, to + 1)
+    auto passwords = ranges::views::closed_iota(from, to)
         | ranges::views::transform(toDigits)
         | ranges::views::filter([](auto&& differences) { return ranges::distance(differences) == 6; }, ranges::views::adjacent_filter(ranges::greater_equal{}))
-        | ranges::views::filter([](auto&& differences) { return ranges::distance(differences) >= 2; }, ranges::views::adjacent_filter(ranges::equal_to{}));
+        | ranges::views::filter([](auto&& differences) { return ranges::distance(differences) >= 1; }, ranges::views::group_by(ranges::equal_to{})
+                                                                                                                    | ranges::views::transform(ranges::distance)
+                                                                                                                    | ranges::views::filter(ranges::bind_back(COMPARATOR{}, 2)));
 
     return ranges::distance(passwords);
 }
@@ -36,13 +39,13 @@ auto exercise(std::istream& stream)
 template <>
 std::size_t exercise<2019, 4, 1>(std::istream& stream)
 {
-    return exercise(stream);
+    return exercise<ranges::greater_equal>(stream);
 }
 
 template <>
 std::size_t exercise<2019, 4, 2>(std::istream& stream)
 {
-    return 0;
+    return exercise<ranges::equal_to>(stream);
 }
 
 }

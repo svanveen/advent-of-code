@@ -16,5 +16,13 @@ TEST(Exercise4, Part1)
 
 TEST(Exercise4, Part2)
 {
+    constexpr auto input1 = R"(112233-112233)";
+    EXPECT_EQ(1, solve(aoc::exercise<2019, 4, 2>, input1));
+
+    constexpr auto input2 = R"(123444-123444)";
+    EXPECT_EQ(0, solve(aoc::exercise<2019, 4, 2>, input2));
+
+    constexpr auto input3 = R"(111122-111122)";
+    EXPECT_EQ(1, solve(aoc::exercise<2019, 4, 2>, input3));
 }
 
