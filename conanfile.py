@@ -2,7 +2,7 @@ from conans import CMake, ConanFile
 
 class AdventOfCodeConan(ConanFile):
     name = 'advent-of-code'
-    version = '2020.12.06'
+    version = '2020.12.11'
     author = 'svanveen'
 
     default_user = 'svanveen'
