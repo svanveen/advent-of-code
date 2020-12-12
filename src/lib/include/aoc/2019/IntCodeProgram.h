@@ -22,8 +22,8 @@ public:
         program[1] = noun;
         program[2] = verb;
         auto instructions = program
-                            | ranges::views::chunk(4)
-                            | ranges::views::take_while([](auto&& instruction) { return ranges::front(instruction) != 99; });
+            | ranges::views::chunk(4)
+            | ranges::views::take_while(ranges::bind_back(ranges::not_equal_to{}, 99), ranges::front);
 
         ranges::for_each(instructions, [&](auto&& instruction)
         {
@@ -37,10 +37,10 @@ public:
     }
 
 private:
-    static std::vector<std::size_t> parseProgram(std::istream& stream)
+    static std::vector<int> parseProgram(std::istream& stream)
     {
         return ranges::getlines(stream, ',')
-            | ranges::views::transform([](auto&& s) { return std::stoull(s); })
+            | ranges::views::transform([](auto&& s) { return std::stoi(s); })
             | ranges::to_vector;
     }
 
@@ -55,7 +55,7 @@ private:
     }
 
 private:
-    std::vector<std::size_t> _program;
+    std::vector<int> _program;
 };
 
 }
