@@ -3,6 +3,7 @@ add_executable(aoc2019-test
     exercise02.cpp
     exercise03.cpp
     exercise04.cpp
+    exercise05.cpp
 )
 
 target_link_libraries(aoc2019-test
