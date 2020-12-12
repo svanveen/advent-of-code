@@ -15,7 +15,8 @@ std::size_t exercise<2019, 5, 1>(std::istream& stream)
 template <>
 std::size_t exercise<2019, 5, 2>(std::istream& stream)
 {
-    return 0;
+    const IntCodeProgram prog{stream};
+    return prog(5);
 }
 
 }
