@@ -67,6 +67,7 @@ struct Instruction
             case 'R': return {Turn::RIGHT, value};
             case 'F': return {Forward{}, value};
         }
+        throw std::runtime_error{"could not parse instruction"};
     }
 };
 

@@ -12,7 +12,7 @@ struct Position
 
     friend std::ostream& operator<<(std::ostream& stream, const Position& position)
     {
-        stream << '[' << position.x << ',' << position.y << ']';
+        return stream << '[' << position.x << ',' << position.y << ']';
     }
 };
 
@@ -27,7 +27,7 @@ struct Direction
 
     friend std::ostream& operator<<(std::ostream& stream, const Direction& direction)
     {
-        stream << '[' << direction.x << ',' << direction.y << ']';
+        return stream << '[' << direction.x << ',' << direction.y << ']';
     }
 };
 
