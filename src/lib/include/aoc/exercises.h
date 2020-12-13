@@ -8,7 +8,7 @@ namespace aoc
 {
 
 template <std::size_t YEAR, std::size_t EXERCISE, std::size_t PART>
-std::size_t exercise(std::istream& surrounding);
+std::size_t exercise(std::istream& line);
 
 }
 #endif //ADVENTOFCODE_EXERCISES_H

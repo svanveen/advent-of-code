@@ -11,6 +11,7 @@ add_executable(aoc2020-test
     exercise10.cpp
     exercise11.cpp
     exercise12.cpp
+    exercise13.cpp
 )
 
 target_link_libraries(aoc2020-test
