@@ -17,13 +17,15 @@ using BitSet = std::bitset<36>;
 struct MaskUpdate
 {
     MaskUpdate() = default;
-    MaskUpdate(const std::string& pullUp, const std::string& pullDown)
+    MaskUpdate(const std::string& pullUp, const std::string& pullDown, const std::string& floating)
         : pullUpMask(pullUp)
         , pullDownMask(pullDown)
+        , floatingMask(floating)
     {}
 
     BitSet pullUpMask;
     BitSet pullDownMask;
+    BitSet floatingMask;
 };
 
 struct ValueWrite
@@ -45,9 +47,13 @@ Instruction parse(const std::string& str)
                 | ranges::views::replace('X', '0');
             auto pullDown = ranges::make_iterator_range(match[1].first, match[1].second)
                 | ranges::views::replace('X', '1');
+            auto floating = ranges::make_iterator_range(match[1].first, match[1].second)
+                | ranges::views::replace('1', '0')
+                | ranges::views::replace('X', '1');
             return MaskUpdate{
                 std::string{pullUp.begin(), pullUp.end()},
-                std::string{pullDown.begin(), pullDown.end()}
+                std::string{pullDown.begin(), pullDown.end()},
+                std::string{floating.begin(), floating.end()}
             };
         }
     }
@@ -62,15 +68,17 @@ Instruction parse(const std::string& str)
     throw std::runtime_error{"could not parse instruction"};
 }
 
-class Program
+class AbstractDecoderChip
 {
 public:
+    virtual ~AbstractDecoderChip() = default;
+
     void operator()(const Instruction& instruction)
     {
         std::visit([&](auto&& instr)
-        {
-            exec(instr);
-        }, instruction);
+                   {
+                       exec(instr);
+                   }, instruction);
     }
 
     const std::map<uint64_t, uint64_t >& getMemoryMap() const
@@ -78,8 +86,23 @@ public:
         return memoryMap;
     }
 
+protected:
+    virtual void exec(const ValueWrite& valueWrite) = 0;
+
 private:
-    void exec(const ValueWrite& valueWrite)
+    void exec(const MaskUpdate& maskUpdate)
+    {
+        mask = maskUpdate;
+    }
+
+protected:
+    std::map<uint64_t, uint64_t> memoryMap;
+    MaskUpdate mask;
+};
+
+class DecoderChip : public AbstractDecoderChip
+{
+    void exec(const ValueWrite& valueWrite) override
     {
         auto bits = BitSet{valueWrite.value};
         bits |= mask.pullUpMask;
@@ -87,37 +110,65 @@ private:
         memoryMap[valueWrite.address] = bits.to_ullong();
     }
 
-    void exec(const MaskUpdate& maskUpdate)
+};
+
+class DecoderChip2 : public AbstractDecoderChip
+{
+    void writeValue(BitSet address, uint64_t value, std::size_t idx = 35)
     {
-        mask = maskUpdate;
+        if (idx == 0)
+        {
+            memoryMap[address.to_ullong()] = value;
+            if (mask.floatingMask.test(idx))
+            {
+                memoryMap[address.flip(idx).to_ullong()] = value;
+            }
+        }
+        else
+        {
+            writeValue(address, value, idx - 1);
+            if (mask.floatingMask.test(idx))
+            {
+                writeValue(address.flip(idx), value, idx - 1);
+            }
+        }
     }
 
-private:
-    std::map<uint64_t, uint64_t> memoryMap;
-    MaskUpdate mask;
+    void exec(const ValueWrite& valueWrite) override
+    {
+        auto address = BitSet{valueWrite.address} | mask.pullUpMask;
+
+        writeValue(address, valueWrite.value);
+    }
 };
+
+template <typename DECODER_CHIP>
+std::size_t exercise(std::istream& stream)
+{
+    auto instructions = ranges::getlines(stream)
+        | ranges::views::transform(parse);
+
+    DECODER_CHIP decoderChip;
+    for (auto&& instruction : instructions)
+    {
+        decoderChip(instruction);
+    }
+
+    return ranges::accumulate(decoderChip.getMemoryMap() | ranges::views::values, std::size_t{0});
+}
 
 }
 
 template <>
 std::size_t exercise<2020, 14, 1>(std::istream& stream)
 {
-    auto instructions = ranges::getlines(stream)
-        | ranges::views::transform(parse);
-
-    Program program;
-    for (auto&& instruction : instructions)
-    {
-        program(instruction);
-    }
-
-    return ranges::accumulate(program.getMemoryMap() | ranges::views::values, std::size_t{0});
+    return exercise<DecoderChip>(stream);
 }
 
 template <>
 std::size_t exercise<2020, 14, 2>(std::istream& stream)
 {
-    return 0;
+    return exercise<DecoderChip2>(stream);
 }
 
 }
