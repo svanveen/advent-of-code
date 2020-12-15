@@ -1,0 +1,22 @@
+#include <gtest/gtest.h>
+#include <test/util.h>
+#include <aoc/exercises.h>
+
+constexpr auto input = R"(COM)B
+B)C
+C)D
+D)E
+E)F
+B)G
+G)H
+D)I
+E)J
+J)K
+K)L
+)";
+
+TEST(Exercise6, Part1)
+{
+    EXPECT_EQ(42, solve(aoc::exercise<2019, 6, 1>, input));
+}
+
