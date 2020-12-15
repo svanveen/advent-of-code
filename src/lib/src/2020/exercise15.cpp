@@ -1,10 +1,8 @@
+#include <map>
 #include <string>
-#include <variant>
 #include <aoc/exercises.h>
 #include <range/v3/algorithm.hpp>
-#include <range/v3/numeric.hpp>
 #include <range/v3/view.hpp>
-#include <range/v3/iterator_range.hpp>
 
 namespace aoc
 {
@@ -14,24 +12,22 @@ namespace
 
 auto exercise(std::istream& stream, std::size_t N)
 {
-    auto numbers = ranges::getlines(stream, ',')
+    auto startingNumbers = ranges::getlines(stream, ',')
         | ranges::views::transform([](auto&& number) { return std::stoull(number); })
         | ranges::to_vector;
-    numbers.reserve(N);
 
-    for (auto i = numbers.size(); i < N; ++i)
+    auto numberTurnPairs = ranges::views::indices(std::size_t{0}, startingNumbers.size() - 1) // don't fill last one into map yet
+        | ranges::views::transform([&](auto&& idx) { return std::pair{startingNumbers[idx], idx + 1}; });
+    auto numberTurnMap = std::map<std::size_t, std::size_t>{ranges::begin(numberTurnPairs), ranges::end(numberTurnPairs)};
+
+    auto lastNumber = startingNumbers.back();
+    for (auto turn = startingNumbers.size() + 1; turn <= N; ++turn)
     {
-        const auto it = find(std::next(std::rbegin(numbers)), std::rend(numbers), numbers[i - 1]);
-        if (it == std::rend(numbers))
-        {
-            numbers.push_back(0);
-        }
-        else
-        {
-            numbers.push_back(std::distance(std::rbegin(numbers), it));
-        }
+        auto& lastNumbersTurn = numberTurnMap[lastNumber];
+        lastNumber = (lastNumbersTurn == 0) ? 0 : (turn - 1 - lastNumbersTurn);
+        lastNumbersTurn = turn - 1;
     }
-    return numbers.back();
+    return lastNumber;
 }
 
 }
@@ -45,7 +41,7 @@ std::size_t exercise<2020, 15, 1>(std::istream& stream)
 template <>
 std::size_t exercise<2020, 15, 2>(std::istream& stream)
 {
-    return 0;
+    return exercise(stream, 30000000);
 }
 
 }
