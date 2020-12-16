@@ -11,7 +11,7 @@ Usage:
 Options:
   -p PATH       path to .dat files
   -y YEAR       year of the event [default: 2020]
-  -e EXERCISE   exercise to execute [default: 15]
+  -e EXERCISE   exercise to execute [default: 16]
 )";
 
 struct Exercise
@@ -37,6 +37,7 @@ static const std::map<int, Exercise> exercises {
     {202013, {aoc::exercise<2020, 13, 1>, aoc::exercise<2020, 13, 2>}},
     {202014, {aoc::exercise<2020, 14, 1>, aoc::exercise<2020, 14, 2>}},
     {202015, {aoc::exercise<2020, 15, 1>, aoc::exercise<2020, 15, 2>}},
+    {202016, {aoc::exercise<2020, 16, 1>, aoc::exercise<2020, 16, 2>}},
 };
 
 template <typename CALLBACK>

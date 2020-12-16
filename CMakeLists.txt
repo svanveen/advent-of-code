@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(AdventOfCode VERSION 2020.12.15)
+project(AdventOfCode VERSION 2020.12.16)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
