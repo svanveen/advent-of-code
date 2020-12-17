@@ -7,6 +7,16 @@ namespace aoc::utils
 template <typename INT = int>
 struct Position
 {
+    Position(int x, int y)
+        : x(x)
+        , y(y)
+    {}
+
+    static Position create(const std::tuple<int, int>& tuple)
+    {
+        return Position{std::get<0>(tuple), std::get<1>(tuple)};
+    }
+
     INT x;
     INT y;
 

@@ -1,9 +1,10 @@
 #include <string>
 #include <vector>
 #include <range/v3/action.hpp>
+#include <range/v3/algorithm.hpp>
 #include <range/v3/view.hpp>
 #include <aoc/exercises.h>
-#include <range/v3/algorithm.hpp>
+#include <aoc/utils/Position.h>
 
 namespace aoc
 {
@@ -13,7 +14,8 @@ namespace
 
 struct Map
 {
-    using Coord = std::tuple<int, int>;
+    using Position = utils::Position<>;
+    using Direction = utils::Direction<>;
 
     enum class Field : char
     {
@@ -35,20 +37,22 @@ struct Map
         , _neighborDist(neighborDist)
     {}
 
-    const Field& operator()(const Coord& coord) const
+    const Field& operator()(const Position& coord) const
     {
-        const auto& [x, y] = coord;
-        return _map[x][y];
+        return _map[coord.x][coord.y];
     }
 
     auto getCoordinates() const
     {
-        return ranges::views::cartesian_product(ranges::views::iota(0, static_cast<int>(_rows)), ranges::views::iota(0, static_cast<int>(_cols)));
+        return ranges::views::cartesian_product(
+            ranges::views::iota(0, static_cast<int>(_rows)),
+            ranges::views::iota(0, static_cast<int>(_cols))
+        ) | ranges::views::transform(Position::create);
     }
 
-    auto getNeighbors(const Coord& coord) const
+    auto getNeighbors(const Position& coord) const
     {
-        static constexpr std::array<std::pair<int, int>, 8> directions =
+        static constexpr std::array<Direction, 8> directions =
         {{
             {-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}
         }};
@@ -58,9 +62,7 @@ struct Map
                     return ranges::views::closed_iota(1, _neighborDist)
                         | ranges::views::transform([=](auto&& factor)
                             {
-                                const auto&[x, y] = coord;
-                                const auto&[dx, dy] = dir;
-                                return std::pair{x + factor * dx, y + factor * dy};
+                                return coord + factor * dir;
                             })
                         | ranges::views::take_while([&](auto&& neighbor)
                             {
@@ -77,7 +79,7 @@ struct Map
             | ranges::views::join;
     }
 
-    bool mustSwitch(const Coord& coord)
+    bool mustSwitch(const Position& coord)
     {
         switch ((*this)(coord))
         {
@@ -90,7 +92,7 @@ struct Map
         }
     }
 
-    void switchField(const Coord& coord)
+    void switchField(const Position& coord)
     {
         const auto& [x, y] = coord;
         switch (_map[x][y])
