@@ -3,6 +3,8 @@
 #include <range/v3/action.hpp>
 #include <range/v3/view.hpp>
 #include <aoc/exercises.h>
+#include <aoc/utils/CartesianProduct.h>
+#include <aoc/utils/Position.h>
 
 namespace aoc
 {
@@ -10,48 +12,21 @@ namespace aoc
 namespace
 {
 
-struct ConwayCube
+template <std::size_t DIMS>
+using ConwayCube = utils::Position<int, DIMS>;
+
+template <std::size_t DIMS>
+using Direction = utils::Direction<int, DIMS>;
+
+template <std::size_t DIMS>
+auto getNeighbors(const ConwayCube<DIMS>& cube)
 {
-    constexpr ConwayCube(int x, int y, int z = 0)
-        : x(x)
-        , y(y)
-        , z(z)
-    {}
-
-    static ConwayCube create(const std::tuple<int, int, int>& tuple)
-    {
-        return ConwayCube{std::get<0>(tuple), std::get<1>(tuple), std::get<2>(tuple)};
-    }
-
-    ConwayCube operator+(const ConwayCube& other) const { return {x + other.x, y + other.y, z + other.z}; }
-
-    bool operator==(const ConwayCube& other) const { return (x == other.x) && (y == other.y) && (z == other.z); }
-    bool operator!=(const ConwayCube& other) const { return !(*this == other); }
-    bool operator<(const ConwayCube& other) const { return (x < other.x) || (x == other.x && y < other.y) || (x == other.x && y == other.y && z < other.z); }
-
-    friend std::ostream& operator<<(std::ostream& stream, const ConwayCube& cube)
-    {
-        return stream << '[' << cube.x << ',' << cube.y << ',' << cube.z << ']';
-    }
-
-    int x;
-    int y;
-    int z;
-};
-
-static constexpr ConwayCube origin{0, 0, 0};
-
-auto getNeighbors(const ConwayCube& cube)
-{
-    static const auto directions = ranges::views::cartesian_product
-    (
-        ranges::views::closed_iota(-1, 1),
-        ranges::views::closed_iota(-1, 1),
-        ranges::views::closed_iota(-1, 1)
-    ) | ranges::views::transform(ConwayCube::create);
+    const auto rng = ranges::views::closed_iota(-1, 1);
+    static const auto directions = utils::cartesian_product<DIMS>(rng)
+        | ranges::views::transform([](auto&& tuple) { return Direction<DIMS>::create(tuple); });
 
     return directions
-      | ranges::views::filter(ranges::bind_back(ranges::not_equal_to{}, origin))
+      | ranges::views::filter(ranges::bind_back(ranges::not_equal_to{}, Direction<DIMS>{}))
       | ranges::views::transform([&](auto&& dir) { return cube + dir; });
 }
 
@@ -62,10 +37,8 @@ enum State
     INACTIVE = '.'
 };
 
-}
-
-template <>
-std::size_t exercise<2020, 17, 1>(std::istream& stream)
+template <std::size_t DIMS>
+std::size_t exercise(std::istream& stream)
 {
     const auto initialState = ranges::getlines(stream)
         | ranges::to_vector;
@@ -75,9 +48,9 @@ std::size_t exercise<2020, 17, 1>(std::istream& stream)
         ranges::views::indices(0, static_cast<int>(initialState.size())),
         ranges::views::indices(0, static_cast<int>(initialState[0].size()))
     ) | ranges::views::filter([&](auto&& tuple) { return initialState[std::get<0>(tuple)][std::get<1>(tuple)] == State::ACTIVE; })
-      | ranges::views::transform([](auto&& tuple) { return std::pair{ConwayCube{std::get<0>(tuple), std::get<1>(tuple), 0}, true}; });
+      | ranges::views::transform([](auto&& tuple) { return std::pair{ConwayCube<DIMS>::create(tuple), true}; });
 
-    auto activeCubes = std::map<ConwayCube, bool>{activeCubesRng.begin(), activeCubesRng.end()};
+    auto activeCubes = std::map<ConwayCube<DIMS>, bool>{activeCubesRng.begin(), activeCubesRng.end()};
 
     auto getActiveNeighbours = [&](auto&& cube)
     {
@@ -114,16 +87,25 @@ std::size_t exercise<2020, 17, 1>(std::istream& stream)
             | ranges::views::filter(futureActive)
             | ranges::views::transform([](auto&& cube) { return std::pair{cube, true}; });
 
-        activeCubes = std::map<ConwayCube, bool>{activeCubesRng.begin(), activeCubesRng.end()};
+        activeCubes = {activeCubesRng.begin(), activeCubesRng.end()};
     }
 
     return activeCubes.size();
 }
 
+}
+
+
+template <>
+std::size_t exercise<2020, 17, 1>(std::istream& stream)
+{
+    return exercise<3>(stream);
+}
+
 template <>
 std::size_t exercise<2020, 17, 2>(std::istream& stream)
 {
-    return 0;
+    return exercise<4>(stream);
 }
 
 }
