@@ -12,8 +12,8 @@ namespace aoc
 namespace
 {
 
-using Position = aoc::utils::Position<int>;
-using Direction = aoc::utils::Direction<int>;
+using Position = aoc::utils::Position<int, 2>;
+using Direction = aoc::utils::Direction<int, 2>;
 
 enum class CardinalDirection
 {
@@ -33,10 +33,10 @@ struct Forward {};
 
 static const std::map<CardinalDirection, Direction> directionMap
 {
-    {CardinalDirection::NORTH, {0, 1}},
-    {CardinalDirection::EAST,  {1, 0}},
-    {CardinalDirection::SOUTH, {0, -1}},
-    {CardinalDirection::WEST,  {-1, 0}},
+    {CardinalDirection::NORTH, {{0, 1}}},
+    {CardinalDirection::EAST,  {{1, 0}}},
+    {CardinalDirection::SOUTH, {{0, -1}}},
+    {CardinalDirection::WEST,  {{-1, 0}}},
 };
 
 CardinalDirection turnCardinalDirection(CardinalDirection direction, Turn turn, int value)
@@ -93,7 +93,7 @@ public:
     }
 
 protected:
-    Position _position = {0, 0};
+    Position _position = {{}};
 };
 
 
@@ -129,8 +129,8 @@ private:
 
     void exec(Turn turn, int value) override
     {
-        _waypoint = _waypoint.dx * directionMap.at(turnCardinalDirection(CardinalDirection::EAST, turn, value))
-                  + _waypoint.dy * directionMap.at(turnCardinalDirection(CardinalDirection::NORTH, turn, value));
+        _waypoint = _waypoint[0] * directionMap.at(turnCardinalDirection(CardinalDirection::EAST, turn, value))
+                  + _waypoint[1] * directionMap.at(turnCardinalDirection(CardinalDirection::NORTH, turn, value));
     }
 
     void exec(Forward, int value) override
@@ -139,7 +139,7 @@ private:
     }
 
 private:
-    Direction _waypoint = {10, 1};
+    Direction _waypoint = {{10, 1}};
 };
 
 template <typename FERRY>
@@ -155,7 +155,7 @@ auto exercise(std::istream& stream)
     }
 
     const auto& position = ferry.getPosition();
-    return std::abs(position.x) + std::abs(position.y);
+    return std::abs(position[0]) + std::abs(position[1]);
 }
 
 }

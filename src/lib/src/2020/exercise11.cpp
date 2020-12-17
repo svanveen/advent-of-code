@@ -14,8 +14,8 @@ namespace
 
 struct Map
 {
-    using Position = utils::Position<>;
-    using Direction = utils::Direction<>;
+    using Position = utils::Position<int, 2>;
+    using Direction = utils::Direction<int, 2>;
 
     enum class Field : char
     {
@@ -39,7 +39,7 @@ struct Map
 
     const Field& operator()(const Position& coord) const
     {
-        return _map[coord.x][coord.y];
+        return _map[coord[0]][coord[1]];
     }
 
     auto getCoordinates() const
@@ -47,14 +47,14 @@ struct Map
         return ranges::views::cartesian_product(
             ranges::views::iota(0, static_cast<int>(_rows)),
             ranges::views::iota(0, static_cast<int>(_cols))
-        ) | ranges::views::transform(Position::create);
+        ) | ranges::views::transform([](auto&& tuple) { return Position::create(tuple); });
     }
 
     auto getNeighbors(const Position& coord) const
     {
         static constexpr std::array<Direction, 8> directions =
         {{
-            {-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}
+             {{-1, -1}}, {{-1, 0}}, {{-1, 1}}, {{0, -1}}, {{0, 1}}, {{1, -1}}, {{1, 0}}, {{1, 1}}
         }};
         return directions
             | ranges::views::transform([&](auto&& dir)
@@ -66,12 +66,12 @@ struct Map
                             })
                         | ranges::views::take_while([&](auto&& neighbor)
                             {
-                                const auto&[x, y] = neighbor;
+                                const auto&[x, y] = neighbor.dims;
                                 return (x >= 0 && x < _rows && y >= 0 && y < _cols);
                             })
                         | ranges::views::drop_while([&](auto&& neighbor)
                             {
-                                const auto&[x, y] = neighbor;
+                                const auto&[x, y] = neighbor.dims;
                                 return _map[x][y] == Field::FLOOR;
                             })
                         | ranges::views::take(1);
@@ -90,11 +90,12 @@ struct Map
             case Field::OCCUPIED:
                 return ranges::distance(getNeighbors(coord) | ranges::views::transform(*this) | ranges::views::filter(ranges::bind_back(ranges::equal_to{}, Field::OCCUPIED))) >= _threshold;
         }
+        throw std::runtime_error{"invalid field value"};
     }
 
     void switchField(const Position& coord)
     {
-        const auto& [x, y] = coord;
+        const auto& [x, y] = coord.dims;
         switch (_map[x][y])
         {
             case Field::EMPTY:

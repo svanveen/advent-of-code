@@ -1,78 +1,131 @@
-#ifndef ADVENTOFCODE_POINT_H
-#define ADVENTOFCODE_POINT_H
+#ifndef ADVENTOFCODE_POSITION_H
+#define ADVENTOFCODE_POSITION_H
 
 namespace aoc::utils
 {
 
-template <typename INT = int>
+namespace detail
+{
+
+template <std::size_t N, typename ARG0, typename ...ARGS, std::size_t ...INDICES>
+auto toArray(const std::tuple<ARG0, ARGS...>& tuple, std::index_sequence<INDICES...>)
+{
+    static_assert(1 + sizeof...(ARGS) <= N);
+    return std::array<ARG0, N>{std::get<INDICES>(tuple)...};
+}
+
+}
+
+template <std::size_t N, typename ARG0, typename ...ARGS>
+auto toArray(const std::tuple<ARG0, ARGS...>& tuple)
+{
+    return detail::toArray<N>(tuple, std::index_sequence_for<ARG0, ARGS...>{});
+}
+
+template <typename T, std::size_t DIMS>
 struct Position
 {
-    Position(int x, int y)
-        : x(x)
-        , y(y)
+    Position() = default;
+    constexpr Position(const std::array<T, DIMS>& dims)
+        : dims(dims)
     {}
 
-    static Position create(const std::tuple<int, int>& tuple)
+    T& operator[](std::size_t dim) { return dims[dim]; }
+    const T& operator[](std::size_t dim) const { return dims[dim]; }
+
+    template <typename ...ARGS>
+    static Position create(const std::tuple<ARGS...>& tuple)
     {
-        return Position{std::get<0>(tuple), std::get<1>(tuple)};
+        return toArray<DIMS>(tuple);
     }
 
-    INT x;
-    INT y;
+    bool operator==(const Position& other) const { return dims == other.dims; }
+    bool operator!=(const Position& other) const { return dims != other.dims; }
+    bool operator<(const Position& other) const
+    {
+        for (int i = 0; i < DIMS; ++i)
+        {
+            if (dims[i] < other.dims[i])
+            {
+                return true;
+            }
+            if (dims[i] > other.dims[i])
+            {
+                return false;
+            }
+        }
+        return false;
+    }
 
     friend std::ostream& operator<<(std::ostream& stream, const Position& position)
     {
-        return stream << '[' << position.x << ',' << position.y << ']';
+        return stream << '[' << std::copy(std::begin(position.dims), std::end(position.end), std::ostream_iterator<int>{stream, ","}) << ']';
     }
+
+    std::array<T, DIMS> dims;
 };
 
-template <typename INT = int>
+template <typename T, std::size_t DIMS>
 struct Direction
 {
-    int dx;
-    int dy;
+    Direction() = default;
+    constexpr Direction(const std::array<T, DIMS>& dims)
+        : dims(dims)
+    {}
 
-    bool operator==(const Direction& other) const { return dx == other.dx && dy == other.dy; }
-    bool operator!=(const Direction& other) const { return !(*this == other); }
+    T& operator[](std::size_t dim) { return dims[dim]; }
+    const T& operator[](std::size_t dim) const { return dims[dim]; }
+
+    template <typename ...ARGS>
+    static Direction create(const std::tuple<ARGS...>& tuple)
+    {
+        return toArray<DIMS>(tuple);
+    }
+
+    bool operator==(const Direction& other) const { return dims == other.dims; }
+    bool operator!=(const Direction& other) const { return dims != other.dims; }
 
     friend std::ostream& operator<<(std::ostream& stream, const Direction& direction)
     {
-        return stream << '[' << direction.x << ',' << direction.y << ']';
+        return stream << '[' << std::copy(std::begin(direction.dims), std::end(direction.end), std::ostream_iterator<int>{stream, ","}) << ']';
     }
+
+    std::array<T, DIMS> dims;
 };
 
-template <typename INT>
-Position<INT> operator+(const Position<INT>& position, const Direction<INT>& direction)
+
+template <typename T, std::size_t DIMS>
+Position<T, DIMS> operator+(const Position<T, DIMS>& position, const Direction<T, DIMS>& direction)
 {
-    return {position.x + direction.dx, position.y + direction.dy};
+    return toArray<DIMS>(ranges::tuple_transform(position.dims, direction.dims, std::plus<>{}));
 }
 
-template <typename INT>
-Position<INT>& operator+=(Position<INT>& position, const Direction<INT>& direction)
+template <typename T, std::size_t DIMS>
+Position<T, DIMS>& operator+=(Position<T, DIMS>& position, const Direction<T, DIMS>& direction)
 {
     position = position + direction;
     return position;
 }
 
-template <typename INT>
-Direction<INT> operator+(const Direction<INT>& lhs, const Direction<INT>& rhs)
+template <typename T, std::size_t DIMS>
+Direction<T, DIMS> operator+(const Direction<T, DIMS>& lhs, const Direction<T, DIMS>& rhs)
 {
-    return {lhs.dx + rhs.dx, lhs.dy + rhs.dy};
+    return toArray<DIMS>(ranges::tuple_transform(lhs.dims, rhs.dims, std::plus<>{}));
 }
 
-template <typename INT>
-Direction<INT>& operator+=(Direction<INT>& lhs, const Direction<INT>& rhs)
+template <typename T, std::size_t DIMS>
+Direction<T, DIMS>& operator+=(Direction<T, DIMS>& lhs, const Direction<T, DIMS>& rhs)
 {
     lhs = lhs + rhs;
     return lhs;
 }
 
-template <typename INT>
-Direction<INT> operator*(INT scale, const Direction<INT>& direction)
+template <typename T, std::size_t DIMS>
+Direction<T, DIMS> operator*(T scale, const Direction<T, DIMS>& direction)
 {
-    return {scale * direction.dx, scale * direction.dy};
+    return toArray<DIMS>(ranges::tuple_transform(direction.dims, ranges::bind_back(std::multiplies<>{}, scale)));
 }
 
 }
 
-#endif //ADVENTOFCODE_POINT_H
+#endif //ADVENTOFCODE_POSITION_H
