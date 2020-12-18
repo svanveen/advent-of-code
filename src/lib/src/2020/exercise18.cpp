@@ -23,6 +23,7 @@ struct LBoundOperator
 {
     std::size_t operator()(std::size_t other)
     {
+        std::cout << value << 'x' << other << std::endl;
         return std::visit([&](auto&& op) { return op(value, other); }, operation);
     }
 
@@ -38,7 +39,9 @@ struct Evaluator
         : expressions({std::monostate{}})
     {}
 
-    std::size_t getValue() const
+    virtual ~Evaluator() = default;
+
+    virtual std::size_t getValue()
     {
         if (expressions.size() == 1 && std::holds_alternative<std::size_t>(expressions.top()))
         {
@@ -67,7 +70,7 @@ struct Evaluator
         expressions.push(std::monostate{});
     }
 
-    void operator()(std::size_t value, Operation operation)
+    virtual void operator()(std::size_t value, Operation operation)
     {
         expressions.top() = LBoundOperator{value, operation};
     }
@@ -95,10 +98,44 @@ struct Evaluator
     void operator()(LBoundOperator, Operation)    { throw std::runtime_error{"invalid token"}; }
     void operator()(LBoundOperator, ClosingBrace) { throw std::runtime_error{"invalid token"}; }
 
-private:
+protected:
     std::stack<Expression> expressions;
 };
 
+struct Evaluator2 : public Evaluator
+{
+    std::size_t getValue() override
+    {
+        while (expressions.size() > 1)
+        {
+            if (!std::holds_alternative<std::size_t>(expressions.top()))
+            {
+                throw std::runtime_error{"invalid end state"};
+            }
+            const auto value = std::get<std::size_t>(expressions.top());
+            expressions.pop();
+            std::visit([&](auto&& top) { return (*this)(top, value); }, expressions.top());
+        }
+        if (!std::holds_alternative<std::size_t>(expressions.top()))
+        {
+            throw std::runtime_error{"invalid end state"};
+        }
+        return std::get<std::size_t>(expressions.top());
+    }
+
+    using Evaluator::operator();
+
+    void operator()(std::size_t value, Operation operation) override
+    {
+        expressions.top() = LBoundOperator{value, operation};
+        if (std::holds_alternative<std::multiplies<>>(operation))
+        {
+            expressions.push(std::monostate{});
+        }
+    }
+};
+
+template <typename EVALUATOR>
 auto compute(const std::string& str)
 {
     auto parseToken = [](auto&& part) -> Token
@@ -117,7 +154,7 @@ auto compute(const std::string& str)
         | ranges::views::tokenize(std::regex{R"((\d+|[*+()]))"})
         | ranges::views::transform(parseToken);
 
-    Evaluator evaluator;
+    EVALUATOR evaluator;
     for (auto&& token : tokens)
     {
         evaluator(token);
@@ -132,14 +169,20 @@ template <>
 std::size_t exercise<2020, 18, 1>(std::istream& stream)
 {
     auto results = ranges::getlines(stream)
-        | ranges::views::transform(compute);
+        | ranges::views::transform([](auto&& str) { return compute<Evaluator>(str); });
     return ranges::accumulate(results, std::size_t{0});
 }
 
 template <>
 std::size_t exercise<2020, 18, 2>(std::istream& stream)
 {
-    return 0;
+    auto results = ranges::getlines(stream)
+       | ranges::views::transform([](auto&& str) { return compute<Evaluator2>(str); });
+    for (auto&& r : results)
+    {
+        std::cout << "R=" << r << std::endl;
+    }
+    return ranges::accumulate(results, std::size_t{0});
 }
 
 }
