@@ -20,6 +20,7 @@ target_sources(aoc
         src/2020/exercise15.cpp
         src/2020/exercise16.cpp
         src/2020/exercise17.cpp
+        src/2020/exercise18.cpp
 )
 
 target_include_directories(aoc
