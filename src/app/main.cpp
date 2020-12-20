@@ -10,8 +10,8 @@ Usage:
 
 Options:
   -p PATH       path to .dat files
-  -y YEAR       year of the event [default: 2020]
-  -e EXERCISE   exercise to execute [default: 20]
+  -y YEAR       year of the event
+  -e EXERCISE   exercise to execute
 )";
 
 struct Exercise
@@ -55,7 +55,6 @@ void solveExercises(int year, int exercise, const std::string& basePath)
 {
     const auto path = basePath + "/" + std::to_string(year) + "/" + std::to_string(exercise) + ".dat";
     const auto&[part1, part2] = exercises.at(year * 100 + exercise);
-    std::ifstream stream{path};
 
     std::cout << "Solutions for event " << year << " exercise " << exercise << std::endl;
     std::cout << "Part 1: " << solve(part1, path) << std::endl;

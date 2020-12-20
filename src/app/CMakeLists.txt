@@ -2,7 +2,7 @@ add_executable(advent-of-code main.cpp)
 
 target_link_libraries(advent-of-code
     PRIVATE
-        AdventOfCode::aoc
+        ${PROJECT_NAME}::aoc
         CONAN_PKG::docopt.cpp
 )
 

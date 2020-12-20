@@ -12,5 +12,7 @@ add_subdirectory(src)
 
 add_subdirectory(test)
 
+add_subdirectory(devel)
+
 
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/res/ DESTINATION share)
