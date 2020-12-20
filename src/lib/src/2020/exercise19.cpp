@@ -1,6 +1,7 @@
 #include <regex>
 #include <string>
 #include <variant>
+#include <range/v3/action.hpp>
 #include <range/v3/algorithm.hpp>
 #include <range/v3/iterator_range.hpp>
 #include <range/v3/numeric.hpp>
@@ -19,11 +20,11 @@ struct CharacterRule
     char character;
 };
 
-using RuleReference = std::vector<std::size_t>;
+using RuleReferences = std::vector<std::size_t>;
 
 struct ReferenceRule
 {
-    std::vector<RuleReference> ruleReferencesAlternatives;
+    std::vector<RuleReferences> ruleReferencesAlternatives;
 };
 
 using Rule = std::variant<CharacterRule, ReferenceRule>;
@@ -59,8 +60,9 @@ std::pair<std::size_t, Rule> parseRule(const std::string& str)
     throw std::runtime_error{"parsing error"};
 }
 
-class RuleSet
+struct RuleSet
 {
+    using Matches = std::vector<std::string_view>;
 public:
     template <typename It>
     RuleSet(It from, It to)
@@ -69,63 +71,67 @@ public:
 
     bool operator()(const std::string& str) const
     {
-        const auto [matched, remainder] = matches(std::string_view{str}, rules.at(0));
-        return matched && remainder.empty();
+        const auto results = matches(std::string_view{str}, rules.at(0));
+        return !ranges::empty(results | ranges::views::filter([](auto&& m) { return m.empty(); }));
     }
 
-private:
-    std::pair<bool, std::string_view> matches(std::string_view str, Rule rule) const
+    Matches matches(std::string_view str, Rule rule) const
     {
         return std::visit([&](auto&& rule) { return matches(str, rule); }, rule);
     }
 
-    std::pair<bool, std::string_view> matches(std::string_view str, CharacterRule rule) const
+    Matches matches(std::string_view str, CharacterRule rule) const
     {
-        if (str.empty())
+        if (str.empty() || (str.front() != rule.character))
         {
-            return {false, {}};
+            return {};
         }
-        return {str.front() == rule.character, str.substr(1)};
+        return {{str.substr(1)}};
     }
 
-    std::pair<bool, std::string_view> matches(std::string_view str, ReferenceRule rule) const
+    Matches matches(std::string_view str, ReferenceRule rule) const
     {
-        for (auto&& ruleReferences : rule.ruleReferencesAlternatives)
-        {
-            auto remainder = str;
-            auto matched = ranges::all_of(ruleReferences, [&](auto&& ruleReference)
-            {
-                auto [matched, rem] = matches(remainder, rules.at(ruleReference));
-                remainder = rem;
-                return matched;
-            });
-            if (matched)
-            {
-                return {matched, remainder};
-            }
-        };
-        return {false, {}};
+        return rule.ruleReferencesAlternatives
+            | ranges::views::transform([&](auto&& ruleReferences) { return matches(str, ruleReferences); })
+            | ranges::actions::join;
     }
 
-private:
+    Matches matches(std::string_view str, RuleReferences ruleReferences) const
+    {
+        auto remainders = std::vector<std::string_view>{str};
+        for (auto&& ruleReference : ruleReferences)
+        {
+            remainders = remainders
+                | ranges::views::transform([&](auto&& remainder) { return matches(remainder, rules.at(ruleReference)); })
+                | ranges::actions::join;
+        }
+        return remainders;
+    }
+
     std::map<std::size_t, Rule> rules;
 };
 
-}
-
-template <>
-std::size_t exercise<2020, 19, 1>(std::istream& stream)
+auto parseInput(std::istream& stream)
 {
     auto blocks = ranges::getlines(stream)
         | ranges::views::split("");
 
     auto rules = (*blocks.begin())
         | ranges::views::transform(parseRule)
-        | ranges::to_vector; // TODO: Remove to_vector
+        | ranges::views::common;
 
-    auto ruleset = RuleSet{std::begin(rules), std::end(rules)};
+    auto ruleset = RuleSet{rules.begin(), rules.end()};
 
-    auto messages = (*++blocks.begin()) | ranges::to_vector;
+    auto messages = (*++blocks.begin());
+    return std::pair{std::move(ruleset), messages | ranges::to_vector};
+}
+
+}
+
+template <>
+std::size_t exercise<2020, 19, 1>(std::istream& stream)
+{
+    const auto[ruleset, messages] = parseInput(stream);
 
     return ranges::distance(messages | ranges::views::filter(ruleset));
 }
@@ -133,7 +139,12 @@ std::size_t exercise<2020, 19, 1>(std::istream& stream)
 template <>
 std::size_t exercise<2020, 19, 2>(std::istream& stream)
 {
-    return 0;
+    auto[ruleset, messages] = parseInput(stream);
+
+    ruleset.rules[8]  = ReferenceRule{{{42}, {42, 8}}};
+    ruleset.rules[11] = ReferenceRule{{{42, 31}, {42, 11, 31}}};
+
+    return ranges::distance(messages | ranges::views::filter(ruleset));
 }
 
 }
