@@ -14,3 +14,8 @@ TEST(Exercise18, Part1)
 {
     EXPECT_EQ(26457, solve(aoc::exercise<2020, 18, 1>, input));
 }
+
+TEST(Exercise18, Part2)
+{
+    EXPECT_EQ(694173, solve(aoc::exercise<2020, 18, 2>, input));
+}

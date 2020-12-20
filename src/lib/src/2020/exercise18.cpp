@@ -1,10 +1,10 @@
 #include <regex>
 #include <string>
 #include <variant>
-#include <range/v3/algorithm.hpp>
 #include <range/v3/numeric.hpp>
 #include <range/v3/view.hpp>
 #include <aoc/exercises.h>
+#include <aoc/utils/Overloaded.h>
 
 namespace aoc
 {
@@ -12,37 +12,95 @@ namespace aoc
 namespace
 {
 
+using Int = std::size_t;
+using Block = std::monostate;
+
 using Operation = std::variant<std::plus<>, std::multiplies<>>;
 
 struct OpeningBrace{};
 struct ClosingBrace{};
 
-using Token = std::variant<std::size_t, Operation, OpeningBrace, ClosingBrace>;
+using Token = std::variant<Int, Operation, OpeningBrace, ClosingBrace>;
 
-struct LBoundOperator
+struct UnevaluatedOperation
 {
-    std::size_t operator()(std::size_t other)
+    Int operator()()
     {
-        return std::visit([&](auto&& op) { return op(value, other); }, operation);
+        return std::visit([&](auto&& op) { return op(lhs, rhs); }, operation);
     }
 
-    std::size_t value;
+    Int lhs;
+    Int rhs;
     Operation operation;
 };
 
-using Expression = std::variant<std::monostate, std::size_t, LBoundOperator>;
+using Value = std::variant<Int, UnevaluatedOperation>;
 
+template <typename PRECEDENCE>
+struct LBoundOperator
+{
+    LBoundOperator(const Value& value, const Operation& opertion)
+        : value(std::visit(
+            utils::overloaded{
+                [](Int value) -> Value { return value; },
+                [&](UnevaluatedOperation unevaluatedOperation) -> Value {
+                    return (unevaluatedOperation.operation.index() == opertion.index()) ? Value{unevaluatedOperation()} : Value{unevaluatedOperation};
+                }
+            }, value)
+        )
+        , operation(opertion)
+    {}
+
+    Value operator()(Int other)
+    {
+        return std::visit([&](auto&& value) { return eval(value, other); }, value);
+    }
+
+    Value eval(Int value, Int other)
+    {
+        return std::visit([&](auto&& op) -> Value
+            {
+                if (std::is_same_v<PRECEDENCE, void> || std::is_same_v<PRECEDENCE, std::decay_t<decltype(op)>>)
+                {
+                    return op(value, other);
+                }
+                else
+                {
+                    return UnevaluatedOperation{value, other, operation};
+                }
+            }, operation);
+    }
+
+    Value eval(UnevaluatedOperation unevaluatedOperation, Int other)
+    {
+        unevaluatedOperation.rhs = std::visit([&](auto&& op) { return op(unevaluatedOperation.rhs, other); }, operation);
+        return unevaluatedOperation;
+    }
+
+    Value value;
+    Operation operation;
+};
+
+template <typename PRECEDENCE>
+using Expression = std::variant<Block, Value, LBoundOperator<PRECEDENCE>>;
+
+template <typename PRECEDENCE>
 struct Evaluator
 {
     Evaluator()
-        : expressions({std::monostate{}})
+        : expressions({Block{}})
     {}
 
-    std::size_t getValue() const
+    Int getValue() const
     {
-        if (expressions.size() == 1 && std::holds_alternative<std::size_t>(expressions.top()))
+        if (expressions.size() == 1 && std::holds_alternative<Value>(expressions.top()))
         {
-            return std::get<std::size_t>(expressions.top());
+            return std::visit(
+                utils::overloaded{
+                    [](Int value) { return value; },
+                    [](UnevaluatedOperation unevaluatedOperation) { return unevaluatedOperation(); }
+                }, std::get<Value>(expressions.top())
+            );
         }
         throw std::runtime_error{"invalid end state"};
     }
@@ -52,53 +110,53 @@ struct Evaluator
         std::visit(*this, expressions.top(), token);
     }
 
-    void operator()(std::monostate, std::size_t value)
+    void operator()(Block, Int value)
     {
         expressions.top() = value;
     }
 
-    void operator()(LBoundOperator lBoundOperator, std::size_t value)
+    void operator()(LBoundOperator<PRECEDENCE> lBoundOperator, Int value)
     {
         expressions.top() = lBoundOperator(value);
     }
 
-    void operator()(LBoundOperator, OpeningBrace)
+    void operator()(LBoundOperator<PRECEDENCE>, OpeningBrace)
     {
-        expressions.push(std::monostate{});
+        expressions.push(Block{});
     }
 
-    void operator()(std::size_t value, Operation operation)
+    void operator()(Value value, Operation operation)
     {
-        expressions.top() = LBoundOperator{value, operation};
+        expressions.top() = LBoundOperator<PRECEDENCE>{value, operation};
     }
 
-    void operator()(std::size_t value, ClosingBrace)
+    void operator()(Value value, ClosingBrace)
     {
         expressions.pop();
-        std::visit([&](auto&& top) { return (*this)(top, value); }, expressions.top());
+        std::visit(utils::overloaded{
+            [this](auto&& top, Int value) { return (*this)(top, value); },
+            [this](auto&& top, UnevaluatedOperation unevaluatedOperation) { return (*this)(top, unevaluatedOperation()); }
+        }, expressions.top(), value);
     }
 
     void operator()(Operation, OpeningBrace)
     {
-        expressions.push(std::monostate{});
+        expressions.push(Block{});
     }
 
-    void operator()(std::monostate, OpeningBrace)
+    void operator()(Block, OpeningBrace)
     {
-        expressions.push(std::monostate{});
+        expressions.push(Block{});
     }
 
-    void operator()(std::size_t, std::size_t)     { throw std::runtime_error{"invalid token"}; }
-    void operator()(std::size_t, OpeningBrace)    { throw std::runtime_error{"invalid token"}; }
-    void operator()(std::monostate, Operation)    { throw std::runtime_error{"invalid token"}; }
-    void operator()(std::monostate, ClosingBrace) { throw std::runtime_error{"invalid token"}; }
-    void operator()(LBoundOperator, Operation)    { throw std::runtime_error{"invalid token"}; }
-    void operator()(LBoundOperator, ClosingBrace) { throw std::runtime_error{"invalid token"}; }
+    template <typename T, typename S>
+    void operator()(T, S) { throw std::runtime_error{"invalid token"}; }
 
 private:
-    std::stack<Expression> expressions;
+    std::stack<Expression<PRECEDENCE>> expressions;
 };
 
+template <typename PRECEDENCE>
 auto compute(const std::string& str)
 {
     auto parseToken = [](auto&& part) -> Token
@@ -117,7 +175,7 @@ auto compute(const std::string& str)
         | ranges::views::tokenize(std::regex{R"((\d+|[*+()]))"})
         | ranges::views::transform(parseToken);
 
-    Evaluator evaluator;
+    Evaluator<PRECEDENCE> evaluator;
     for (auto&& token : tokens)
     {
         evaluator(token);
@@ -126,20 +184,26 @@ auto compute(const std::string& str)
     return evaluator.getValue();
 }
 
+template <typename PRECEDENCE=void>
+auto exercise(std::istream& stream)
+{
+    auto results = ranges::getlines(stream)
+        | ranges::views::transform([](auto&& expression) { return compute<PRECEDENCE>(expression); });
+    return ranges::accumulate(results, std::size_t{0});
+}
+
 }
 
 template <>
 std::size_t exercise<2020, 18, 1>(std::istream& stream)
 {
-    auto results = ranges::getlines(stream)
-        | ranges::views::transform(compute);
-    return ranges::accumulate(results, std::size_t{0});
+    return exercise<>(stream);
 }
 
 template <>
 std::size_t exercise<2020, 18, 2>(std::istream& stream)
 {
-    return 0;
+    return exercise<std::plus<>>(stream);
 }
 
 }
