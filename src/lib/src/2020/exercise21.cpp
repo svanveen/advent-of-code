@@ -2,10 +2,10 @@
 #include <string>
 #include <range/v3/action.hpp>
 #include <range/v3/algorithm.hpp>
+#include <range/v3/iterator_range.hpp>
 #include <range/v3/numeric.hpp>
 #include <range/v3/view.hpp>
 #include <aoc/exercises.h>
-#include <range/v3/iterator_range.hpp>
 
 namespace aoc
 {
@@ -42,27 +42,33 @@ auto parse(const std::string& str)
     return Food{std::move(ingredients), std::move(allergens)};
 }
 
-}
-
-template <>
-std::size_t exercise<2020, 21, 1>(std::istream& stream)
+auto getFoods(std::istream& stream)
 {
-    auto foods = ranges::getlines(stream)
+    return ranges::getlines(stream)
         | ranges::views::transform(parse)
         | ranges::to_vector;
+}
 
-    auto ingredients = foods
+auto getIngredients(const std::vector<Food>& foods)
+{
+    return foods
         | ranges::views::transform([](auto&& food) { return food.ingredients; })
         | ranges::actions::join
         | ranges::actions::sort
         | ranges::actions::unique;
+}
 
+auto getAllergenIngredientOptionsMapping(const std::vector<Food>& foods, const std::vector<std::string>& ingredients)
+{
     auto intersect = [&](auto&& group)
     {
-        return ranges::accumulate(group | ranges::views::values, ingredients, [](auto&& lhs, auto&& rhs)
-        {
-            return ranges::views::set_intersection(lhs, rhs) | ranges::to_vector;
-        });
+        return std::pair{
+            group.front().first,
+            ranges::accumulate(group | ranges::views::values, ingredients, [](auto&& lhs, auto&& rhs)
+            {
+                return ranges::views::set_intersection(lhs, rhs) | ranges::to_vector;
+            })
+        };
     };
 
     auto allergenToIngredients = foods
@@ -70,9 +76,24 @@ std::size_t exercise<2020, 21, 1>(std::istream& stream)
         | ranges::actions::join
         | ranges::actions::sort([](auto&& lhs, auto&& rhs) { return lhs.first < rhs.first; });
 
-    auto ingredientsWithAllergens = allergenToIngredients
+    return allergenToIngredients
         | ranges::views::group_by([](auto&& lhs, auto&& rhs) { return lhs.first == rhs.first; })
         | ranges::views::transform(intersect)
+        | ranges::to_vector;
+}
+
+}
+
+template <>
+std::size_t exercise<2020, 21, 1>(std::istream& stream)
+{
+    const auto foods = getFoods(stream);
+    const auto ingredients = getIngredients(foods);
+
+    auto allergenIngredientMapping = getAllergenIngredientOptionsMapping(foods, ingredients);
+
+    auto ingredientsWithAllergens = allergenIngredientMapping
+        | ranges::views::values
         | ranges::actions::join
         | ranges::actions::sort
         | ranges::actions::unique;
@@ -90,6 +111,33 @@ std::size_t exercise<2020, 21, 1>(std::istream& stream)
 template <>
 std::size_t exercise<2020, 21, 2>(std::istream& stream)
 {
+    const auto foods = getFoods(stream);
+    const auto ingredients = getIngredients(foods);
+
+    std::map<std::string, bool> isSet;
+    std::map<std::string, std::string> allergenToIngredients;
+
+    auto allergenIngredientOptionsMapping = getAllergenIngredientOptionsMapping(foods, ingredients)
+        | ranges::actions::sort([](auto&& lhs, auto&& rhs) { return lhs.second.size() < rhs.second.size(); });
+
+    while (allergenToIngredients.size() != allergenIngredientOptionsMapping.size())
+    {
+        for (auto&& allergenIngredientOptions : allergenIngredientOptionsMapping)
+        {
+            auto unsetIngredients = allergenIngredientOptions.second | ranges::views::filter([&](auto&& ingredient) { return !isSet[ingredient]; });
+            if (ranges::distance(unsetIngredients) == 1)
+            {
+                const auto& ingredient = unsetIngredients.front();
+                allergenToIngredients[allergenIngredientOptions.first] = ingredient;
+                isSet[ingredient] = true;
+            }
+        }
+    }
+
+    auto ingredientsWithAllergen = allergenToIngredients | ranges::views::values;
+    std::copy(ingredientsWithAllergen.begin(), ingredientsWithAllergen.end(), std::ostream_iterator<std::string>{std::cout, ","});
+    std::cout << std::endl;
+
     return 0;
 }
 
