@@ -1,6 +1,12 @@
 ### library ###
+if (${CMAKE_PROJECT_VERSION_PATCH} LESS 10)
+    set(EXERCISE "exercise0${CMAKE_PROJECT_VERSION_PATCH}")
+else()
+    set(EXERCISE "exercise${CMAKE_PROJECT_VERSION_PATCH}")
+endif()
+
 add_library(current EXCLUDE_FROM_ALL
-    ${CMAKE_SOURCE_DIR}/src/lib/src/${CMAKE_PROJECT_VERSION_MAJOR}/exercise${CMAKE_PROJECT_VERSION_PATCH}.cpp
+    ${CMAKE_SOURCE_DIR}/src/lib/src/${CMAKE_PROJECT_VERSION_MAJOR}/${EXERCISE}.cpp
 )
 
 add_library(${PROJECT_NAME}::current ALIAS current)
@@ -44,7 +50,7 @@ target_include_directories(current-exercise
 
 ### test ###
 add_executable(current-test EXCLUDE_FROM_ALL
-    ${CMAKE_SOURCE_DIR}/test/src/${CMAKE_PROJECT_VERSION_MAJOR}/exercise${CMAKE_PROJECT_VERSION_PATCH}.cpp
+    ${CMAKE_SOURCE_DIR}/test/src/${CMAKE_PROJECT_VERSION_MAJOR}/${EXERCISE}.cpp
 )
 
 target_include_directories(current-test
