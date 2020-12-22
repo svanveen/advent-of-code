@@ -2,7 +2,6 @@
 #include <test/util.h>
 #include <aoc/exercises.h>
 
-
 TEST(Exercise7, Part1)
 {
     {
