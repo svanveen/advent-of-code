@@ -9,6 +9,7 @@ target_sources(aoc
         src/2019/exercise04.cpp
         src/2019/exercise05.cpp
         src/2019/exercise06.cpp
+        src/2019/exercise07.cpp
         src/2020/exercise01.cpp
         src/2020/exercise02.cpp
         src/2020/exercise03.cpp

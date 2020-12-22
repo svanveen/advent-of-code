@@ -70,6 +70,11 @@ public:
 
     int operator()(int input) const
     {
+        return (*this)(std::vector{input});
+    }
+
+    int operator()(const std::vector<int>& inputs) const
+    {
         auto program = _program;
         auto value = [&](std::size_t idx, Mode mode)
         {
@@ -80,6 +85,7 @@ public:
             }
         };
 
+        std::size_t inputIdx = 0;
         int output = 0;
         for (std::size_t idx = 0; idx < program.size() && program[idx] != 99;)
        {
@@ -87,7 +93,7 @@ public:
            switch (op)
            {
                case Operation::READ:
-                   program[program[idx + 1]] = input;
+                   program[program[idx + 1]] = inputs.at(inputIdx++);
                    idx += 2;
                    break;
                case Operation::WRITE:
