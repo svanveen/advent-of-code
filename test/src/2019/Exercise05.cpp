@@ -7,7 +7,7 @@ auto runProgram(const std::string& input, int inputValue)
 {
     std::stringstream stream{input};
     aoc::IntCodeProgram prog{stream};
-    return prog(inputValue);
+    return prog(inputValue).first;
 }
 
 TEST(Exercise5, Part1)

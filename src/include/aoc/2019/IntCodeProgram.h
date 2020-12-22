@@ -68,26 +68,36 @@ public:
         return program[0];
     }
 
-    int operator()(int input) const
+    std::pair<int, bool> operator()(int input)
     {
-        auto program = _program;
+        return (*this)(std::vector{input});
+    }
+
+    std::pair<int, bool> operator()(const std::vector<int>& inputs)
+    {
         auto value = [&](std::size_t idx, Mode mode)
         {
             switch (mode)
             {
-                case Mode::IMMEDIATE: return program[idx];
-                case Mode::PARAMETER: return program[program[idx]];
+                case Mode::IMMEDIATE: return _program[idx];
+                case Mode::PARAMETER: return _program[_program[idx]];
             }
+            throw std::runtime_error{"invalid mode"};
         };
 
         int output = 0;
-        for (std::size_t idx = 0; idx < program.size() && program[idx] != 99;)
-       {
-           const auto[op, m1, m2, m3] = splitOpCode(program[idx]);
+        std::size_t inputIdx = 0;
+        while (idx < _program.size() && _program[idx] != 99)
+        {
+           const auto[op, m1, m2, m3] = splitOpCode(_program[idx]);
            switch (op)
            {
                case Operation::READ:
-                   program[program[idx + 1]] = input;
+                   if (inputIdx >= inputs.size())
+                   {
+                       return {output, false};
+                   }
+                   _program[_program[idx + 1]] = inputs.at(inputIdx++);
                    idx += 2;
                    break;
                case Operation::WRITE:
@@ -101,7 +111,7 @@ public:
                {
                    const auto a = value(idx + 1, m1);
                    const auto b = value(idx + 2, m2);
-                   program[program[idx + 3]] = exec(op, a, b);
+                   _program[_program[idx + 3]] = exec(op, a, b);
                    idx += 4;
                    break;
                }
@@ -120,7 +130,7 @@ public:
                }
            }
        }
-       return output;
+       return std::pair{output, true};
     }
 
 private:
@@ -146,6 +156,7 @@ private:
 
 private:
     std::vector<int> _program;
+    std::size_t idx = 0;
 };
 
 }

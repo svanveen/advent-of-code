@@ -8,15 +8,15 @@ namespace aoc
 template <>
 Result exercise<2019, 5, 1>(std::istream& stream)
 {
-    const IntCodeProgram prog{stream};
-    return prog(1);
+    IntCodeProgram prog{stream};
+    return prog(1).first;
 }
 
 template <>
 Result exercise<2019, 5, 2>(std::istream& stream)
 {
-    const IntCodeProgram prog{stream};
-    return prog(5);
+    IntCodeProgram prog{stream};
+    return prog(5).first;
 }
 
 }
