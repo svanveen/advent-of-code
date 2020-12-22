@@ -18,12 +18,6 @@ public:
 
     virtual int operator()(int input)
     {
-        return eval(input);
-    }
-
-protected:
-    int eval(int input)
-    {
         for (int idx = 0; idx < 5; ++idx)
         {
             const auto [output, _] = amplifiers[idx]({phaseSettings[idx], input});
@@ -35,6 +29,27 @@ protected:
 protected:
     std::array<IntCodeProgram, 5> amplifiers;
     std::array<int, 5> phaseSettings;
+};
+
+struct AdvancedAmplifierControllerSoftware
+    : public AmplifierControllerSoftware
+{
+public:
+    using AmplifierControllerSoftware::AmplifierControllerSoftware;
+    int operator()(int input) override
+    {
+        input = AmplifierControllerSoftware::operator()(input);
+        for (int idx = 0; ; idx = (idx + 1) % 5)
+        {
+            const auto [output, halted] = amplifiers[idx](input);
+            input = output;
+            if (idx == 4 && halted)
+            {
+                break;
+            }
+        }
+        return input;
+    }
 };
 
 auto getPhaseSettingsOptions(std::array<int, 5> phaseSettings)
@@ -64,7 +79,13 @@ std::size_t exercise<2019, 7, 1>(std::istream& stream)
 template <>
 std::size_t exercise<2019, 7, 2>(std::istream& stream)
 {
-    return 0;
+    const IntCodeProgram program{stream};
+    auto phaseSettingsOptions = getPhaseSettingsOptions({5, 6, 7, 8, 9});
+
+    return ranges::max(
+        phaseSettingsOptions
+            | ranges::views::transform([&](auto&& phaseSettings) { return AdvancedAmplifierControllerSoftware{program, phaseSettings}(0); })
+    );
 }
 
 }
