@@ -22,3 +22,8 @@ TEST(Exercise22, Part1)
     EXPECT_EQ(306, solve(aoc::exercise<2020, 22, 1>, input));
 }
 
+TEST(Exercise22, Part2)
+{
+    EXPECT_EQ(291, solve(aoc::exercise<2020, 22, 2>, input));
+}
+
