@@ -59,7 +59,9 @@ struct Position
 
     friend std::ostream& operator<<(std::ostream& stream, const Position& position)
     {
-        return stream << '[' << std::copy(std::begin(position.dims), std::end(position.end), std::ostream_iterator<int>{stream, ","}) << ']';
+        stream << '[';
+        std::copy(std::begin(position.dims), std::end(position.dims), std::ostream_iterator<int>{stream, ","});
+        return stream << ']';
     }
 
     std::array<T, DIMS> dims;
@@ -87,7 +89,9 @@ struct Direction
 
     friend std::ostream& operator<<(std::ostream& stream, const Direction& direction)
     {
-        return stream << '[' << std::copy(std::begin(direction.dims), std::end(direction.end), std::ostream_iterator<int>{stream, ","}) << ']';
+        stream << '[';
+        std::copy(std::begin(direction.dims), std::end(direction.dims), std::ostream_iterator<int>{stream, ","});
+        return stream << ']';
     }
 
     std::array<T, DIMS> dims;
