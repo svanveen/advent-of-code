@@ -45,6 +45,7 @@ static const std::map<int, Exercise> exercises {
     {202021, {aoc::exercise<2020, 21, 1>, aoc::exercise<2020, 21, 2>}},
     {202022, {aoc::exercise<2020, 22, 1>, aoc::exercise<2020, 22, 2>}},
     {202023, {aoc::exercise<2020, 23, 1>, aoc::exercise<2020, 23, 2>}},
+    {202024, {aoc::exercise<2020, 24, 1>, aoc::exercise<2020, 24, 2>}},
 };
 
 template <typename CALLBACK>
