@@ -41,6 +41,9 @@ struct Position
 
     bool operator==(const Position& other) const { return dims == other.dims; }
     bool operator!=(const Position& other) const { return dims != other.dims; }
+    bool operator<=(const Position& other) const { return (*this < other) || (*this == other); }
+    bool operator>=(const Position& other) const { return (*this > other) || (*this == other); }
+    bool operator>(const Position& other) const  { return other < *this; }
     bool operator<(const Position& other) const
     {
         for (int i = 0; i < DIMS; ++i)
