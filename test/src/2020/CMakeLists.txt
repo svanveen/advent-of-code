@@ -23,6 +23,7 @@ add_executable(aoc2020-test
     exercise22.cpp
     exercise23.cpp
     exercise24.cpp
+    exercise25.cpp
 )
 
 target_link_libraries(aoc2020-test
