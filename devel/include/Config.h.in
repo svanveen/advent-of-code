@@ -1,7 +1,0 @@
-#ifndef ADVENTOFCODE_CONFIG_H
-#define ADVENTOFCODE_CONFIG_H
-
-static constexpr auto YEAR      = @CMAKE_PROJECT_VERSION_MAJOR@;
-static constexpr auto EXERCISE  = @CMAKE_PROJECT_VERSION_PATCH@;
-
-#endif //ADVENTOFCODE_CONFIG_H
