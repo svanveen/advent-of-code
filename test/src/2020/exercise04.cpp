@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <test/util.h>
 #include <aoc/exercises.h>
 
 TEST(Exercise4, Part1)
@@ -18,7 +17,7 @@ hgt:179cm
 hcl:#cfa07d eyr:2025 pid:166559648
 iyr:2011 ecl:brn hgt:59in
 )";
-    EXPECT_EQ(2, solve(aoc::exercise<2020, 4, 1>, input));
+    EXPECT_EQ(2, (aoc::exercise<2020, 4, 1>(input)));
 }
 
 TEST(Exercise4, Part2)
@@ -37,7 +36,7 @@ hgt:59cm ecl:zzz
 eyr:2038 hcl:74454a iyr:2023
 pid:3556412378 byr:2007
 )";
-    EXPECT_EQ(0, solve(aoc::exercise<2020, 4, 2>, input1));
+    EXPECT_EQ(0, (aoc::exercise<2020, 4, 2>(input1)));
 
     constexpr auto input2 = R"(pid:087499704 hgt:74in ecl:grn iyr:2012 eyr:2030 byr:1980
 hcl:#623a2f
@@ -52,5 +51,5 @@ eyr:2022
 
 iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719
 )";
-    EXPECT_EQ(4, solve(aoc::exercise<2020, 4, 2>, input2));
+    EXPECT_EQ(4, (aoc::exercise<2020, 4, 2>(input2)));
 }

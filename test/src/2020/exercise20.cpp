@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <test/util.h>
 #include <aoc/exercises.h>
 
 constexpr auto input = R"(Tile 2311:
@@ -113,6 +112,6 @@ Tile 3079:
 
 TEST(Exercise20, Part1)
 {
-    EXPECT_EQ(20899048083289, solve(aoc::exercise<2020, 20, 1>, input));
+    EXPECT_EQ(20899048083289, (aoc::exercise<2020, 20, 1>(input)));
 }
 

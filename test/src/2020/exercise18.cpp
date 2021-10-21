@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <test/util.h>
 #include <aoc/exercises.h>
 
 constexpr auto input = R"(1 + 2 * 3 + 4 * 5 + 6
@@ -12,10 +11,10 @@ constexpr auto input = R"(1 + 2 * 3 + 4 * 5 + 6
 
 TEST(Exercise18, Part1)
 {
-    EXPECT_EQ(26457, solve(aoc::exercise<2020, 18, 1>, input));
+    EXPECT_EQ(26457, (aoc::exercise<2020, 18, 1>(input)));
 }
 
 TEST(Exercise18, Part2)
 {
-    EXPECT_EQ(694173, solve(aoc::exercise<2020, 18, 2>, input));
+    EXPECT_EQ(694173, (aoc::exercise<2020, 18, 2>(input)));
 }

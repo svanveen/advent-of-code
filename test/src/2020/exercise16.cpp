@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <test/util.h>
 #include <aoc/exercises.h>
 
 constexpr auto input = R"(class: 1-3 or 5-7
@@ -18,5 +17,5 @@ nearby tickets:
 
 TEST(Exercise16, Part1)
 {
-    EXPECT_EQ(71, solve(aoc::exercise<2020, 16, 1>, input));
+    EXPECT_EQ(71, (aoc::exercise<2020, 16, 1>(input)));
 }

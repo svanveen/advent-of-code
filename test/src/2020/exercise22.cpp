@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <test/util.h>
 #include <aoc/exercises.h>
 
 constexpr auto input = R"(Player 1:
@@ -19,11 +18,11 @@ Player 2:
 
 TEST(Exercise22, Part1)
 {
-    EXPECT_EQ(306, solve(aoc::exercise<2020, 22, 1>, input));
+    EXPECT_EQ(306, (aoc::exercise<2020, 22, 1>(input)));
 }
 
 TEST(Exercise22, Part2)
 {
-    EXPECT_EQ(291, solve(aoc::exercise<2020, 22, 2>, input));
+    EXPECT_EQ(291, (aoc::exercise<2020, 22, 2>(input)));
 }
 

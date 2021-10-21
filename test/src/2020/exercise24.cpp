@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <test/util.h>
 #include <aoc/exercises.h>
 
 constexpr auto input = R"(sesenwnenenewseeswwswswwnenewsewsw
@@ -26,11 +25,11 @@ wseweeenwnesenwwwswnew
 
 TEST(Exercise24, Part1)
 {
-    EXPECT_EQ(10, solve(aoc::exercise<2020, 24, 1>, input));
+    EXPECT_EQ(10, (aoc::exercise<2020, 24, 1>(input)));
 }
 
 TEST(Exercise24, Part2)
 {
-EXPECT_EQ(2208, solve(aoc::exercise<2020, 24, 2>, input));
+EXPECT_EQ(2208, (aoc::exercise<2020, 24, 2>(input)));
 }
 

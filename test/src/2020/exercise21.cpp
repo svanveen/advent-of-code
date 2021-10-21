@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <test/util.h>
 #include <aoc/exercises.h>
 
 constexpr auto input = R"(mxmxvkd kfcds sqjhc nhms (contains dairy, fish)
@@ -10,6 +9,6 @@ sqjhc mxmxvkd sbzzf (contains fish)
 
 TEST(Exercise21, Part1)
 {
-    EXPECT_EQ(5, solve(aoc::exercise<2020, 21, 1>, input));
+    EXPECT_EQ(5, (aoc::exercise<2020, 21, 1>(input)));
 }
 
