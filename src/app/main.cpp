@@ -21,33 +21,42 @@ struct Exercise
     Part part2;
 };
 
+#define EXERCISE(YEAR, EXERCISE)          \
+  {                                       \
+    YEAR##EXERCISE,                       \
+    {                                     \
+      aoc::exercise<YEAR, EXERCISE, 1>,   \
+      aoc::exercise<YEAR, EXERCISE, 2>,   \
+    }                                     \
+  }
 static const std::map<int, Exercise> exercises {
-    {202001, {aoc::exercise<2020, 1, 1>, aoc::exercise<2020, 1, 2>}},
-    {202002, {aoc::exercise<2020, 2, 1>, aoc::exercise<2020, 2, 2>}},
-    {202003, {aoc::exercise<2020, 3, 1>, aoc::exercise<2020, 3, 2>}},
-    {202004, {aoc::exercise<2020, 4, 1>, aoc::exercise<2020, 4, 2>}},
-    {202005, {aoc::exercise<2020, 5, 1>, aoc::exercise<2020, 5, 2>}},
-    {202006, {aoc::exercise<2020, 6, 1>, aoc::exercise<2020, 6, 2>}},
-    {202007, {aoc::exercise<2020, 7, 1>, aoc::exercise<2020, 7, 2>}},
-    {202008, {aoc::exercise<2020, 8, 1>, aoc::exercise<2020, 8, 2>}},
-    {202009, {aoc::exercise<2020, 9, 1>, aoc::exercise<2020, 9, 2>}},
-    {202010, {aoc::exercise<2020, 10, 1>, aoc::exercise<2020, 10, 2>}},
-    {202011, {aoc::exercise<2020, 11, 1>, aoc::exercise<2020, 11, 2>}},
-    {202012, {aoc::exercise<2020, 12, 1>, aoc::exercise<2020, 12, 2>}},
-    {202013, {aoc::exercise<2020, 13, 1>, aoc::exercise<2020, 13, 2>}},
-    {202014, {aoc::exercise<2020, 14, 1>, aoc::exercise<2020, 14, 2>}},
-    {202015, {aoc::exercise<2020, 15, 1>, aoc::exercise<2020, 15, 2>}},
-    {202016, {aoc::exercise<2020, 16, 1>, aoc::exercise<2020, 16, 2>}},
-    {202017, {aoc::exercise<2020, 17, 1>, aoc::exercise<2020, 17, 2>}},
-    {202018, {aoc::exercise<2020, 18, 1>, aoc::exercise<2020, 18, 2>}},
-    {202019, {aoc::exercise<2020, 19, 1>, aoc::exercise<2020, 19, 2>}},
-    {202020, {aoc::exercise<2020, 20, 1>, aoc::exercise<2020, 20, 2>}},
-    {202021, {aoc::exercise<2020, 21, 1>, aoc::exercise<2020, 21, 2>}},
-    {202022, {aoc::exercise<2020, 22, 1>, aoc::exercise<2020, 22, 2>}},
-    {202023, {aoc::exercise<2020, 23, 1>, aoc::exercise<2020, 23, 2>}},
-    {202024, {aoc::exercise<2020, 24, 1>, aoc::exercise<2020, 24, 2>}},
-    {202025, {aoc::exercise<2020, 25, 1>, aoc::exercise<2020, 25, 2>}},
+    EXERCISE(2020, 1),
+    EXERCISE(2020, 2),
+    EXERCISE(2020, 3),
+    EXERCISE(2020, 4),
+    EXERCISE(2020, 5),
+    EXERCISE(2020, 6),
+    EXERCISE(2020, 7),
+    EXERCISE(2020, 8),
+    EXERCISE(2020, 9),
+    EXERCISE(2020, 10),
+    EXERCISE(2020, 11),
+    EXERCISE(2020, 12),
+    EXERCISE(2020, 13),
+    EXERCISE(2020, 14),
+    EXERCISE(2020, 15),
+    EXERCISE(2020, 16),
+    EXERCISE(2020, 17),
+    EXERCISE(2020, 18),
+    EXERCISE(2020, 19),
+    EXERCISE(2020, 20),
+    EXERCISE(2020, 21),
+    EXERCISE(2020, 22),
+    EXERCISE(2020, 23),
+    EXERCISE(2020, 24),
+    EXERCISE(2020, 25),
 };
+#undef EXERCISE
 
 template <typename CALLBACK>
 auto solve(CALLBACK&& callback, const std::string& path)
