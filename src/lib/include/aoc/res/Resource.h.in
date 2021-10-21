@@ -1,0 +1,13 @@
+#ifndef ADVENTOFCODE_RES_@YEAR@_@EXERCISE@_H
+#define ADVENTOFCODE_RES_@YEAR@_@EXERCISE@_H
+
+#include <string_view>
+
+using namespace std::literals;
+
+namespace aoc::res
+{
+inline constexpr auto @NAME@ = R"(@CONTENT@)"sv;
+}
+
+#endif // ADVENTOFCODE_RES_@YEAR@_@EXERCISE@_H
