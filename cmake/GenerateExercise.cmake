@@ -2,6 +2,9 @@ include(${CMAKE_CURRENT_LIST_DIR}/GenerateResource.cmake)
 
 function(get_target_name VAR NAME YEAR EXERCISE)
     cmake_parse_arguments(NAME "" "PREFIX;SUFFIX" "" ${ARGN})
+    if (EXERCISE LESS 10)
+        set(EXERCISE "0${EXERCISE}")
+    endif()
     set(NAME "${NAME}-${YEAR}-${EXERCISE}")
     if (NAME_PREFIX)
         set(NAME "${NAME_PREFIX}-${NAME}")
@@ -10,6 +13,35 @@ function(get_target_name VAR NAME YEAR EXERCISE)
         set(NAME "${NAME}-${NAME_SUFFIX}")
     endif()
     set(${VAR} ${NAME} PARENT_SCOPE)
+endfunction()
+
+function(_add_exercise_impl NAME YEAR EXERCISE)
+    cmake_parse_arguments(ARG "" "" "LIBRARIES;SOURCES" ${ARGN})
+
+    get_target_name(TARGET_NAME ${NAME} ${YEAR} ${EXERCISE})
+    get_target_name(OBJECT_TARGET_NAME ${NAME} ${YEAR} ${EXERCISE} PREFIX obj)
+
+    if (EXERCISE LESS 10)
+        set(EXERCISE "0${EXERCISE}")
+    endif()
+
+    add_library(${OBJECT_TARGET_NAME} OBJECT
+        src/${YEAR}/exercise${EXERCISE}.cpp
+    )
+
+    foreach(LIBRARY IN LISTS ARG_LIBRARIES)
+        target_link_libraries(${OBJECT_TARGET_NAME} PUBLIC ${PROJECT_NAME}::${LIBRARY})
+    endforeach()
+
+    add_executable(${TARGET_NAME}
+        $<TARGET_OBJECTS:${OBJECT_TARGET_NAME}>
+    )
+
+    foreach(SOURCE IN LISTS ARG_SOURCES)
+        target_sources(${TARGET_NAME} PUBLIC ${SOURCE})
+    endforeach()
+
+    target_link_libraries(${TARGET_NAME} PRIVATE ${OBJECT_TARGET_NAME})
 endfunction()
 
 function(add_exercise YEAR EXERCISE OBJECT_TARGET)
@@ -22,49 +54,22 @@ function(add_exercise YEAR EXERCISE OBJECT_TARGET)
         @ONLY
     )
 
-    if (EXERCISE LESS 10)
-        set(EXERCISE "0${EXERCISE}")
-    endif()
+    _add_exercise_impl(exercise ${YEAR} ${EXERCISE}
+        LIBRARIES aoc
+        SOURCES ${TARGET_MAIN}
+    )
 
-    get_target_name(TARGET_NAME exercise ${YEAR} ${EXERCISE})
     get_target_name(OBJECT_TARGET_NAME exercise ${YEAR} ${EXERCISE} PREFIX obj)
     set(${OBJECT_TARGET} ${OBJECT_TARGET_NAME} PARENT_SCOPE)
-
-    add_library(${OBJECT_TARGET_NAME} OBJECT
-        src/${YEAR}/exercise${EXERCISE}.cpp
-    )
-
-    target_link_libraries(${OBJECT_TARGET_NAME} PUBLIC ${PROJECT_NAME}::aoc)
-
-    add_executable(${TARGET_NAME}
-        ${TARGET_MAIN}
-        $<TARGET_OBJECTS:${OBJECT_TARGET_NAME}>
-    )
-
-    target_link_libraries(${TARGET_NAME} PRIVATE ${OBJECT_TARGET_NAME})
 endfunction()
 
 function(add_exercise_test YEAR EXERCISE)
-    if (EXERCISE LESS 10)
-        set(EXERCISE "0${EXERCISE}")
-    endif()
+    get_target_name(OBJECT_TARGET_NAME exercise ${YEAR} ${EXERCISE} PREFIX obj)
+    _add_exercise_impl(test ${YEAR} ${EXERCISE}
+        LIBRARIES aoc-test
+        SOURCES $<TARGET_OBJECTS:${OBJECT_TARGET_NAME}>
+    )
 
     get_target_name(TEST_TARGET_NAME test ${YEAR} ${EXERCISE})
-    get_target_name(TEST_OBJECT_TARGET_NAME test ${YEAR} ${EXERCISE} PREFIX obj)
-    get_target_name(OBJECT_TARGET_NAME exercise ${YEAR} ${EXERCISE} PREFIX obj)
-
-    add_library(${TEST_OBJECT_TARGET_NAME} OBJECT
-        src/${YEAR}/exercise${EXERCISE}.cpp
-    )
-
-    target_link_libraries(${TEST_OBJECT_TARGET_NAME} PUBLIC ${PROJECT_NAME}::aoc-test)
-
-    add_executable(${TEST_TARGET_NAME}
-        $<TARGET_OBJECTS:${OBJECT_TARGET_NAME}>
-        $<TARGET_OBJECTS:${TEST_OBJECT_TARGET_NAME}>
-    )
-
-    target_link_libraries(${TEST_TARGET_NAME} PRIVATE ${TEST_OBJECT_TARGET_NAME})
-
     add_test(NAME ${TEST_TARGET_NAME} COMMAND ${TEST_TARGET_NAME})
 endfunction()
