@@ -18,8 +18,12 @@ target_link_libraries(aoc INTERFACE CONAN_PKG::range-v3)
 
 target_compile_features(aoc INTERFACE cxx_std_17)
 
-foreach(EXERCISE RANGE 1 25)
-    add_exercise(2020 ${EXERCISE} OBJECT_TARGET)
+file(GLOB RESOURCES RELATIVE "${CMAKE_SOURCE_DIR}/res/" "${CMAKE_SOURCE_DIR}/res/*/*.dat")
+foreach(RESOURCE IN LISTS RESOURCES)
+    get_filename_component(YEAR ${RESOURCE} DIRECTORY)
+    get_filename_component(EXERCISE ${RESOURCE} NAME_WE)
+
+    add_exercise(${YEAR} ${EXERCISE} OBJECT_TARGET)
 
     target_sources(advent-of-code PRIVATE $<TARGET_OBJECTS:${OBJECT_TARGET}>)
     target_link_libraries(advent-of-code PRIVATE ${OBJECT_TARGET})
