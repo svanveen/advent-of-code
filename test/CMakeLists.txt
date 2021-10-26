@@ -1,5 +1,7 @@
 enable_testing()
 
+find_package(GTest REQUIRED)
+
 add_executable(advent-of-code-test)
 add_test(NAME advent-of-code-test COMMAND advent-of-code)
 
@@ -12,7 +14,8 @@ foreach(RESOURCE IN LISTS RESOURCES)
         ADD_TO_TARGET
             advent-of-code-test
         LINK_LIBRARIES
-            CONAN_PKG::gtest
+            GTest::gtest
+            GTest::gtest_main
     )
 endforeach()
 

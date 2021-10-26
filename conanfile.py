@@ -14,7 +14,7 @@ class AdventOfCodeConan(ConanFile):
         'revision': 'auto',
     }
 
-    generators = 'cmake'
+    generators = 'cmake_find_package'
     settings = 'os', 'compiler', 'build_type', 'arch'
 
     default_options = {

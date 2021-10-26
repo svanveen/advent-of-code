@@ -1,8 +1,11 @@
+find_package(docopt REQUIRED)
+find_package(range-v3 REQUIRED)
+
 add_executable(advent-of-code src/main.cpp)
 
 target_link_libraries(advent-of-code
     PRIVATE
-        CONAN_PKG::docopt.cpp
+        docopt::docopt
 )
 
 file(GLOB RESOURCES RELATIVE "${CMAKE_SOURCE_DIR}/res/" "${CMAKE_SOURCE_DIR}/res/*/*.dat")
@@ -14,7 +17,7 @@ foreach(RESOURCE IN LISTS RESOURCES)
         ADD_TO_TARGET
             advent-of-code
         LINK_LIBRARIES
-            CONAN_PKG::range-v3
+            range-v3::range-v3
     )
 endforeach()
 
