@@ -34,6 +34,7 @@ function(_add_exercise_impl NAME YEAR EXERCISE)
     endforeach()
 
     add_executable(${TARGET_NAME}
+        EXCLUDE_FROM_ALL
         $<TARGET_OBJECTS:${OBJECT_TARGET_NAME}>
     )
 
