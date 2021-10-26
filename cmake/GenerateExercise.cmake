@@ -16,7 +16,7 @@ function(get_target_name VAR NAME YEAR EXERCISE)
 endfunction()
 
 function(_add_exercise_impl NAME YEAR EXERCISE)
-    cmake_parse_arguments(ARG "" "" "LIBRARIES;SOURCES" ${ARGN})
+    cmake_parse_arguments(ARG "IS_TEST" "ADD_TO_TARGET" "LINK_LIBRARIES;EXECUTABLE_SOURCES;OBJECT_SOURCES" ${ARGN})
 
     get_target_name(TARGET_NAME ${NAME} ${YEAR} ${EXERCISE})
     get_target_name(OBJECT_TARGET_NAME ${NAME} ${YEAR} ${EXERCISE} PREFIX obj)
@@ -29,23 +29,48 @@ function(_add_exercise_impl NAME YEAR EXERCISE)
         src/${YEAR}/exercise${EXERCISE}.cpp
     )
 
-    foreach(LIBRARY IN LISTS ARG_LIBRARIES)
-        target_link_libraries(${OBJECT_TARGET_NAME} PUBLIC ${PROJECT_NAME}::${LIBRARY})
+    target_include_directories(${OBJECT_TARGET_NAME}
+        PUBLIC
+            ${CMAKE_CURRENT_SOURCE_DIR}/include
+            ${CMAKE_CURRENT_BINARY_DIR}/gen/include
+    )
+
+    target_compile_features(${OBJECT_TARGET_NAME} PUBLIC cxx_std_17)
+
+    foreach(SOURCE IN LISTS ARG_OBJECT_SOURCES)
+        target_sources(${OBJECT_TARGET_NAME} PUBLIC ${SOURCE})
     endforeach()
+
+    foreach(LIBRARY IN LISTS ARG_LINK_LIBRARIES)
+        target_link_libraries(${OBJECT_TARGET_NAME} PUBLIC ${LIBRARY})
+    endforeach()
+
+    target_sources(${ARG_ADD_TO_TARGET}
+        PRIVATE
+            $<TARGET_OBJECTS:${OBJECT_TARGET_NAME}>
+    )
+    target_link_libraries(${ARG_ADD_TO_TARGET}
+        PUBLIC
+            ${OBJECT_TARGET_NAME}
+    )
 
     add_executable(${TARGET_NAME}
         EXCLUDE_FROM_ALL
         $<TARGET_OBJECTS:${OBJECT_TARGET_NAME}>
     )
 
-    foreach(SOURCE IN LISTS ARG_SOURCES)
+    foreach(SOURCE IN LISTS ARG_EXECUTABLE_SOURCES)
         target_sources(${TARGET_NAME} PUBLIC ${SOURCE})
     endforeach()
 
     target_link_libraries(${TARGET_NAME} PRIVATE ${OBJECT_TARGET_NAME})
+
+    if (ARG_IS_TEST)
+        add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})
+    endif()
 endfunction()
 
-function(add_exercise YEAR EXERCISE OBJECT_TARGET)
+function(add_exercise YEAR EXERCISE)
     generate_resource(${YEAR} ${EXERCISE})
 
     set(TARGET_MAIN ${CMAKE_CURRENT_BINARY_DIR}/gen/src/${YEAR}/${EXERCISE}/main.cpp)
@@ -55,22 +80,19 @@ function(add_exercise YEAR EXERCISE OBJECT_TARGET)
         @ONLY
     )
 
-    _add_exercise_impl(exercise ${YEAR} ${EXERCISE}
-        LIBRARIES aoc
-        SOURCES ${TARGET_MAIN}
+    _add_exercise_impl(exercise ${YEAR} ${EXERCISE} ${ARGN}
+        EXECUTABLE_SOURCES
+            ${TARGET_MAIN}
     )
-
-    get_target_name(OBJECT_TARGET_NAME exercise ${YEAR} ${EXERCISE} PREFIX obj)
-    set(${OBJECT_TARGET} ${OBJECT_TARGET_NAME} PARENT_SCOPE)
 endfunction()
 
 function(add_exercise_test YEAR EXERCISE)
     get_target_name(OBJECT_TARGET_NAME exercise ${YEAR} ${EXERCISE} PREFIX obj)
-    _add_exercise_impl(test ${YEAR} ${EXERCISE}
-        LIBRARIES aoc-test
-        SOURCES $<TARGET_OBJECTS:${OBJECT_TARGET_NAME}>
+    _add_exercise_impl(test ${YEAR} ${EXERCISE} ${ARGN}
+        LINK_LIBRARIES
+            ${OBJECT_TARGET_NAME}
+        OBJECT_SOURCES
+            $<TARGET_OBJECTS:${OBJECT_TARGET_NAME}>
+        IS_TEST
     )
-
-    get_target_name(TEST_TARGET_NAME test ${YEAR} ${EXERCISE})
-    add_test(NAME ${TEST_TARGET_NAME} COMMAND ${TEST_TARGET_NAME})
 endfunction()
