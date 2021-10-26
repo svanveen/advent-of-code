@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <aoc/exercises.h>
+#include <aoc/res/2020/Data-19.h>
 
 TEST(Exercise19, Part1)
 {
@@ -18,6 +19,7 @@ aaaabbb
 )";
 
     EXPECT_EQ(2, (aoc::exercise<2020, 19, 1>(input)));
+    EXPECT_EQ(265, (aoc::exercise<2020, 19, 1>(aoc::res::data_2020_19)));
 }
 
 TEST(Exercise19, Part2)
@@ -71,4 +73,5 @@ babaaabbbaaabaababbaabababaaab
 aabbbbbaabbbaaaaaabbbbbababaaaaabbaaabba)";
 
     EXPECT_EQ(12, (aoc::exercise<2020, 19, 2>(input)));
+    EXPECT_EQ(394, (aoc::exercise<2020, 19, 2>(aoc::res::data_2020_19)));
 }

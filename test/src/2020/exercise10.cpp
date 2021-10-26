@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <aoc/exercises.h>
+#include <aoc/res/2020/Data-10.h>
 
 constexpr auto input1 = R"(16
 10
@@ -48,12 +49,14 @@ constexpr auto input2 = R"(28
 
 TEST(Exercise10, Part1)
 {
-    EXPECT_EQ(35, (aoc::exercise<2020, 10 ,1>(input1)));
-    EXPECT_EQ(220, (aoc::exercise<2020, 10 ,1>(input2)));
+    EXPECT_EQ(35, (aoc::exercise<2020, 10, 1>(input1)));
+    EXPECT_EQ(220, (aoc::exercise<2020, 10, 1>(input2)));
+    EXPECT_EQ(2112, (aoc::exercise<2020, 10, 1>(aoc::res::data_2020_10)));
 }
 
 TEST(Exercise10, Part2)
 {
-    EXPECT_EQ(8, (aoc::exercise<2020, 10 ,2>(input1)));
-    EXPECT_EQ(19208, (aoc::exercise<2020, 10 ,2>(input2)));
+    EXPECT_EQ(8, (aoc::exercise<2020, 10, 2>(input1)));
+    EXPECT_EQ(19208, (aoc::exercise<2020, 10, 2>(input2)));
+    EXPECT_EQ(3022415986688, (aoc::exercise<2020, 10, 2>(aoc::res::data_2020_10)));
 }
