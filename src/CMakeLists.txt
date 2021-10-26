@@ -5,28 +5,17 @@ target_link_libraries(advent-of-code
         CONAN_PKG::docopt.cpp
 )
 
-add_library(aoc INTERFACE)
-add_library(${PROJECT_NAME}::aoc ALIAS aoc)
-
-target_include_directories(aoc
-    INTERFACE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-        ${CMAKE_CURRENT_BINARY_DIR}/gen/include
-)
-
-target_link_libraries(aoc INTERFACE CONAN_PKG::range-v3)
-
-target_compile_features(aoc INTERFACE cxx_std_17)
-
 file(GLOB RESOURCES RELATIVE "${CMAKE_SOURCE_DIR}/res/" "${CMAKE_SOURCE_DIR}/res/*/*.dat")
 foreach(RESOURCE IN LISTS RESOURCES)
     get_filename_component(YEAR ${RESOURCE} DIRECTORY)
     get_filename_component(EXERCISE ${RESOURCE} NAME_WE)
 
-    add_exercise(${YEAR} ${EXERCISE} OBJECT_TARGET)
-
-    target_sources(advent-of-code PRIVATE $<TARGET_OBJECTS:${OBJECT_TARGET}>)
-    target_link_libraries(advent-of-code PRIVATE ${OBJECT_TARGET})
+    add_exercise(${YEAR} ${EXERCISE}
+        ADD_TO_TARGET
+            advent-of-code
+        LINK_LIBRARIES
+            CONAN_PKG::range-v3
+    )
 endforeach()
 
 install(TARGETS advent-of-code
