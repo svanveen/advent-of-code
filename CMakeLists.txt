@@ -3,8 +3,7 @@ project(AdventOfCode VERSION 2020.12.25)
 
 include(cmake/GenerateExercise.cmake)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR})
 
 if(WIN32)
     add_definitions(-D_WIN32_WINNT=0x600)
