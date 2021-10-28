@@ -1,4 +1,4 @@
-#include <fstream>
+#include <filesystem>
 #include <istream>
 #include <docopt/docopt.h>
 #include <aoc/exercises.h>
@@ -16,7 +16,7 @@ Options:
 
 struct Exercise
 {
-    using Part = aoc::Result (&)(std::istream&);
+    using Part = aoc::Result (&)(const std::filesystem::path&);
     Part part1;
     Part part2;
 };
@@ -58,21 +58,14 @@ static const std::map<int, Exercise> exercises {
 };
 #undef EXERCISE
 
-template <typename CALLBACK>
-auto solve(CALLBACK&& callback, const std::string& path)
+void solveExercises(int year, int exercise, const std::filesystem::path& basePath)
 {
-    std::ifstream stream{path};
-    return callback(stream);
-}
-
-void solveExercises(int year, int exercise, const std::string& basePath)
-{
-    const auto path = basePath + "/" + std::to_string(year) + "/" + std::to_string(exercise) + ".dat";
+    const auto path = basePath / std::to_string(year) / (std::to_string(exercise) + ".dat");
     const auto&[part1, part2] = exercises.at(year * 100 + exercise);
 
     std::cout << "Solutions for event " << year << " exercise " << exercise << std::endl;
-    std::cout << "Part 1: " << solve(part1, path) << std::endl;
-    std::cout << "Part 2: " << solve(part2, path) << std::endl;
+    std::cout << "Part 1: " << part1(path) << std::endl;
+    std::cout << "Part 2: " << part2(path) << std::endl;
 }
 
 int main(int argc, char** argv)
