@@ -92,7 +92,8 @@ auto parseRule(const std::string& str)
         | ranges::views::tokenize(std::regex{R"((\d) (\w+ \w+) bags?)"}, {1, 2})
         | ranges::views::chunk(2)
         | ranges::views::transform(ranges::to_vector)
-        | ranges::views::transform([outter = match[1]](auto&& inner) { return std::pair(outter.str(), std::pair(std::stoi(inner[0]), inner[1].str())); });
+        | ranges::views::transform([outter = match[1]](auto&& inner) { return std::pair(outter.str(), std::pair(std::stoi(inner[0]), inner[1].str())); })
+        | ranges::to_vector;
 }
 
 template <typename COUNTER>
@@ -100,7 +101,7 @@ auto exercise(std::istream& stream)
 {
     auto rules = ranges::getlines(stream)
            | ranges::views::transform(parseRule)
-           | ranges::views::join
+           | ranges::actions::join
            | ranges::to_vector;
 
     COUNTER counter{std::move(rules)};
