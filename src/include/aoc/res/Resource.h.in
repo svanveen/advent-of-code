@@ -7,7 +7,7 @@ using namespace std::literals;
 
 namespace aoc::res
 {
-inline constexpr auto @NAME@ = R"(@CONTENT@)"sv;
+inline constexpr auto data_@YEAR@_@EXERCISE@ = R"(@CONTENT@)"sv;
 }
 
 #endif // ADVENTOFCODE_RES_@YEAR@_@EXERCISE@_H

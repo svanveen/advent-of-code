@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <aoc/exercises.h>
-#include <aoc/res/2020/Data-7.h>
+#include <aoc/res/2020/Data-07.h>
 
 constexpr auto input = R"(light red bags contain 1 bright white bag, 2 muted yellow bags.
 dark orange bags contain 3 bright white bags, 4 muted yellow bags.
@@ -16,7 +16,7 @@ dotted black bags contain no other bags.
 TEST(Exercise7, Part1)
 {
     EXPECT_EQ(4, (aoc::exercise<2020, 7, 1>(input)));
-    EXPECT_EQ(287, (aoc::exercise<2020, 7, 1>(aoc::res::data_2020_7)));
+    EXPECT_EQ(287, (aoc::exercise<2020, 7, 1>(aoc::res::data_2020_07)));
 }
 
 TEST(Exercise7, Part2)
@@ -33,5 +33,5 @@ dark violet bags contain no other bags.
 )";
     EXPECT_EQ(126, (aoc::exercise<2020, 7, 2>(input2)));
 
-    EXPECT_EQ(48160, (aoc::exercise<2020, 7, 2>(aoc::res::data_2020_7)));
+    EXPECT_EQ(48160, (aoc::exercise<2020, 7, 2>(aoc::res::data_2020_07)));
 }

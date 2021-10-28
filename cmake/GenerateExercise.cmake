@@ -1,5 +1,10 @@
 include(${CMAKE_CURRENT_LIST_DIR}/GenerateResource.cmake)
 
+function(generate_source_file YEAR EXERCISE SOURCE TARGET)
+    string(REGEX REPLACE "0([1-9])" "\\1" EXERCISE_NUMBER ${EXERCISE})
+    configure_file(${SOURCE} ${TARGET} @ONLY)
+endfunction()
+
 function(get_target_name OUT NAME YEAR EXERCISE)
     cmake_parse_arguments(NAME "" "PREFIX;SUFFIX" "" ${ARGN})
     if (EXERCISE LESS 10)
@@ -21,12 +26,16 @@ function(_add_exercise_impl NAME YEAR EXERCISE)
     get_target_name(TARGET_NAME ${NAME} ${YEAR} ${EXERCISE})
     get_target_name(OBJECT_TARGET_NAME ${NAME} ${YEAR} ${EXERCISE} PREFIX obj)
 
-    if (EXERCISE LESS 10)
-        set(EXERCISE "0${EXERCISE}")
+    set(SOURCE_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/${YEAR}/exercise${EXERCISE}.cpp)
+    if (NOT EXISTS ${SOURCE_FILE})
+        generate_source_file(${YEAR} ${EXERCISE}
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/exercise.cpp.in
+            ${SOURCE_FILE}
+        )
     endif()
 
     add_library(${OBJECT_TARGET_NAME} OBJECT
-        src/${YEAR}/exercise${EXERCISE}.cpp
+        ${SOURCE_FILE}
     )
 
     target_include_directories(${OBJECT_TARGET_NAME}
@@ -74,10 +83,9 @@ function(add_exercise YEAR EXERCISE)
     generate_resource(${YEAR} ${EXERCISE})
 
     set(TARGET_MAIN ${CMAKE_CURRENT_BINARY_DIR}/gen/src/${YEAR}/${EXERCISE}/main.cpp)
-    configure_file(
+    generate_source_file(${YEAR} ${EXERCISE}
         ${CMAKE_CURRENT_SOURCE_DIR}/src/exercise-main.cpp.in
         ${TARGET_MAIN}
-        @ONLY
     )
 
     _add_exercise_impl(exercise ${YEAR} ${EXERCISE} ${ARGN}

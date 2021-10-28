@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <aoc/exercises.h>
-#include <aoc/res/2020/Data-4.h>
+#include <aoc/res/2020/Data-04.h>
 
 TEST(Exercise4, Part1)
 {
@@ -19,7 +19,7 @@ hcl:#cfa07d eyr:2025 pid:166559648
 iyr:2011 ecl:brn hgt:59in
 )";
     EXPECT_EQ(2, (aoc::exercise<2020, 4, 1>(input)));
-    EXPECT_EQ(182, (aoc::exercise<2020, 4, 1>(aoc::res::data_2020_4)));
+    EXPECT_EQ(182, (aoc::exercise<2020, 4, 1>(aoc::res::data_2020_04)));
 }
 
 TEST(Exercise4, Part2)
@@ -55,5 +55,5 @@ iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719
 )";
     EXPECT_EQ(4, (aoc::exercise<2020, 4, 2>(input2)));
 
-    EXPECT_EQ(109, (aoc::exercise<2020, 4, 2>(aoc::res::data_2020_4)));
+    EXPECT_EQ(109, (aoc::exercise<2020, 4, 2>(aoc::res::data_2020_04)));
 }
