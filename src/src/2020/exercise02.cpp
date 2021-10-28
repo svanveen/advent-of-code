@@ -38,7 +38,7 @@ auto exercise(std::istream& stream, FILTER&& filter)
 }
 
 template <>
-std::size_t exercise<2020, 2, 1>(std::istream& stream)
+Result exercise<2020, 2, 1>(std::istream& stream)
 {
     return exercise(stream, [](auto&& match)
     {
@@ -48,7 +48,7 @@ std::size_t exercise<2020, 2, 1>(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 2, 2>(std::istream& stream)
+Result exercise<2020, 2, 2>(std::istream& stream)
 {
     return exercise(stream, [](auto&& match)
     {

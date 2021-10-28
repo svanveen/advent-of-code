@@ -18,7 +18,7 @@ enum class Player
     B,
 };
 
-struct Result
+struct GameResult
 {
     Player winner;
     int score;
@@ -81,7 +81,7 @@ auto getPlayersCards(std::istream& stream)
     return std::pair{*playersCards.begin(), *++playersCards.begin()};
 }
 
-Result playGameOfCombat(CardDeck playerA, CardDeck playerB, bool recursive = false)
+GameResult playGameOfCombat(CardDeck playerA, CardDeck playerB, bool recursive = false)
 {
     auto appendToWinner = [&](Player winner, int a, int b)
     {
@@ -139,7 +139,7 @@ Result playGameOfCombat(CardDeck playerA, CardDeck playerB, bool recursive = fal
 }
 
 template <>
-std::size_t exercise<2020, 22, 1>(std::istream& stream)
+Result exercise<2020, 22, 1>(std::istream& stream)
 {
     auto [playerA, playerB] = getPlayersCards(stream);
 
@@ -147,7 +147,7 @@ std::size_t exercise<2020, 22, 1>(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 22, 2>(std::istream& stream)
+Result exercise<2020, 22, 2>(std::istream& stream)
 {
     auto [playerA, playerB] = getPlayersCards(stream);
 

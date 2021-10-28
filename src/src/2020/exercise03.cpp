@@ -33,13 +33,13 @@ auto exercise(std::istream& stream, std::initializer_list<Slope> slopes)
 }
 
 template <>
-std::size_t exercise<2020, 3, 1>(std::istream& stream)
+Result exercise<2020, 3, 1>(std::istream& stream)
 {
     return exercise(stream, {{3, 1}});
 }
 
 template <>
-std::size_t exercise<2020, 3, 2>(std::istream& stream)
+Result exercise<2020, 3, 2>(std::istream& stream)
 {
     return exercise(stream, {{1, 1}, {3, 1}, {5, 1}, {7, 1}, {1, 2}});
 }

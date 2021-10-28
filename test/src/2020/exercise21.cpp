@@ -16,5 +16,6 @@ TEST(Exercise21, Part1)
 
 TEST(Exercise21, Part2)
 {
-    // TODO solution: fsr,skrxt,lqbcg,mgbv,dvjrrkv,ndnlm,xcljh,zbhp
+    EXPECT_EQ("mxmxvkd,sqjhc,fvjkl", (aoc::exercise<2020, 21, 2>(input)));
+    EXPECT_EQ("fsr,skrxt,lqbcg,mgbv,dvjrrkv,ndnlm,xcljh,zbhp", (aoc::exercise<2020, 21, 2>(aoc::res::data_2020_21)));
 }

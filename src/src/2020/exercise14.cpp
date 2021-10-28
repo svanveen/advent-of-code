@@ -160,13 +160,13 @@ std::size_t exercise(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 14, 1>(std::istream& stream)
+Result exercise<2020, 14, 1>(std::istream& stream)
 {
     return exercise<DecoderChip>(stream);
 }
 
 template <>
-std::size_t exercise<2020, 14, 2>(std::istream& stream)
+Result exercise<2020, 14, 2>(std::istream& stream)
 {
     return exercise<DecoderChip2>(stream);
 }

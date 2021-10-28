@@ -61,13 +61,13 @@ auto exercise(std::istream& stream, FILTER&& filter)
 }
 
 template <>
-std::size_t exercise<2020, 4, 1>(std::istream& stream)
+Result exercise<2020, 4, 1>(std::istream& stream)
 {
     return exercise(stream, containsAllKeys);
 }
 
 template <>
-std::size_t exercise<2020, 4, 2>(std::istream& stream)
+Result exercise<2020, 4, 2>(std::istream& stream)
 {
     return exercise(stream, [](auto&& passportEntries)
     {

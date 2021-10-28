@@ -16,7 +16,7 @@ Options:
 
 struct Exercise
 {
-    using Part = std::size_t (&)(std::istream&);
+    using Part = aoc::Result (&)(std::istream&);
     Part part1;
     Part part2;
 };

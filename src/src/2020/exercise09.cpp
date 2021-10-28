@@ -39,14 +39,14 @@ auto getInvalidNumber(const std::vector<std::size_t>& numbers, int preamble)
 }
 
 template <>
-std::size_t exercise<2020, 9, 1>(std::istream& stream)
+Result exercise<2020, 9, 1>(std::istream& stream)
 {
     auto numbers = getNumbers(stream);
     return getInvalidNumber(numbers, 25);
 }
 
 template <>
-std::size_t exercise<2020, 9, 2>(std::istream& stream)
+Result exercise<2020, 9, 2>(std::istream& stream)
 {
     const auto numbers = getNumbers(stream);
     const auto invalidNumber = getInvalidNumber(numbers, 25);

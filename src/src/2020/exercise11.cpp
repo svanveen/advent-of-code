@@ -146,13 +146,13 @@ auto exercise(std::istream& stream, int threshold, int neighborDist)
 }
 
 template <>
-std::size_t exercise<2020, 11, 1>(std::istream& stream)
+Result exercise<2020, 11, 1>(std::istream& stream)
 {
     return exercise(stream, 4, 1);
 }
 
 template <>
-std::size_t exercise<2020, 11, 2>(std::istream& stream)
+Result exercise<2020, 11, 2>(std::istream& stream)
 {
     return exercise(stream, 5, std::numeric_limits<int>::max());
 }

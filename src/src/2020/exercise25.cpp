@@ -37,7 +37,7 @@ auto computeLoopSize(std::size_t publicKey)
 }
 
 template <>
-std::size_t exercise<2020, 25, 1>(std::istream& stream)
+Result exercise<2020, 25, 1>(std::istream& stream)
 {
     const auto publicKeys = ranges::getlines(stream)
         | ranges::views::transform([](auto&& number) { return std::stoull(number); })
@@ -51,7 +51,7 @@ std::size_t exercise<2020, 25, 1>(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 25, 2>(std::istream& stream)
+Result exercise<2020, 25, 2>(std::istream& stream)
 {
     return 0;
 }

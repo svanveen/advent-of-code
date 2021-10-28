@@ -35,13 +35,13 @@ auto exercise(std::istream& stream, FILTER&& filter)
 }
 
 template <>
-std::size_t exercise<2020, 6, 1>(std::istream& stream)
+Result exercise<2020, 6, 1>(std::istream& stream)
 {
     return exercise(stream, ranges::any_of);
 }
 
 template <>
-std::size_t exercise<2020, 6, 2>(std::istream& stream)
+Result exercise<2020, 6, 2>(std::istream& stream)
 {
     return exercise(stream, ranges::all_of);
 }

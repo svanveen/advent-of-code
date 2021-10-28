@@ -129,7 +129,7 @@ auto parseInput(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 19, 1>(std::istream& stream)
+Result exercise<2020, 19, 1>(std::istream& stream)
 {
     const auto[ruleset, messages] = parseInput(stream);
 
@@ -137,7 +137,7 @@ std::size_t exercise<2020, 19, 1>(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 19, 2>(std::istream& stream)
+Result exercise<2020, 19, 2>(std::istream& stream)
 {
     auto[ruleset, messages] = parseInput(stream);
 
