@@ -33,13 +33,13 @@ auto exercise(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 5, 1>(std::istream& stream)
+Result exercise<2020, 5, 1>(std::istream& stream)
 {
     return ranges::max(exercise(stream));
 }
 
 template <>
-std::size_t exercise<2020, 5, 2>(std::istream& stream)
+Result exercise<2020, 5, 2>(std::istream& stream)
 {
     auto ids = exercise(stream)
         | ranges::to_vector

@@ -95,14 +95,14 @@ auto getInstrucions(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 8, 1>(std::istream& stream)
+Result exercise<2020, 8, 1>(std::istream& stream)
 {
     const auto instructions = getInstrucions(stream);
     return runInstructions(instructions).second;
 }
 
 template <>
-std::size_t exercise<2020, 8, 2>(std::istream& stream)
+Result exercise<2020, 8, 2>(std::istream& stream)
 {
     const auto instructions = getInstrucions(stream);
 

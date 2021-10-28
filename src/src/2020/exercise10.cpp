@@ -56,7 +56,7 @@ auto getNumbers(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 10, 1>(std::istream& stream)
+Result exercise<2020, 10, 1>(std::istream& stream)
 {
     const auto numbers = getNumbers(stream);
     auto dist1 = numbers | adjacentDifferenceEquals(1);
@@ -67,7 +67,7 @@ std::size_t exercise<2020, 10, 1>(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 10, 2>(std::istream& stream)
+Result exercise<2020, 10, 2>(std::istream& stream)
 {
     const auto numbers = getNumbers(stream);
 

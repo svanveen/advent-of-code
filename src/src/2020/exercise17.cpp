@@ -97,13 +97,13 @@ std::size_t exercise(std::istream& stream)
 
 
 template <>
-std::size_t exercise<2020, 17, 1>(std::istream& stream)
+Result exercise<2020, 17, 1>(std::istream& stream)
 {
     return exercise<3>(stream);
 }
 
 template <>
-std::size_t exercise<2020, 17, 2>(std::istream& stream)
+Result exercise<2020, 17, 2>(std::istream& stream)
 {
     return exercise<4>(stream);
 }

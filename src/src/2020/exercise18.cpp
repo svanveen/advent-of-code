@@ -195,13 +195,13 @@ auto exercise(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 18, 1>(std::istream& stream)
+Result exercise<2020, 18, 1>(std::istream& stream)
 {
     return exercise<>(stream);
 }
 
 template <>
-std::size_t exercise<2020, 18, 2>(std::istream& stream)
+Result exercise<2020, 18, 2>(std::istream& stream)
 {
     return exercise<std::plus<>>(stream);
 }

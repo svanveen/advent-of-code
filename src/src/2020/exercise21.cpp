@@ -1,4 +1,5 @@
 #include <regex>
+#include <sstream>
 #include <string>
 #include <range/v3/action.hpp>
 #include <range/v3/algorithm.hpp>
@@ -85,7 +86,7 @@ auto getAllergenIngredientOptionsMapping(const std::vector<Food>& foods, const s
 }
 
 template <>
-std::size_t exercise<2020, 21, 1>(std::istream& stream)
+Result exercise<2020, 21, 1>(std::istream& stream)
 {
     const auto foods = getFoods(stream);
     const auto ingredients = getIngredients(foods);
@@ -109,7 +110,7 @@ std::size_t exercise<2020, 21, 1>(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 21, 2>(std::istream& stream)
+Result exercise<2020, 21, 2>(std::istream& stream)
 {
     const auto foods = getFoods(stream);
     const auto ingredients = getIngredients(foods);
@@ -135,10 +136,15 @@ std::size_t exercise<2020, 21, 2>(std::istream& stream)
     }
 
     auto ingredientsWithAllergen = allergenToIngredients | ranges::views::values;
-    std::copy(ingredientsWithAllergen.begin(), ingredientsWithAllergen.end(), std::ostream_iterator<std::string>{std::cout, ","});
-    std::cout << std::endl;
 
-    return 0;
+    return [&]()
+    {
+        auto sstream = std::stringstream{};
+        std::copy(ingredientsWithAllergen.begin(), ingredientsWithAllergen.end(), std::ostream_iterator<std::string>{sstream, ","});
+        auto result = sstream.str();
+        result.pop_back();
+        return result;
+    }();
 }
 
 }

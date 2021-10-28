@@ -161,13 +161,13 @@ auto exercise(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 12, 1>(std::istream& stream)
+Result exercise<2020, 12, 1>(std::istream& stream)
 {
     return exercise<Ferry>(stream);
 }
 
 template <>
-std::size_t exercise<2020, 12, 2>(std::istream& stream)
+Result exercise<2020, 12, 2>(std::istream& stream)
 {
     return exercise<Ferry2>(stream);
 }

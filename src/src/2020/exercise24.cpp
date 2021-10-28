@@ -68,7 +68,7 @@ auto getBlackTiles(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 24, 1>(std::istream& stream)
+Result exercise<2020, 24, 1>(std::istream& stream)
 {
     const auto blackTiles = getBlackTiles(stream);
 
@@ -76,7 +76,7 @@ std::size_t exercise<2020, 24, 1>(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 24, 2>(std::istream& stream)
+Result exercise<2020, 24, 2>(std::istream& stream)
 {
     auto blackTiles = getBlackTiles(stream); // TODO: why can't the statements be combined using actions::transform
 

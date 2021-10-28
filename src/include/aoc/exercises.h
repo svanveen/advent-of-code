@@ -4,16 +4,16 @@
 #include <iostream>
 #include <sstream>
 #include <string_view>
-#include <aoc/exercises.h>
+#include <aoc/Result.h>
 
 namespace aoc
 {
 
 template <std::size_t YEAR, std::size_t EXERCISE, std::size_t PART>
-std::size_t exercise(std::istream& line);
+Result exercise(std::istream& line);
 
 template <std::size_t YEAR, std::size_t EXERCISE, std::size_t PART>
-std::size_t exercise(std::string_view str)
+Result exercise(std::string_view str)
 {
   auto os = std::stringstream{};
   os << str;

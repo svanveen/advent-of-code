@@ -88,7 +88,7 @@ private:
 }
 
 template <>
-std::size_t exercise<2020, 23, 1>(std::istream& stream)
+Result exercise<2020, 23, 1>(std::istream& stream)
 {
     Game game{stream};
     game.play(100);
@@ -100,7 +100,7 @@ std::size_t exercise<2020, 23, 1>(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 23, 2>(std::istream& stream)
+Result exercise<2020, 23, 2>(std::istream& stream)
 {
     Game game{stream, 1'000'000};
     game.play(10'000'000);

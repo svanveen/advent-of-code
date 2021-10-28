@@ -33,13 +33,13 @@ auto exercise(std::istream& stream, std::size_t N)
 }
 
 template <>
-std::size_t exercise<2020, 15, 1>(std::istream& stream)
+Result exercise<2020, 15, 1>(std::istream& stream)
 {
     return exercise(stream, 2020);
 }
 
 template <>
-std::size_t exercise<2020, 15, 2>(std::istream& stream)
+Result exercise<2020, 15, 2>(std::istream& stream)
 {
     return exercise(stream, 30000000);
 }

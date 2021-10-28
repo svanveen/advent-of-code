@@ -51,7 +51,7 @@ auto getDepature(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 13, 1>(std::istream& stream)
+Result exercise<2020, 13, 1>(std::istream& stream)
 {
     const auto departure = getDepature(stream);
     auto busIds = ranges::getlines(stream, ',')
@@ -69,7 +69,7 @@ std::size_t exercise<2020, 13, 1>(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 13, 2>(std::istream& stream)
+Result exercise<2020, 13, 2>(std::istream& stream)
 {
     (void) getDepature(stream);
     auto busIds = ranges::getlines(stream, ',')

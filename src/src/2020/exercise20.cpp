@@ -62,7 +62,7 @@ Tile parseTile(Rng&& rng)
 }
 
 template <>
-std::size_t exercise<2020, 20, 1>(std::istream& stream)
+Result exercise<2020, 20, 1>(std::istream& stream)
 {
     auto tiles = ranges::getlines(stream)
         | ranges::views::split("")
@@ -86,7 +86,7 @@ std::size_t exercise<2020, 20, 1>(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 20, 2>(std::istream& stream)
+Result exercise<2020, 20, 2>(std::istream& stream)
 {
     return 0;
 }

@@ -112,13 +112,13 @@ auto exercise(std::istream& stream)
 }
 
 template <>
-std::size_t exercise<2020, 7, 1>(std::istream& stream)
+Result exercise<2020, 7, 1>(std::istream& stream)
 {
     return exercise<ContainingBagCounter>(stream);
 }
 
 template <>
-std::size_t exercise<2020, 7, 2>(std::istream& stream)
+Result exercise<2020, 7, 2>(std::istream& stream)
 {
     return exercise<ContainedBagCounter>(stream);
 }
