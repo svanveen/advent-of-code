@@ -1,0 +1,34 @@
+#ifndef ADVENTOFCODE_ALLEXERCISES_H
+#define ADVENTOFCODE_ALLEXERCISES_H
+
+#include <unordered_map>
+#include <aoc/exercise.h>
+#include <aoc/Result.h>
+
+namespace aoc
+{
+
+struct Exercise
+{
+    using Part = Result (&)(std::istream&);
+    Part part1;
+    Part part2;
+};
+
+#define EXERCISE(YEAR, EXERCISE)          \
+{                                         \
+    YEAR##EXERCISE,                       \
+    {                                     \
+        aoc::exercise<YEAR, EXERCISE, 1>, \
+        aoc::exercise<YEAR, EXERCISE, 2>, \
+    }                                     \
+}
+
+static const std::unordered_map<int, Exercise> exercises {
+@ALL_EXERCISES@
+};
+#undef EXERCISE
+
+}
+
+#endif //ADVENTOFCODE_ALLEXERCISES_H
