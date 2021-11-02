@@ -1,5 +1,15 @@
 include(${CMAKE_CURRENT_LIST_DIR}/GenerateResource.cmake)
 
+macro(list_exercises OUT_YEARS OUT_EXERCISES)
+    file(GLOB RESOURCES RELATIVE "${CMAKE_SOURCE_DIR}/res/" "${CMAKE_SOURCE_DIR}/res/*/*.dat")
+    foreach(RESOURCE IN LISTS RESOURCES)
+        get_filename_component(YEAR ${RESOURCE} DIRECTORY)
+        get_filename_component(EXERCISE ${RESOURCE} NAME_WE)
+        list(APPEND ${OUT_YEARS} ${YEAR})
+        list(APPEND ${OUT_EXERCISES} ${EXERCISE})
+    endforeach()
+endmacro()
+
 macro(exercise_number OUT EXERCISE)
     string(REGEX REPLACE "0([1-9])" "\\1" ${OUT} ${EXERCISE})
 endmacro()
