@@ -1,7 +1,11 @@
 include(${CMAKE_CURRENT_LIST_DIR}/GenerateResource.cmake)
 
+macro(exercise_number OUT EXERCISE)
+    string(REGEX REPLACE "0([1-9])" "\\1" ${OUT} ${EXERCISE})
+endmacro()
+
 function(generate_source_file YEAR EXERCISE SOURCE TARGET)
-    string(REGEX REPLACE "0([1-9])" "\\1" EXERCISE_NUMBER ${EXERCISE})
+    exercise_number(EXERCISE_NUMBER ${EXERCISE})
     configure_file(${SOURCE} ${TARGET} @ONLY)
 endfunction()
 
