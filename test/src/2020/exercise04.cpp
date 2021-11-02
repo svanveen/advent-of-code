@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <aoc/exercises.h>
+#include <aoc/exercise.h>
 #include <aoc/res/2020/Data-04.h>
 
 TEST(Exercise4, Part1)

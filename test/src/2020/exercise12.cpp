@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <aoc/exercises.h>
+#include <aoc/exercise.h>
 #include <aoc/res/2020/Data-12.h>
 
 constexpr auto input = R"(F10

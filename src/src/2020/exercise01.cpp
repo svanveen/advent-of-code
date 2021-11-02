@@ -1,6 +1,6 @@
 #include <string>
 #include <range/v3/view.hpp>
-#include <aoc/exercises.h>
+#include <aoc/exercise.h>
 #include <aoc/utils/CartesianProduct.h>
 
 namespace aoc

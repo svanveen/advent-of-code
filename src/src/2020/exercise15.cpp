@@ -1,6 +1,6 @@
 #include <map>
 #include <string>
-#include <aoc/exercises.h>
+#include <aoc/exercise.h>
 #include <range/v3/algorithm.hpp>
 #include <range/v3/view.hpp>
 

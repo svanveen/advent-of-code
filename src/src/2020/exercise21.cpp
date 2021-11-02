@@ -6,7 +6,7 @@
 #include <range/v3/iterator_range.hpp>
 #include <range/v3/numeric.hpp>
 #include <range/v3/view.hpp>
-#include <aoc/exercises.h>
+#include <aoc/exercise.h>
 
 namespace aoc
 {

@@ -3,7 +3,7 @@
 #include <range/v3/action.hpp>
 #include <range/v3/iterator_range.hpp>
 #include <range/v3/view.hpp>
-#include <aoc/exercises.h>
+#include <aoc/exercise.h>
 #include <range/v3/numeric/accumulate.hpp>
 
 namespace aoc

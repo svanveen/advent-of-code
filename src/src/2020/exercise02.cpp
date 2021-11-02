@@ -1,7 +1,7 @@
 #include <regex>
 #include <string>
 #include <range/v3/view.hpp>
-#include <aoc/exercises.h>
+#include <aoc/exercise.h>
 
 namespace aoc
 {

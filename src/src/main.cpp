@@ -1,7 +1,7 @@
 #include <fstream>
 #include <istream>
 #include <docopt/docopt.h>
-#include <aoc/exercises.h>
+#include <aoc/exercise.h>
 
 constexpr auto USAGE = R"(Advent of Code.
 

@@ -3,7 +3,7 @@
 #include <variant>
 #include <range/v3/algorithm.hpp>
 #include <range/v3/view.hpp>
-#include <aoc/exercises.h>
+#include <aoc/exercise.h>
 #include <aoc/utils/Position.h>
 
 namespace aoc

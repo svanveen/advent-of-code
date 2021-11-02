@@ -1,5 +1,5 @@
-#ifndef ADVENTOFCODE_EXERCISES_H
-#define ADVENTOFCODE_EXERCISES_H
+#ifndef ADVENTOFCODE_EXERCISE_H
+#define ADVENTOFCODE_EXERCISE_H
 
 #include <iostream>
 #include <sstream>
@@ -21,4 +21,4 @@ Result exercise(std::string_view str)
 }
 
 }
-#endif //ADVENTOFCODE_EXERCISES_H
+#endif //ADVENTOFCODE_EXERCISE_H
