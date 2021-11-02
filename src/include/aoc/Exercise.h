@@ -15,9 +15,9 @@ Result exercise(std::istream& line);
 template <std::size_t YEAR, std::size_t EXERCISE, std::size_t PART>
 Result exercise(std::string_view str)
 {
-  auto os = std::stringstream{};
-  os << str;
-  return exercise<YEAR, EXERCISE, PART>(os);
+    auto os = std::stringstream{};
+    os << str;
+    return exercise<YEAR, EXERCISE, PART>(os);
 }
 
 }
