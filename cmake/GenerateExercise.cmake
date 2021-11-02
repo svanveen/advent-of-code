@@ -20,7 +20,7 @@ function(get_target_name OUT NAME YEAR EXERCISE)
     set(${OUT} ${NAME} PARENT_SCOPE)
 endfunction()
 
-function(_add_exercise_impl NAME YEAR EXERCISE)
+function(add_exercise_impl NAME YEAR EXERCISE)
     cmake_parse_arguments(ARG "IS_TEST" "ADD_TO_TARGET" "LINK_LIBRARIES;EXECUTABLE_SOURCES;OBJECT_SOURCES" ${ARGN})
 
     get_target_name(TARGET_NAME ${NAME} ${YEAR} ${EXERCISE})
@@ -88,7 +88,7 @@ function(add_exercise YEAR EXERCISE)
         ${TARGET_MAIN}
     )
 
-    _add_exercise_impl(exercise ${YEAR} ${EXERCISE} ${ARGN}
+    add_exercise_impl(exercise ${YEAR} ${EXERCISE} ${ARGN}
         EXECUTABLE_SOURCES
             ${TARGET_MAIN}
     )
@@ -96,7 +96,7 @@ endfunction()
 
 function(add_exercise_test YEAR EXERCISE)
     get_target_name(OBJECT_TARGET_NAME exercise ${YEAR} ${EXERCISE} PREFIX obj)
-    _add_exercise_impl(test ${YEAR} ${EXERCISE} ${ARGN}
+    add_exercise_impl(test ${YEAR} ${EXERCISE} ${ARGN}
         LINK_LIBRARIES
             ${OBJECT_TARGET_NAME}
         OBJECT_SOURCES
