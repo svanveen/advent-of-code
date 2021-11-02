@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.17)
-project(AdventOfCode VERSION 2020.12.25)
+project(AdventOfCode VERSION 2020.25)
 
 include(cmake/GenerateExercise.cmake)
 
