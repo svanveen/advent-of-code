@@ -30,10 +30,10 @@ function(add_exercise_impl NAME YEAR EXERCISE)
     get_target_name(TARGET_NAME ${NAME} ${YEAR} ${EXERCISE})
     get_target_name(OBJECT_TARGET_NAME ${NAME} ${YEAR} ${EXERCISE} PREFIX obj)
 
-    set(SOURCE_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/${YEAR}/exercise${EXERCISE}.cpp)
+    set(SOURCE_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/${YEAR}/Exercise${EXERCISE}.cpp)
     if (NOT EXISTS ${SOURCE_FILE})
         generate_source_file(${YEAR} ${EXERCISE}
-            ${CMAKE_CURRENT_SOURCE_DIR}/src/exercise.cpp.in
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Exercise.cpp.in
             ${SOURCE_FILE}
         )
     endif()

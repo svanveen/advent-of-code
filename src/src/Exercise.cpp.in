@@ -1,0 +1,19 @@
+#include <range/v3/view.hpp>
+#include <aoc/Exercise.h>
+
+namespace aoc
+{
+
+template <>
+Result exercise<@YEAR@, @EXERCISE_NUMBER@, 1>(std::istream& stream)
+{
+    return 0;
+}
+
+template <>
+Result exercise<@YEAR@, @EXERCISE_NUMBER@, 2>(std::istream& stream)
+{
+    return 0;
+}
+
+}

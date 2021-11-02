@@ -1,5 +1,5 @@
 #include <iostream>
-#include <aoc/exercise.h>
+#include <aoc/Exercise.h>
 #include <aoc/res/@YEAR@/Data-@EXERCISE@.h>
 
 int main()
