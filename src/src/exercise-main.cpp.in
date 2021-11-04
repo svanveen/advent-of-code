@@ -4,7 +4,7 @@
 
 int main()
 {
-    std::cout << "Solutions for event " << @YEAR@ << " exercise " << @EXERCISE@ << std::endl;
-    std::cout << "Part 1: " << aoc::exercise<@YEAR@, @EXERCISE@, 1>(aoc::res::data_@YEAR@_@EXERCISE@) << std::endl;
-    std::cout << "Part 2: " << aoc::exercise<@YEAR@, @EXERCISE@, 2>(aoc::res::data_@YEAR@_@EXERCISE@) << std::endl;
+    std::cout << "Solutions for event " << @YEAR@ << " exercise " << @EXERCISE_NUMBER@ << std::endl;
+    std::cout << "Part 1: " << aoc::exercise<@YEAR@, @EXERCISE_NUMBER@, 1>(aoc::res::data_@YEAR@_@EXERCISE@) << std::endl;
+    std::cout << "Part 2: " << aoc::exercise<@YEAR@, @EXERCISE_NUMBER@, 2>(aoc::res::data_@YEAR@_@EXERCISE@) << std::endl;
 }
