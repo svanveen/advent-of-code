@@ -25,23 +25,21 @@ private:
         EQUALS        = 8,
     };
 
-    enum class Mode
+    enum class ParameterMode
     {
-        PARAMETER = 0,
+        POSITION  = 0,
         IMMEDIATE = 1,
     };
 
-    static std::tuple<Operation, Mode, Mode, Mode> splitOpCode(int value)
+    static std::tuple<Operation, ParameterMode, ParameterMode, ParameterMode> splitOpCode(int value)
     {
         return std::tuple{
             static_cast<Operation>(value % 100),
-            static_cast<Mode>((value % 1000) / 100),
-            static_cast<Mode>((value % 10000) / 1000),
-            static_cast<Mode>((value % 100000) / 10000),
+            static_cast<ParameterMode>((value % 1000) / 100),
+            static_cast<ParameterMode>((value % 10000) / 1000),
+            static_cast<ParameterMode>((value % 100000) / 10000),
         };
     }
-
-
 
 public:
     explicit IntCodeProgram(std::istream& stream)
@@ -75,12 +73,12 @@ public:
 
     std::pair<int, bool> operator()(const std::vector<int>& inputs)
     {
-        auto value = [&](std::size_t idx, Mode mode)
+        auto value = [&](std::size_t idx, ParameterMode mode)
         {
             switch (mode)
             {
-                case Mode::IMMEDIATE: return _program[idx];
-                case Mode::PARAMETER: return _program[_program[idx]];
+                case ParameterMode::POSITION:  return _program[_program[idx]];
+                case ParameterMode::IMMEDIATE: return _program[idx];
             }
             throw std::runtime_error{"invalid mode"};
         };
