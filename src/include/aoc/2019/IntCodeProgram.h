@@ -46,7 +46,7 @@ public:
         : _program(parseProgram(stream))
     {}
 
-    int operator()(int noun, int verb) const
+    long long operator()(long long noun, long long verb) const
     {
         auto program = _program;
         program[1] = noun;
@@ -66,12 +66,12 @@ public:
         return program[0];
     }
 
-    std::pair<int, bool> operator()(int input)
+    std::pair<long long, bool> operator()(long long input)
     {
         return (*this)(std::vector{input});
     }
 
-    std::pair<int, bool> operator()(const std::vector<int>& inputs)
+    std::pair<long long, bool> operator()(const std::vector<long long>& inputs)
     {
         auto value = [&](std::size_t idx, ParameterMode mode)
         {
@@ -83,7 +83,7 @@ public:
             throw std::runtime_error{"invalid mode"};
         };
 
-        int output = 0;
+        long long output = 0;
         std::size_t inputIdx = 0;
         while (idx < _program.size() && _program[idx] != 99)
         {
@@ -132,15 +132,15 @@ public:
     }
 
 private:
-    static std::vector<int> parseProgram(std::istream& stream)
+    static std::vector<long long> parseProgram(std::istream& stream)
     {
         return ranges::getlines(stream, ',')
-            | ranges::views::transform([](auto&& s) { return std::stoi(s); })
+            | ranges::views::transform([](auto&& s) { return std::stoll(s); })
             | ranges::to_vector;
     }
 
 
-    static int exec(Operation op, int a, int b)
+    static long long exec(Operation op, long long a, long long b)
     {
         switch(op)
         {
@@ -153,7 +153,7 @@ private:
     }
 
 private:
-    std::vector<int> _program;
+    std::vector<long long> _program;
     std::size_t idx = 0;
 };
 
