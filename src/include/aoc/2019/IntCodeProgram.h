@@ -15,20 +15,49 @@ class IntCodeProgram
 private:
     enum class Operation
     {
-        ADD           = 1,
-        MULTIPLY      = 2,
-        READ          = 3,
-        WRITE         = 4,
-        JUMP_IF_TRUE  = 5,
-        JUMP_IF_FALSE = 6,
-        LESS_THAN     = 7,
-        EQUALS        = 8,
+        ADD                  = 1,
+        MULTIPLY             = 2,
+        READ                 = 3,
+        WRITE                = 4,
+        JUMP_IF_TRUE         = 5,
+        JUMP_IF_FALSE        = 6,
+        LESS_THAN            = 7,
+        EQUALS               = 8,
+        ADJUST_RELATIVE_BASE = 9,
     };
 
     enum class ParameterMode
     {
         POSITION  = 0,
         IMMEDIATE = 1,
+        RELATIVE  = 2,
+    };
+
+    class Program
+    {
+    public:
+        Program(std::istream& stream)
+            : _code(
+                ranges::getlines(stream, ',')
+                    | ranges::views::transform([](auto&& s) { return std::stoll(s); })
+                    | ranges::to_vector
+            )
+        {}
+
+        auto begin() { return _code.begin(); }
+        auto end()   { return _code.end(); }
+        std::size_t size() const { return _code.size(); }
+        long long& operator[](std::size_t idx)
+        {
+            if (idx >= _code.size())
+            {
+                _code.resize(idx + 1);
+            }
+            return _code[idx];
+        }
+
+    private:
+        std::vector<long long> _code;
     };
 
     static std::tuple<Operation, ParameterMode, ParameterMode, ParameterMode> splitOpCode(long long value)
@@ -43,7 +72,7 @@ private:
 
 public:
     explicit IntCodeProgram(std::istream& stream)
-        : _program(parseProgram(stream))
+        : _program(stream)
     {}
 
     long long operator()(long long noun, long long verb) const
@@ -79,6 +108,7 @@ public:
             {
                 case ParameterMode::POSITION:  return _program[_program[idx]];
                 case ParameterMode::IMMEDIATE: return _program[idx];
+                case ParameterMode::RELATIVE:  return _program[_relativeBase + _program[idx]];
             }
             throw std::runtime_error{"invalid mode"};
         };
@@ -124,20 +154,15 @@ public:
                     }
                     break;
                 }
+                case Operation::ADJUST_RELATIVE_BASE:
+                    _relativeBase += value(idx++, m1);
+                    break;
             }
         }
         return std::pair{output, true};
     }
 
 private:
-    static std::vector<long long> parseProgram(std::istream& stream)
-    {
-        return ranges::getlines(stream, ',')
-            | ranges::views::transform([](auto&& s) { return std::stoll(s); })
-            | ranges::to_vector;
-    }
-
-
     static long long exec(Operation op, long long a, long long b)
     {
         switch(op)
@@ -151,8 +176,9 @@ private:
     }
 
 private:
-    std::vector<long long> _program;
+    Program _program;
     std::size_t idx = 0;
+    std::size_t _relativeBase = 0;
 };
 
 }
