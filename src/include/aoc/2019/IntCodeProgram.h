@@ -31,7 +31,7 @@ private:
         IMMEDIATE = 1,
     };
 
-    static std::tuple<Operation, ParameterMode, ParameterMode, ParameterMode> splitOpCode(int value)
+    static std::tuple<Operation, ParameterMode, ParameterMode, ParameterMode> splitOpCode(long long value)
     {
         return std::tuple{
             static_cast<Operation>(value % 100),
