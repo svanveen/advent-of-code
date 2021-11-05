@@ -73,7 +73,7 @@ public:
 
     std::pair<long long, bool> operator()(const std::vector<long long>& inputs)
     {
-        auto value = [&](std::size_t idx, ParameterMode mode)
+        auto value = [&](std::size_t idx, ParameterMode mode) -> long long&
         {
             switch (mode)
             {
@@ -96,7 +96,7 @@ public:
                         --idx;
                         return {output, false};
                     }
-                    _program[_program[idx++]] = inputs.at(inputIdx++);
+                    value(idx++, m1) = inputs.at(inputIdx++);
                     break;
                 case Operation::WRITE:
                     output = value(idx++, m1);
@@ -108,7 +108,7 @@ public:
                 {
                     const auto a = value(idx++, m1);
                     const auto b = value(idx++, m2);
-                    _program[_program[idx++]] = exec(op, a, b);
+                    value(idx++, m3) = exec(op, a, b);
                     break;
                 }
                 case Operation::JUMP_IF_TRUE:
