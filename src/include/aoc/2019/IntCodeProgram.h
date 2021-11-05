@@ -87,48 +87,48 @@ public:
         std::size_t inputIdx = 0;
         while (idx < _program.size() && _program[idx] != 99)
         {
-           const auto[op, m1, m2, m3] = splitOpCode(_program[idx]);
-           switch (op)
-           {
-               case Operation::READ:
-                   if (inputIdx >= inputs.size())
-                   {
-                       return {output, false};
-                   }
-                   _program[_program[idx + 1]] = inputs.at(inputIdx++);
-                   idx += 2;
-                   break;
-               case Operation::WRITE:
-                   output = value(idx + 1, m1);
-                   idx += 2;
-                   break;
-               case Operation::ADD:
-               case Operation::MULTIPLY:
-               case Operation::LESS_THAN:
-               case Operation::EQUALS:
-               {
-                   const auto a = value(idx + 1, m1);
-                   const auto b = value(idx + 2, m2);
-                   _program[_program[idx + 3]] = exec(op, a, b);
-                   idx += 4;
-                   break;
-               }
-               case Operation::JUMP_IF_TRUE:
-               case Operation::JUMP_IF_FALSE:
-               {
-                   if ((value(idx + 1, m1) != 0) ^ (op == Operation::JUMP_IF_FALSE))
-                   {
-                       idx = value(idx + 2, m2);
-                   }
-                   else
-                   {
-                       idx += 3;
-                   }
-                   break;
-               }
-           }
-       }
-       return std::pair{output, true};
+            const auto[op, m1, m2, m3] = splitOpCode(_program[idx]);
+            switch (op)
+            {
+                case Operation::READ:
+                    if (inputIdx >= inputs.size())
+                    {
+                        return {output, false};
+                    }
+                    _program[_program[idx + 1]] = inputs.at(inputIdx++);
+                    idx += 2;
+                    break;
+                case Operation::WRITE:
+                    output = value(idx + 1, m1);
+                    idx += 2;
+                    break;
+                case Operation::ADD:
+                case Operation::MULTIPLY:
+                case Operation::LESS_THAN:
+                case Operation::EQUALS:
+                {
+                    const auto a = value(idx + 1, m1);
+                    const auto b = value(idx + 2, m2);
+                    _program[_program[idx + 3]] = exec(op, a, b);
+                    idx += 4;
+                    break;
+                }
+                case Operation::JUMP_IF_TRUE:
+                case Operation::JUMP_IF_FALSE:
+                {
+                    if ((value(idx + 1, m1) != 0) ^ (op == Operation::JUMP_IF_FALSE))
+                    {
+                        idx = value(idx + 2, m2);
+                    }
+                    else
+                    {
+                        idx += 3;
+                    }
+                    break;
+                }
+            }
+        }
+        return std::pair{output, true};
     }
 
 private:
