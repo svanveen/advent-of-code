@@ -100,6 +100,11 @@ struct Direction
     std::array<T, DIMS> dims;
 };
 
+template <typename T, std::size_t DIMS>
+Direction<T, DIMS> operator-(const Position<T, DIMS>& lhs, const Position<T, DIMS>& rhs)
+{
+    return toArray<DIMS>(ranges::tuple_transform(lhs.dims, rhs.dims, std::minus<>{}));
+}
 
 template <typename T, std::size_t DIMS>
 Position<T, DIMS> operator+(const Position<T, DIMS>& position, const Direction<T, DIMS>& direction)
