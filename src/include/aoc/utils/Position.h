@@ -138,6 +138,12 @@ Direction<T, DIMS> operator*(T scale, const Direction<T, DIMS>& direction)
     return toArray<DIMS>(ranges::tuple_transform(direction.dims, ranges::bind_back(std::multiplies<>{}, scale)));
 }
 
+template <typename T, std::size_t DIMS>
+Direction<T, DIMS> operator/(const Direction<T, DIMS>& direction, T scale)
+{
+    return toArray<DIMS>(ranges::tuple_transform(direction.dims, [scale](auto&& entry) { return entry / scale; }));
+}
+
 }
 
 #endif //ADVENTOFCODE_POSITION_H
