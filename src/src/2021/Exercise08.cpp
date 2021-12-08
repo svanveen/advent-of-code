@@ -1,3 +1,4 @@
+#include <bitset>
 #include <cassert>
 #include <regex>
 #include <range/v3/algorithm.hpp>
@@ -11,11 +12,16 @@ namespace aoc
 namespace
 {
 
-std::string operator-(const std::string& lhs, const std::string& rhs)
+using Digit = std::bitset<7>;
+
+Digit parseDigit(const std::string& str)
 {
-    return lhs
-        | ranges::views::filter([&](char c) { return rhs.find(c) == std::string::npos; })
-        | ranges::to<std::string>;
+    auto digit = Digit{};
+    for (const auto c : str)
+    {
+        digit.set(c - 'a');
+    }
+    return digit;
 }
 
 struct Note
@@ -24,66 +30,61 @@ struct Note
     {
         const auto regex = std::regex{R"([a-g]+)"};
 
-        const auto tokens = str | ranges::views::tokenize(regex);
+        const auto tokens = str
+            | ranges::views::tokenize(regex)
+            | ranges::views::transform(parseDigit);
 
         auto result = Note{};
         ranges::copy(tokens | ranges::views::take(10), result.signalPatterns.begin());
-        ranges::sort(result.signalPatterns, ranges::less{}, [](auto &&str) { return str.size(); });
+        ranges::sort(result.signalPatterns, ranges::less{}, [](auto&& digit) { return digit.count(); });
         ranges::copy(tokens | ranges::views::drop(10), result.outputValue.begin());
         return result;
     }
 
     int computeValue() const
     {
-        auto segments = std::array<std::string, 10>{};
+        auto segments = std::array<Digit, 10>{};
         segments[1] = signalPatterns[0];
         segments[7] = signalPatterns[1];
         segments[4] = signalPatterns[2];
         segments[8] = signalPatterns[9];
 
-        const auto top = segments[7] - segments[1];
-        assert(top.size() == 1);
-        const auto bottomLeftCorner = segments[8] - (segments[4] + top);
-        assert(bottomLeftCorner.size() == 2);
-
-        auto bottom = std::string{};
-        auto topLeft = std::string{};
+        for (auto i = 3; i < 6; ++i)
         {
-            const auto nineNoBottom = segments[4] + top;
-            const auto zeroNoTopLeft = segments[7] + bottomLeftCorner;
-            for (auto i = 6; i < 9; ++i) // all digits with one segment missing
+            if ((signalPatterns[i] & segments[1]).count() == 2)
             {
-                assert(signalPatterns[i].size() == 6);
-                if (auto tmp = signalPatterns[i] - zeroNoTopLeft; tmp.size() == 1)
-                {
-                    topLeft = std::move(tmp);
-                    segments[0] = signalPatterns[i];
-                }
-                else if (auto tmp2 = signalPatterns[i] - nineNoBottom; tmp2.size() == 1)
-                {
-                    bottom = std::move(tmp2);
-                    segments[9] = signalPatterns[i];
-                }
-                else
-                {
-                    segments[6] = signalPatterns[i];
-                }
+                segments[3] = signalPatterns[i];
+                break;
             }
         }
-        assert(!segments[0].empty() && !segments[6].empty() && !segments[9].empty());
-        assert(bottom.size() == 1 && topLeft.size() == 1);
+        assert(segments[3].any());
 
-        const auto center = segments[8] - segments[0];
-        assert(center.size() == 1);
-        segments[3] = segments[1] + top + center + bottom;
+        for (auto i = 6; i < 9; ++i)
+        {
+            if ((signalPatterns[i] & segments[1]).count() == 2 && (signalPatterns[i] & ~segments[3]).count() == 2)
+            {
+                segments[0] = signalPatterns[i];
+            }
+            else if ((signalPatterns[i] & segments[1]).count() == 2)
+            {
+                segments[9] = signalPatterns[i];
+            }
+            else
+            {
+                segments[6] = signalPatterns[i];
+            }
+        }
+        assert(segments[0].any());
+        assert(segments[6].any());
+        assert(segments[9].any());
 
         for (auto i = 3; i < 6; ++i)
         {
-            if (ranges::is_permutation(signalPatterns[i], segments[3]))
+            if (signalPatterns[i] == segments[3])
             {
-                segments[3] = signalPatterns[i];
+                // noop
             }
-            else if (const auto tmp = segments[6] - signalPatterns[i]; tmp.size() == 1)
+            else if ((segments[6] & ~signalPatterns[i]).count() == 1)
             {
                 segments[5] = signalPatterns[i];
             }
@@ -92,27 +93,21 @@ struct Note
                 segments[2] = signalPatterns[i];
             }
         }
-        assert(!segments[2].empty() && !segments[5].empty());
+        assert(segments[2].any());
+        assert(segments[5].any());
 
         auto result = int{};
+
         for (auto i = 0; i < 4; ++i)
         {
-            const auto number = ranges::distance
-            (
-                ranges::begin(segments),
-                ranges::find_if(segments, [&](auto&& str)
-                {
-                    return ranges::is_permutation(str, outputValue[i]);
-                })
-            );
-            result += std::pow(10, 3 - i) * number;
+            result += std::pow(10, 3 - i) * ranges::distance(ranges::begin(segments), ranges::find(segments, outputValue[i]));
         }
 
         return result;
     }
 
-    std::array<std::string, 10> signalPatterns;
-    std::array<std::string, 4> outputValue;
+    std::array<Digit, 10> signalPatterns;
+    std::array<Digit, 4> outputValue;
 };
 
 }
@@ -131,7 +126,7 @@ Result exercise<2021, 8, 1>(std::istream& stream)
             | ranges::views::join
             | ranges::views::filter([](auto&& str)
             {
-                const auto size = str.size();
+                const auto size = str.count();
                 return (size == 2) || (size == 3) || (size == 4) || (size == 7);
             })
     );
