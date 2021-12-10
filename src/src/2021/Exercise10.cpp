@@ -36,19 +36,20 @@ const Match& getMatch(char c)
     });
 }
 
-std::variant<std::size_t, std::stack<char>> computeScore(const std::string& str)
+std::variant<std::size_t, std::vector<char>> computeScore(const std::string& str)
 {
-    auto stack = std::stack<char>{};
+    auto stack = std::vector<char>{};
+    stack.reserve(str.size());
 
     for (const auto& c : str)
     {
         if (const auto& match = getMatch(c); match.open == c)
         {
-            stack.push(c);
+            stack.push_back(c);
         }
-        else if (match.open == stack.top())
+        else if (match.open == stack.back())
         {
-            stack.pop();
+            stack.pop_back();
         }
         else
         {
@@ -78,17 +79,17 @@ Result exercise<2021, 10, 2>(std::istream& stream)
 {
     auto scores = ranges::getlines(stream)
         | ranges::views::transform(computeScore)
-        | ranges::views::filter([](auto&& result) { return std::holds_alternative<std::stack<char>>(result); })
+        | ranges::views::filter([](auto&& result) { return std::holds_alternative<std::vector<char>>(result); })
         | ranges::views::transform([](auto&& result)
         {
-            auto& stack = std::get<std::stack<char>>(result);
-            auto score = std::size_t{};
-            while (!stack.empty())
-            {
-                score = 5 * score + getMatch(stack.top()).score2;
-                stack.pop();
-            }
-            return score;
+            return ranges::accumulate
+            (
+                std::get<std::vector<char>>(result) | ranges::views::reverse, std::size_t{0},
+                [](auto lhs, auto rhs)
+                {
+                    return 5 * lhs + getMatch(rhs).score2;
+                }
+            );
         })
         | ranges::to_vector;
 
