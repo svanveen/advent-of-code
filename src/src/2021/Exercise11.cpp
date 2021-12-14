@@ -1,3 +1,4 @@
+#include <range/v3/numeric.hpp>
 #include <range/v3/view.hpp>
 #include <aoc/Exercise.h>
 
@@ -72,14 +73,11 @@ template <>
 Result exercise<2021, 11, 1>(std::istream& stream)
 {
     auto energyLevels = getEnergyLevels(stream);
-
-    auto flashes = std::size_t{};
-    for (auto step = 0; step < 100; ++step)
-    {
-        flashes += update(energyLevels);
-    }
-
-    return flashes;
+    return ranges::accumulate
+    (
+        ranges::views::generate_n([&]() { return update(energyLevels); }, 100),
+        std::size_t{0}
+    );
 }
 
 template <>
@@ -89,13 +87,11 @@ Result exercise<2021, 11, 2>(std::istream& stream)
     const auto rows = energyLevels.size();
     const auto cols = energyLevels[0].size();
 
-    for (auto step = 1;; ++step)
-    {
-        if (update(energyLevels) == rows * cols)
-        {
-            return step;
-        }
-    }
+    return *ranges::begin
+    (
+        ranges::views::ints(1)
+            | ranges::views::drop_while([&](auto&&) { return update(energyLevels) != rows * cols; })
+    );
 }
 
 }
