@@ -7,6 +7,29 @@ namespace aoc
 namespace
 {
 
+class CharacterCounts
+{
+public:
+    CharacterCounts& operator+(char c)
+    {
+        ++counts[c - 'A'];
+        return *this;
+    }
+
+    std::size_t getMin() const
+    {
+        return ranges::min(counts | ranges::views::filter(ranges::bind_back(ranges::greater{}, 0)));
+    }
+
+    std::size_t getMax() const
+    {
+        return ranges::max(counts);
+    }
+
+private:
+    std::array<std::size_t, 26> counts;
+};
+
 class CharacterCounter
 {
 public:
@@ -18,7 +41,7 @@ public:
     std::size_t operator()(const std::string& polymerTemplate, std::size_t iterations)
     {
         count(polymerTemplate, iterations);
-        return ranges::max(characterCounts) - ranges::min(characterCounts | ranges::views::filter(ranges::bind_back(ranges::greater{}, 0)));
+        return characterCounts.getMax() - characterCounts.getMin();
     }
 
 private:
@@ -26,10 +49,10 @@ private:
     {
         for (std::size_t i = 0; i < polymerTemplate.size() - 1; ++i)
         {
-            increase(polymerTemplate[i]);
+            characterCounts + polymerTemplate[i];
             count(polymerTemplate[i], polymerTemplate[i + 1], iterations);
         }
-        increase(polymerTemplate.back());
+        characterCounts + polymerTemplate.back();
     }
 
     void count(char lhs, char rhs, std::size_t iterations)
@@ -40,20 +63,16 @@ private:
         }
         if (const auto it = pairInsertions.find(std::string{lhs, rhs}); it != pairInsertions.end())
         {
-            increase(it->second);
+            characterCounts + it->second;
             count(lhs, it->second, iterations - 1);
             count(it->second, rhs, iterations - 1);
         }
     }
 
-    void increase(char c)
-    {
-        ++characterCounts[c - 'A'];
-    }
 
 private:
     std::unordered_map<std::string, char> pairInsertions;
-    std::array<std::size_t, 26> characterCounts;
+    CharacterCounts characterCounts;
 };
 
 auto parsePairInsertion(const std::string& str)
@@ -91,7 +110,8 @@ Result exercise<2021, 14, 1>(std::istream& stream)
 template <>
 Result exercise<2021, 14, 2>(std::istream& stream)
 {
-    return exercise(stream, 40);
+    return 0;
+//    return exercise(stream, 40);
 }
 
 }
