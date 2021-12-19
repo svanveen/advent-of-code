@@ -1,3 +1,4 @@
+#include <cassert>
 #include <regex>
 #include <range/v3/algorithm.hpp>
 #include <range/v3/numeric.hpp>
@@ -95,8 +96,9 @@ Result exercise<2021, 17, 1>(std::istream& stream)
 {
     const auto rect = Rectangle::parse(*ranges::getlines(stream).begin());
 
-    auto highestPoints = ranges::views::iota(rect.bottom())
-        | ranges::views::take_while([&](const auto dy)
+    assert(rect.bottom() < 0); // the upper bound only works if rect.bottom < 0
+    auto highestPoints = ranges::views::iota(rect.bottom(), -rect.bottom())
+        | ranges::views::filter([&](const auto dy)
         {
             return ranges::any_of
             (
@@ -106,7 +108,7 @@ Result exercise<2021, 17, 1>(std::istream& stream)
         })
         | ranges::views::transform([&](const auto dy)
         {
-            return (dy * (dy + 1)) / 2;
+            return (dy <= 0) ? dy : (dy * (dy + 1)) / 2;
         });
 
     return ranges::max(highestPoints);
@@ -117,7 +119,8 @@ Result exercise<2021, 17, 2>(std::istream& stream)
 {
     const auto rect = Rectangle::parse(*ranges::getlines(stream).begin());
 
-    auto velocityCounts = ranges::views::iota(rect.bottom())
+    assert(rect.bottom() < 0); // the upper bound only works if rect.bottom < 0
+    auto velocityCounts = ranges::views::iota(rect.bottom(), -rect.bottom())
         | ranges::views::transform([&](const auto dy)
         {
             return ranges::distance
@@ -125,8 +128,7 @@ Result exercise<2021, 17, 2>(std::istream& stream)
                 ranges::views::closed_iota(std::min(rect.left(), 0), std::max(rect.right(), 0))
                     | ranges::views::filter([&](const auto dx) { return hits(rect, dx, dy); })
             );
-        })
-        | ranges::views::take_while(ranges::bind_back(ranges::greater{}, 0));
+        });
 
     return ranges::accumulate(velocityCounts, std::size_t{0});
 }
