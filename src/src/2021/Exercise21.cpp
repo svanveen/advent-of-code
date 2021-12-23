@@ -40,6 +40,45 @@ auto parsePlayers(std::istream& stream)
     };
 }
 
+using Players = std::array<Player, 2>;
+using Wins = std::array<std::size_t, 2>;
+
+Wins playDiracDie(const Players& players, std::size_t player = 0, std::size_t cardinality = 1)
+{
+    struct Roll
+    {
+        int value;
+        std::size_t cardinality;
+    };
+    constexpr auto rolls = std::array
+    {
+        Roll{3, 1},
+        Roll{4, 3},
+        Roll{5, 6},
+        Roll{6, 7},
+        Roll{7, 6},
+        Roll{8, 3},
+        Roll{9, 1}
+    };
+
+    auto wins = Wins{};
+    for (const auto& roll : rolls)
+    {
+        auto p = players;
+        if (p[player].roll(roll.value) >= 21)
+        {
+            wins[player] += cardinality * roll.cardinality;
+        }
+        else
+        {
+            const auto subwins = playDiracDie(p, 1 - player, cardinality * roll.cardinality);
+            wins[0] += subwins[0];
+            wins[1] += subwins[1];
+        }
+    }
+    return wins;
+}
+
 }
 
 template <>
@@ -68,7 +107,9 @@ Result exercise<2021, 21, 1>(std::istream& stream)
 template <>
 Result exercise<2021, 21, 2>(std::istream& stream)
 {
-    return 0;
+    auto players = parsePlayers(stream);
+    const auto[winsPlayer1, winsPlayer2] = playDiracDie(players);
+    return std::max(winsPlayer1, winsPlayer2);
 }
 
 }

@@ -14,5 +14,5 @@ TEST(Exercise21, Part1)
 TEST(Exercise21, Part2)
 {
     EXPECT_EQ(444356092776315, (aoc::exercise<2021, 21, 2>(input)));
-    EXPECT_EQ(0, (aoc::exercise<2021, 21, 2>(aoc::res::data_2021_21)));
+    EXPECT_EQ(131180774190079, (aoc::exercise<2021, 21, 2>(aoc::res::data_2021_21)));
 }
