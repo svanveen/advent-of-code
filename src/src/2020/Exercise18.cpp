@@ -167,7 +167,7 @@ auto compute(const std::string& str)
             case '*': return std::multiplies<>{};
             case '(': return OpeningBrace{};
             case ')': return ClosingBrace{};
-            default:  return std::stoi(part);
+            default:  return std::stoull(part);
         }
     };
 

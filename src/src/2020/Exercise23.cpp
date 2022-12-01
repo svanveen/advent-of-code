@@ -1,4 +1,5 @@
 #include <list>
+#include <optional>
 #include <string>
 #include <range/v3/algorithm.hpp>
 #include <range/v3/view.hpp>

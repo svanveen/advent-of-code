@@ -1,4 +1,5 @@
 #include <regex>
+#include <stdexcept>
 #include <range/v3/numeric.hpp>
 #include <range/v3/view.hpp>
 #include <aoc/Exercise.h>
@@ -44,6 +45,7 @@ Position operator+(const Position& position, const Movement& movement)
         case Movement::Direction::UP:
             return {position.x, position.y - movement.steps};
     }
+    throw std::logic_error{"invalid direction"};
 }
 
 AimedPosition operator+(const AimedPosition& position, const Movement& movement)
@@ -57,6 +59,7 @@ AimedPosition operator+(const AimedPosition& position, const Movement& movement)
         case Movement::Direction::UP:
             return {position.x, position.y, position.aim - movement.steps};
     }
+    throw std::logic_error{"invalid direction"};
 }
 
 Movement parseOperation(const std::string& str)

@@ -89,7 +89,7 @@ Result exercise<2021, 11, 2>(std::istream& stream)
 
     return *ranges::begin
     (
-        ranges::views::ints(1)
+        ranges::views::ints(1, ranges::unreachable)
             | ranges::views::drop_while([&](auto&&) { return update(energyLevels) != rows * cols; })
     );
 }

@@ -11,7 +11,7 @@ Result exercise<2021, 25, 1>(std::istream& stream)
     const auto rows = map.size();
     const auto cols = map.front().size();
 
-    for (const auto round : ranges::views::ints(1))
+    for (const auto round : ranges::views::ints(1, ranges::unreachable))
     {
         auto moved = false;
         auto copy = map;

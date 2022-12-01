@@ -1,4 +1,5 @@
 #include <array>
+#include <optional>
 #include <limits>
 #include <range/v3/algorithm.hpp>
 #include <range/v3/view.hpp>
