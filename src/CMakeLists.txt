@@ -10,6 +10,7 @@ target_link_libraries(advent-of-code
 
 list_exercises(YEARS EXERCISES)
 foreach(YEAR EXERCISE IN ZIP_LISTS YEARS EXERCISES)
+    # create an individual executable for each exercise
     add_exercise(${YEAR} ${EXERCISE}
         ADD_TO_TARGET
             advent-of-code

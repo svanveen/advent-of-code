@@ -57,13 +57,9 @@ function(add_exercise_impl NAME YEAR EXERCISE)
 
     target_compile_features(${OBJECT_TARGET_NAME} PUBLIC cxx_std_17)
 
-    foreach(SOURCE IN LISTS ARG_OBJECT_SOURCES)
-        target_sources(${OBJECT_TARGET_NAME} PUBLIC ${SOURCE})
-    endforeach()
+    target_sources(${OBJECT_TARGET_NAME} PUBLIC ${ARG_OBJECT_SOURCES})
 
-    foreach(LIBRARY IN LISTS ARG_LINK_LIBRARIES)
-        target_link_libraries(${OBJECT_TARGET_NAME} PUBLIC ${LIBRARY})
-    endforeach()
+    target_link_libraries(${OBJECT_TARGET_NAME} PUBLIC ${ARG_LINK_LIBRARIES})
 
     target_sources(${ARG_ADD_TO_TARGET}
         PRIVATE
@@ -79,9 +75,7 @@ function(add_exercise_impl NAME YEAR EXERCISE)
         $<TARGET_OBJECTS:${OBJECT_TARGET_NAME}>
     )
 
-    foreach(SOURCE IN LISTS ARG_EXECUTABLE_SOURCES)
-        target_sources(${TARGET_NAME} PUBLIC ${SOURCE})
-    endforeach()
+    target_sources(${TARGET_NAME} PUBLIC ${ARG_EXECUTABLE_SOURCES})
 
     target_link_libraries(${TARGET_NAME} PRIVATE ${OBJECT_TARGET_NAME})
 
