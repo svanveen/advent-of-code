@@ -1,8 +1,9 @@
 #include <string>
-#include <aoc/Exercise.h>
 #include <range/v3/algorithm.hpp>
 #include <range/v3/numeric.hpp>
 #include <range/v3/view.hpp>
+#include <aoc/Exercise.h>
+#include <aoc/utils/ToInts.h>
 
 namespace aoc
 {
@@ -56,7 +57,7 @@ Result exercise<2020, 13, 1>(std::istream& stream)
     const auto departure = getDepature(stream);
     auto busIds = ranges::getlines(stream, ',')
         | ranges::views::filter(ranges::bind_back(ranges::not_equal_to{}, "x"))
-        | ranges::views::transform([](auto&& line) { return std::stoi(line); });
+        | utils::toInts<int>;
 
     auto waitTime = [=](auto&& busId)
     {

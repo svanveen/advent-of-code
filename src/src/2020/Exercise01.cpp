@@ -2,6 +2,7 @@
 #include <range/v3/view.hpp>
 #include <aoc/Exercise.h>
 #include <aoc/utils/CartesianProduct.h>
+#include <aoc/utils/ToInts.h>
 
 namespace aoc
 {
@@ -15,7 +16,7 @@ auto exercise(std::istream& stream)
 {
     const auto numbers = ranges::getlines(stream)
            | ranges::views::filter([](auto&& s) { return !s.empty(); })
-           | ranges::views::transform([](auto&& s) { return std::stoi(s); })
+           | utils::toInts<int>
            | ranges::to_vector;
 
     auto solutions = utils::cartesian_product<N + 1>(numbers)

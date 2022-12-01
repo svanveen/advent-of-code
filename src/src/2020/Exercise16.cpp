@@ -1,11 +1,12 @@
 #include <map>
 #include <string>
 #include <variant>
-#include <aoc/Exercise.h>
 #include <range/v3/action.hpp>
 #include <range/v3/algorithm.hpp>
 #include <range/v3/numeric.hpp>
 #include <range/v3/view.hpp>
+#include <aoc/Exercise.h>
+#include <aoc/utils/ToInts.h>
 
 namespace aoc
 {
@@ -57,7 +58,7 @@ struct Ticket
         static const std::regex regex{R"(\w+)"};
         auto numbers = str
                        | ranges::views::tokenize(regex)
-                       | ranges::views::transform([](auto&& numberStr) { return std::stoi(numberStr); })
+                       | utils::toInts<int>
                        | ranges::to_vector;
         return Ticket{numbers};
     }

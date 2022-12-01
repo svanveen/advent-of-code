@@ -3,6 +3,7 @@
 #include <range/v3/numeric.hpp>
 #include <range/v3/view.hpp>
 #include <aoc/Exercise.h>
+#include <aoc/utils/ToInts.h>
 
 using namespace std::literals;
 
@@ -13,7 +14,7 @@ namespace
 {
 
 const auto parseNumbers = ranges::views::tokenize(std::regex{R"(\d+)"})
-    | ranges::views::transform([](auto&& str) { return std::stoi(str); });
+    | utils::toInts<int>;
 
 Result exercise(std::istream& stream, bool exitOnFirst)
 {

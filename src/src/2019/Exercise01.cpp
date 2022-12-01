@@ -2,6 +2,7 @@
 #include <range/v3/numeric.hpp>
 #include <range/v3/view.hpp>
 #include <aoc/Exercise.h>
+#include <aoc/utils/ToInts.h>
 
 namespace aoc
 {
@@ -25,7 +26,7 @@ auto exercise(std::istream& stream, CALLBACK&& callback)
 {
     auto fuelRequirements = ranges::getlines(stream)
            | ranges::views::filter([](auto&& s) { return !s.empty(); })
-           | ranges::views::transform([](auto&& s) { return std::stoull(s); })
+           | utils::toInts<unsigned long long>
            | ranges::views::transform(callback);
 
     return ranges::accumulate(fuelRequirements, std::size_t{0});

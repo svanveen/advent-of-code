@@ -1,6 +1,7 @@
 #include <range/v3/numeric.hpp>
 #include <range/v3/view.hpp>
 #include <aoc/Exercise.h>
+#include <aoc/utils/ToInts.h>
 
 namespace aoc
 {
@@ -11,7 +12,7 @@ namespace
 Result exercise(std::istream& stream, int days)
 {
     auto population = ranges::getlines(stream, ',')
-        | ranges::views::transform([](auto&& str) { return std::stoi(str); });
+        | utils::toInts<int>;
 
     auto countWithTimer = std::array<std::size_t, 9>{};
     for (const auto& p : population)

@@ -17,7 +17,7 @@ auto parseCaloriesPerElve(std::istream& stream)
         | ranges::views::split(std::string{})
         | ranges::views::transform([](auto&& rng)
             {
-                return ranges::accumulate(rng | utils::toInts, 0);
+                return ranges::accumulate(rng | utils::toInts<int>, 0);
             });
 }
 

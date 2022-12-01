@@ -2,6 +2,7 @@
 #include <range/v3/action.hpp>
 #include <range/v3/view.hpp>
 #include <aoc/Exercise.h>
+#include <aoc/utils/ToInts.h>
 
 namespace aoc
 {
@@ -18,7 +19,7 @@ template <typename COMPARATOR>
 auto exercise(std::istream& stream)
 {
     const auto passwordRange = ranges::getlines(stream, '-')
-        | ranges::views::transform([](auto&& str) { return std::stoi(str); })
+        | utils::toInts<int>
         | ranges::to_vector;
 
     const auto& from = passwordRange[0];

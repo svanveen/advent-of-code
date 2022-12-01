@@ -8,6 +8,7 @@
 #include <range/v3/view.hpp>
 #include <aoc/Exercise.h>
 #include <aoc/utils/Overloaded.h>
+#include <aoc/utils/ToInts.h>
 
 namespace aoc
 {
@@ -50,7 +51,7 @@ std::pair<std::size_t, Rule> parseRule(const std::string& str)
                     {
                         return ranges::make_iterator_range(submatch.first, submatch.second)
                             | ranges::views::tokenize(std::regex{R"(\d+)"})
-                            | ranges::views::transform([](auto&& number) { return std::stoull(number); })
+                            | utils::toInts<unsigned long long>
                             | ranges::to_vector;
                     })
                 | ranges::to_vector;

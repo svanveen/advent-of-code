@@ -5,6 +5,7 @@
 #include <range/v3/numeric.hpp>
 #include <range/v3/view.hpp>
 #include <aoc/Exercise.h>
+#include <aoc/utils/ToInts.h>
 
 namespace aoc
 {
@@ -72,7 +73,7 @@ auto getPlayersCards(std::istream& stream)
             {
                 auto numbers = rng
                     | ranges::views::drop(1)
-                    | ranges::views::transform([](auto&& number) { return std::stoi(number); })
+                    | utils::toInts<int>
                     | ranges::views::common;
                 return CardDeck{numbers.begin(), numbers.end()};
             }

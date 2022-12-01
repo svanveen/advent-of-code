@@ -4,6 +4,7 @@
 #include <range/v3/algorithm.hpp>
 #include <range/v3/view.hpp>
 #include <aoc/Exercise.h>
+#include <aoc/utils/ToInts.h>
 
 namespace aoc
 {
@@ -20,7 +21,7 @@ struct Game
                 std::getline(stream, line);
                 auto cupsRng = line
                     | ranges::views::tokenize(std::regex{R"(\d)"})
-                    | ranges::views::transform([](auto&& number) { return std::stoi(number); });
+                    | utils::toInts<int>;
                 if (fillUpTo)
                 {
                     auto extendedCupsRng = ranges::views::concat(

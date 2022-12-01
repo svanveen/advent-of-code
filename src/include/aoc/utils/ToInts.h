@@ -7,9 +7,33 @@
 namespace aoc::utils
 {
     
+template <typename INT>
 inline auto toInts = ranges::views::transform([](const std::string& str)
 {
-    return std::stoi(str);
+    if constexpr (std::is_same_v<INT, int>)
+    {
+        return std::stoi(str);
+    }
+    else if constexpr (std::is_same_v<INT, long>)
+    {
+        return std::stol(str);
+    }
+    else if constexpr (std::is_same_v<INT, long long>)
+    {
+        return std::stoll(str);
+    }
+    else if constexpr (std::is_same_v<INT, unsigned long>)
+    {
+        return std::stoul(str);
+    }
+    else if constexpr (std::is_same_v<INT, unsigned long long>)
+    {
+        return std::stoull(str);
+    }
+    else
+    {
+        static_assert(!std::is_same_v<INT, INT>, "integer type not supported");
+    }
 });
     
 }

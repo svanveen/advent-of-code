@@ -2,9 +2,10 @@
 #include <vector>
 #include <range/v3/action.hpp>
 #include <range/v3/iterator_range.hpp>
+#include <range/v3/numeric/accumulate.hpp>
 #include <range/v3/view.hpp>
 #include <aoc/Exercise.h>
-#include <range/v3/numeric/accumulate.hpp>
+#include <aoc/utils/ToInts.h>
 
 namespace aoc
 {
@@ -47,7 +48,7 @@ auto countPossibleCombinations(const std::vector<std::size_t>& numbers, std::siz
 auto getNumbers(std::istream& stream)
 {
     return ranges::getlines(stream)
-        | ranges::views::transform([](auto&& str) { return std::stoull(str); })
+        | utils::toInts<unsigned long long>
         | ranges::to_vector
         | ranges::actions::push_back(std::size_t{0})
         | ranges::actions::sort;

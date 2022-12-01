@@ -2,6 +2,7 @@
 #include <range/v3/numeric.hpp>
 #include <range/v3/view.hpp>
 #include <aoc/Exercise.h>
+#include <aoc/utils/ToInts.h>
 
 namespace aoc
 {
@@ -10,7 +11,7 @@ template <>
 Result exercise<2021, 7, 1>(std::istream& stream)
 {
     auto positions = ranges::getlines(stream, ',')
-        | ranges::views::transform([](auto&& str) { return std::stoi(str); })
+        | utils::toInts<int>
         | ranges::to_vector;
 
     ranges::nth_element(positions, positions.begin() + positions.size() / 2);
@@ -28,7 +29,7 @@ template <>
 Result exercise<2021, 7, 2>(std::istream& stream)
 {
     auto positions = ranges::getlines(stream, ',')
-        | ranges::views::transform([](auto&& str) { return std::stoi(str); })
+        | utils::toInts<int>
         | ranges::to_vector;
 
     // Here also the mean should work somehow since it minimizes the L2 norm and we are trying to minimize L1 + L2 norm

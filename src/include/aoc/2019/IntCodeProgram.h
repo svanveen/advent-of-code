@@ -6,6 +6,7 @@
 #include <string>
 #include <range/v3/algorithm.hpp>
 #include <range/v3/view.hpp>
+#include <aoc/utils/ToInts.h>
 
 namespace aoc
 {
@@ -39,7 +40,7 @@ private:
         Program(std::istream& stream)
             : _code(
                 ranges::getlines(stream, ',')
-                    | ranges::views::transform([](auto&& s) { return std::stoll(s); })
+                    | utils::toInts<long long>
                     | ranges::to_vector
             )
         {}

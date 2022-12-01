@@ -1,6 +1,7 @@
 #include <range/v3/numeric.hpp>
 #include <range/v3/view.hpp>
 #include <aoc/Exercise.h>
+#include <aoc/utils/ToInts.h>
 
 namespace aoc
 {
@@ -11,7 +12,7 @@ namespace
 auto getDepths(std::istream& stream)
 {
     return ranges::getlines(stream)
-        | ranges::views::transform([](auto&& str) { return std::stoi(str); })
+        | utils::toInts<int>
         | ranges::to_vector;
 }
 

@@ -2,6 +2,7 @@
 #include <string>
 #include <range/v3/view.hpp>
 #include <aoc/Exercise.h>
+#include <aoc/utils/ToInts.h>
 
 namespace aoc
 {
@@ -40,7 +41,7 @@ template <>
 Result exercise<2020, 25, 1>(std::istream& stream)
 {
     const auto publicKeys = ranges::getlines(stream)
-        | ranges::views::transform([](auto&& number) { return std::stoull(number); })
+        | utils::toInts<unsigned long long>
         | ranges::to_vector;
 
     const auto loopSizes = publicKeys

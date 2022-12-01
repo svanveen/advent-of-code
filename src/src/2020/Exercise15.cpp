@@ -1,8 +1,9 @@
 #include <map>
 #include <string>
-#include <aoc/Exercise.h>
 #include <range/v3/algorithm.hpp>
 #include <range/v3/view.hpp>
+#include <aoc/Exercise.h>
+#include <aoc/utils/ToInts.h>
 
 namespace aoc
 {
@@ -13,7 +14,7 @@ namespace
 auto exercise(std::istream& stream, std::size_t N)
 {
     auto startingNumbers = ranges::getlines(stream, ',')
-        | ranges::views::transform([](auto&& number) { return std::stoull(number); })
+        | utils::toInts<unsigned long long>
         | ranges::to_vector;
 
     auto numberTurnPairs = ranges::views::indices(std::size_t{0}, startingNumbers.size() - 1) // don't fill last one into map yet
