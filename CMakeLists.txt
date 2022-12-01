@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.17)
 project(AdventOfCode VERSION 2021.14)
 
+set(CMAKE_EXPORT_COMPILE_DATABASE ON)
+
 include(cmake/GenerateExercise.cmake)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR})
