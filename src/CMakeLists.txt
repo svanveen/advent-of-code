@@ -3,6 +3,8 @@ find_package(range-v3 REQUIRED)
 
 add_executable(advent-of-code src/main.cpp)
 
+target_enable_compiler_warnings(advent-of-code)
+
 target_link_libraries(advent-of-code
     PRIVATE
         docopt::docopt

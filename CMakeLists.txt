@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.17)
-project(AdventOfCode VERSION 2021.14)
+project(AdventOfCode VERSION 2022.01)
 
 set(CMAKE_EXPORT_COMPILE_DATABASE ON)
 
