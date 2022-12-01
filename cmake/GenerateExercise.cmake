@@ -31,6 +31,10 @@ function(get_target_name OUT NAME YEAR EXERCISE)
     set(${OUT} ${NAME} PARENT_SCOPE)
 endfunction()
 
+function(target_enable_compiler_warnings TARGET_NAME)
+    target_compile_options(${TARGET_NAME} PUBLIC $<$<CXX_COMPILER_ID:GCC>:-Wall -Wextra -pedantic -Werror>)
+endfunction()
+
 function(add_exercise_impl NAME YEAR EXERCISE)
     cmake_parse_arguments(ARG "IS_TEST" "ADD_TO_TARGET" "LINK_LIBRARIES;EXECUTABLE_SOURCES;OBJECT_SOURCES" ${ARGN})
 
@@ -55,6 +59,8 @@ function(add_exercise_impl NAME YEAR EXERCISE)
             ${CMAKE_CURRENT_BINARY_DIR}/gen/include
     )
 
+    target_enable_compiler_warnings(${OBJECT_TARGET_NAME})
+
     target_compile_features(${OBJECT_TARGET_NAME} PUBLIC cxx_std_17)
 
     target_sources(${OBJECT_TARGET_NAME} PUBLIC ${ARG_OBJECT_SOURCES})
@@ -76,6 +82,8 @@ function(add_exercise_impl NAME YEAR EXERCISE)
     )
 
     target_sources(${TARGET_NAME} PUBLIC ${ARG_EXECUTABLE_SOURCES})
+
+    target_enable_compiler_warnings(${TARGET_NAME})
 
     target_link_libraries(${TARGET_NAME} PRIVATE ${OBJECT_TARGET_NAME})
 

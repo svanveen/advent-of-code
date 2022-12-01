@@ -9,6 +9,7 @@ foreach(YEAR EXERCISE IN ZIP_LISTS YEARS EXERCISES)
     # create a test executable for each year
     if (NOT TARGET ${TARGET_NAME})
         add_executable(${TARGET_NAME})
+        target_enable_compiler_warnings(${TARGET_NAME})
         add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})
     endif()
 
