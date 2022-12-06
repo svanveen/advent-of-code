@@ -61,7 +61,7 @@ function(add_exercise_impl NAME YEAR EXERCISE)
 
     target_enable_compiler_warnings(${OBJECT_TARGET_NAME})
 
-    target_compile_features(${OBJECT_TARGET_NAME} PUBLIC cxx_std_17)
+    target_compile_features(${OBJECT_TARGET_NAME} PUBLIC cxx_std_20)
 
     target_sources(${OBJECT_TARGET_NAME} PUBLIC ${ARG_OBJECT_SOURCES})
 
