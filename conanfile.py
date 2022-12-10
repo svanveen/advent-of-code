@@ -26,12 +26,16 @@ class AdventOfCodeConan(ConanFile):
     ]
 
     requires = [
+        'boost/1.80.0',
         'docopt.cpp/0.6.3',
         'gtest/1.10.0',
         'range-v3/0.11.0'
     ]
 
     no_copy_sources = True
+
+    def configure(self):
+        self.options['boost'].header_only = True
 
     def build(self):
         cmake = CMake(self)

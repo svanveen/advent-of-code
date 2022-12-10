@@ -1,3 +1,4 @@
+find_package(Boost REQUIRED)
 find_package(docopt REQUIRED)
 find_package(range-v3 REQUIRED)
 
@@ -17,6 +18,7 @@ foreach(YEAR EXERCISE IN ZIP_LISTS YEARS EXERCISES)
         ADD_TO_TARGET
             advent-of-code
         LINK_LIBRARIES
+            Boost::headers
             range-v3::range-v3
     )
     exercise_number(EXERCISE_NUMBER ${EXERCISE})
