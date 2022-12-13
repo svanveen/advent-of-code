@@ -6,6 +6,8 @@
 #include <string_view>
 #include <aoc/Result.h>
 
+using namespace std::literals;
+
 namespace aoc
 {
 
