@@ -6,10 +6,10 @@
 constexpr auto USAGE = R"(Advent of Code.
 
 Usage:
-  advent-of-code -p PATH [-y YEAR] [-e EXERCISE]
+  advent-of-code -p PATH -y YEAR -e EXERCISE
 
 Options:
-  -p PATH       path to .dat files
+  -p PATH       base path to directory containing all input .dat files per year
   -y YEAR       year of the event
   -e EXERCISE   exercise to execute
 )";
